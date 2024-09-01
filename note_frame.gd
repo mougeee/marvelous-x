@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
 	
 	if mouse_delta.length() > radius:
-		Input.warp_mouse(position + mouse_delta.normalized() * radius)
+		#Input.warp_mouse(position + mouse_delta.normalized() * radius)
 		pass
 
 
