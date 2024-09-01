@@ -6,6 +6,7 @@ var width = 0
 var process = 0.0
 var frame_radius
 @export var color = Color.WHITE
+@export var speed = 1.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,7 +19,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	process += 1 * delta
+	process += speed * delta
 	
 	width = pow(process, 3) * 20
 	radius = frame_radius * pow(process, 4)

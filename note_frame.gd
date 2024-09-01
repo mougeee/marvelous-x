@@ -5,15 +5,20 @@ var coverage = 1.0
 var width = 20
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func resize():
 	radius = get_window().size.y / 3
 	queue_redraw()
 	
 	position = get_window().size / 2
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	resize()
+	
+	get_tree().get_root().size_changed.connect(resize)
 	
 	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,7 +37,7 @@ func _draw():
 	draw_circle(Vector2.ZERO, radius, Color.WHITE, false, 2, true)
 	
 	# center
-	draw_circle(Vector2.ZERO, 10, Color.WHITE, false, 5, true)
+	draw_circle(Vector2.ZERO, 2, Color.WHITE, true, -1, true)
 	
 	# frame cursor
 	draw_arc(
