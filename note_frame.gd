@@ -7,6 +7,7 @@ var width = 20
 
 func resize():
 	radius = get_window().size.y / 3
+	width = radius / 20
 	queue_redraw()
 	
 	position = get_window().size / 2

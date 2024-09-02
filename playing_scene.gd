@@ -5,16 +5,22 @@ var ApproachNote = preload("res://approach_note.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	if !$AudioStreamPlayer.playing:
+		$AudioStreamPlayer.play()
 
 
 # [time, angle, coverage, speed]
 var notes = [
-	[5.0, 1.0, 0.2, 1.0],
-	[6.0, 0.5, 0.2, 1.2],
-	[7.0, 1.0, 0.2, 1.4],
-	[7.5, 1.5, 0.2, 2.6],
-	[8.0, 2.0, 0.2, 1.2]
+	[2.0, 1.0, 0.2, 1.0],
+	[3.0, 0.5, 0.2, 1.2],
+	[4.0, 1.0, 0.2, 1.4],
+	[4.5, 1.5, 0.2, 1.0],
+	[5.0, 2.0, 0.2, 1.2],
+	[6.0, -2.0, 0.2, 1.2],
+	[6.5, -1.0, 0.2, 1.2],
+	[7.0, -2.0, 0.2, 1.2],
+	[7.5, -3.0, 0.2, 1.2],
+	[8.0, -2.0, 0.2, 1.2],
 ]
 var next_index = 0
 var time = 0
@@ -38,3 +44,4 @@ func _process(delta: float) -> void:
 	if time > 10.0:
 		time = 0.0
 		next_index = 0
+		$AudioStreamPlayer.play()

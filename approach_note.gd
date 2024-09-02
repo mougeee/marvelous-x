@@ -3,6 +3,7 @@ extends Node2D
 var radius = 0
 var coverage = 0.4
 var width = 0
+var note_width = 0
 var process = 0.0
 var frame_radius
 @export var color = Color.WHITE
@@ -11,7 +12,9 @@ var frame_radius
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	frame_radius = get_parent().get_node("NoteFrame").radius
+	var frame = get_parent().get_node("NoteFrame")
+	frame_radius = frame.radius
+	note_width = frame.width
 	
 	position = get_window().size / 2
 
@@ -21,7 +24,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	process += speed * delta
 	
-	width = pow(process, 3) * 20
+	width = pow(process, 3) * note_width
 	radius = frame_radius * pow(process, 4)
 	queue_redraw()
 	
