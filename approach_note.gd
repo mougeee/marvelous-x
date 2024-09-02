@@ -18,11 +18,17 @@ var processed = false
 signal pressed
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func resize() -> void:
 	var frame = get_parent().get_node("NoteFrame")
 	frame_radius = frame.radius
 	note_width = frame.width
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	get_tree().get_root().size_changed.connect(resize)
+	
+	resize()
 	
 	if key == Keys.CRITICAL:
 		coverage = TAU

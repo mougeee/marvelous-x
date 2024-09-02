@@ -5,14 +5,14 @@ const judgement_info = preload("res://globals.gd").judgement_info
 
 var ApproachNote = preload("res://approach_note.tscn")
 var time_begin
-var offset = 0.08
+var offset = 0.00
 
 
 const Keys = preload("res://globals.gd").Keys
 var notes = []
 var next_index = 0
 
-var note_start_time = INF
+var note_start_time = 0
 var info_path = "res://20240902001.json"
 var audio_path = "res://20240902001.mp3"
 
@@ -21,10 +21,16 @@ func reset_times() -> void:
 	if $AudioStreamPlayer.playing:
 		$AudioStreamPlayer.stop()
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
+	
+
+func resize() -> void:
+	position = get_viewport_rect().size / 2
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_tree().get_root().size_changed.connect(resize)
+	
 	position = get_viewport_rect().size / 2
 	
 	# load notes from file
