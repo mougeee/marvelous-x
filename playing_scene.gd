@@ -8,31 +8,28 @@ var time_begin
 var offset = 0.090
 
 
-# [time, angle, coverage, speed, key]
 const Keys = preload("res://globals.gd").Keys
-var raw_notes = [
-	[2.0, 1.0, 0.2, 1.0, Keys.LEFT],
-	[3.0, 0.5, 0.2, 1.8, Keys.LEFT],
-	[4.0, 1.0, 0.2, 1.6, Keys.LEFT],
-	[4.5, 1.5, 0.2, 1.4, Keys.LEFT],
-	[5.0, 2.0, 0.2, 1.2, Keys.RIGHT],
-	[6.0, -2.0, 0.2, 1.0, Keys.LEFT],
-	[6.5, -1.0, 0.2, 0.8, Keys.RIGHT],
-	[7.0, -2.0, 0.2, 0.6, Keys.RIGHT],
-	[7.5, -3.0, 0.2, 0.4, Keys.LEFT],
-	[8.0, -2.0, 0.2, 0.2, Keys.CRITICAL],
-]
 var notes = []
 var next_index = 0
+
+var info_path = "res://20240902001.json"
+var audio_path = "res://20240902001.mp3"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$AudioStreamPlayer.stream = load(audio_path)
 	time_begin = Time.get_ticks_usec()
 	$AudioStreamPlayer.play()
 	
 	position = get_viewport_rect().size / 2
 	
+	# load notes from file
+	var file = FileAccess.open(info_path, FileAccess.READ)
+	var raw_notes = JSON.parse_string(file.get_as_text())["notes"]
+	file.close()
+	
+	# preprocess notes
 	for raw_note in raw_notes:
 		var time = raw_note[0] - 1 / raw_note[3]
 		
@@ -49,9 +46,20 @@ func _ready() -> void:
 				left = anchor + 1
 			else:
 				right = anchor
-				
+		
+		# correct key
+		if raw_note[4] == 0:
+			raw_note[4] = Keys.LEFT
+		elif raw_note[4] == 1:
+			raw_note[4] = Keys.RIGHT
+		else:
+			raw_note[4] = Keys.CRITICAL
+			
 		# insert
-		notes.insert(left, [time] + raw_note)
+		raw_note.insert(0, time)
+		notes.insert(left, raw_note)
+		
+		# [summon_time, time, angle, coverage, speed, key]
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
