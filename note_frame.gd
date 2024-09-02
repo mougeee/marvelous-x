@@ -9,8 +9,6 @@ func resize():
 	radius = get_window().size.y / 3
 	width = radius / 20
 	queue_redraw()
-	
-	position = get_window().size / 2
 
 
 # Called when the node enters the scene tree for the first time.
@@ -24,7 +22,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var mouse_delta = get_global_mouse_position() - position
+	var mouse_delta = get_global_mouse_position() - get_parent().position
 	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
 	
 	if mouse_delta.length() > radius:

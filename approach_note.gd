@@ -2,6 +2,8 @@ extends Node2D
 
 const Keys = preload("res://globals.gd").Keys
 const color_map = preload("res://globals.gd").color_map
+const Judgements = preload("res://globals.gd").Judgements
+const judgement_info = preload("res://globals.gd").judgement_info
 
 var radius = 0
 var coverage = 0.4
@@ -13,6 +15,8 @@ var frame_radius
 @export var speed = 1.0
 var processed = false
 
+signal pressed
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,8 +26,6 @@ func _ready() -> void:
 	
 	if key == Keys.CRITICAL:
 		coverage = TAU
-	
-	position = get_window().size / 2
 
 
 func is_covered() -> bool:
@@ -43,7 +45,7 @@ func _process(delta: float) -> void:
 	
 	var dt = (process - 1.0) * speed
 	if not processed:
-		if abs(dt) <= 0.100 and (
+		if abs(dt) <= judgement_info[Judgements.MISS][2] and (
 			key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
 			or is_covered() and (
 				key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
@@ -51,20 +53,17 @@ func _process(delta: float) -> void:
 			)
 		):
 			processed = true
-			if abs(dt) <= 0.020:
-				print('Marvelous ', dt)
-			elif abs(dt) <= 0.040:
-				print('Splendid ', dt)
-			elif abs(dt) <= 0.070:
-				print('Great ', dt)
-			else:
-				print('OK ', dt)
+			for i in range(judgement_info.size() - 1):
+				if abs(dt) <= judgement_info[i][2]:
+					pressed.emit(i)
+					break
+			print(dt)
 			queue_free()
-		elif dt > 0.100:
-			print("Miss")
+		elif dt > judgement_info[Judgements.MISS][2]:
+			pressed.emit(Judgements.MISS)
 			processed = true
-			
-	if dt > 0.065 and radius > (get_window().size/2).length():
+	
+	if dt > judgement_info[Judgements.MISS][2] and radius > (get_window().size/2).length():
 		queue_free()
 
 

@@ -11,3 +11,11 @@ script = ExtResource("1_o3yjq")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_gwyby")
+
+[node name="Judgement" type="Label" parent="."]
+offset_right = 98.0
+offset_bottom = 23.0
+text = "Hello, world!"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
