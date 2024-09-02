@@ -3,6 +3,7 @@ extends Node2D
 var radius = 600
 var coverage = 1.0
 var width = 20
+var press_highlight = Color.TRANSPARENT
 
 
 func resize():
@@ -28,6 +29,16 @@ func _process(delta: float) -> void:
 	if mouse_delta.length() > radius:
 		#Input.warp_mouse(get_parent().position + mouse_delta.normalized() * radius)
 		pass
+	
+	if Input.is_action_just_pressed("LeftPress"):
+		press_highlight = Color.RED
+	elif Input.is_action_just_pressed("RightPress"):
+		press_highlight = Color.BLUE
+	elif Input.is_action_just_pressed("CriticalPress"):
+		press_highlight = Color.YELLOW
+		
+	press_highlight.a = max(0.0, press_highlight.a - delta * 2)
+	queue_redraw()
 
 
 func _draw():
@@ -40,8 +51,17 @@ func _draw():
 	# frame cursor
 	draw_arc(
 		Vector2.ZERO, radius,
-		-coverage/2, coverage/2, coverage * 50, Color.WHITE, width*2,
+		-coverage/2, coverage/2, coverage * 50, Color.WHITE, width,
 		true
 	)
-	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width, Color.WHITE, true, -1, true)
-	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width, Color.WHITE, true, -1, true)
+	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, Color.WHITE, true, -1, true)
+	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, Color.WHITE, true, -1, true)
+	
+	# press highlight
+	draw_arc(
+		Vector2.ZERO, radius,
+		-coverage/2, coverage/2, coverage * 50, press_highlight, width,
+		true
+	)
+	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, press_highlight, true, -1, true)
+	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, press_highlight, true, -1, true)

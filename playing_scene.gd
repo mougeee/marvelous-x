@@ -5,21 +5,22 @@ const judgement_info = preload("res://globals.gd").judgement_info
 
 var ApproachNote = preload("res://approach_note.tscn")
 var time_begin
-var offset = 0.00
+var offset = 0.08
 
 
 const Keys = preload("res://globals.gd").Keys
 var notes = []
 var next_index = 0
 
+var note_start_time = INF
 var info_path = "res://20240902001.json"
 var audio_path = "res://20240902001.mp3"
 
 
-func reset_times(start_time: float) -> void:
+func reset_times() -> void:
 	if $AudioStreamPlayer.playing:
 		$AudioStreamPlayer.stop()
-	time_begin = Time.get_ticks_usec() - start_time * 1e6
+	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 
 
 # Called when the node enters the scene tree for the first time.
@@ -32,7 +33,6 @@ func _ready() -> void:
 	file.close()
 	
 	# preprocess notes
-	var note_start_time = INF
 	for raw_note in raw_notes:
 		var time = raw_note[0] - 1 / raw_note[3]
 		note_start_time = min(note_start_time, time)
@@ -66,7 +66,7 @@ func _ready() -> void:
 		# [summon_time, time, angle, coverage, speed, key]
 		
 	$AudioStreamPlayer.stream = load(audio_path)
-	reset_times(note_start_time)
+	reset_times()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 	time -= AudioServer.get_output_latency()
 	time -= offset
 	
-	if not $AudioStreamPlayer.playing and time > 0.0:
+	if not $AudioStreamPlayer.playing and time > -offset:
 		$AudioStreamPlayer.play()
 	
 	while next_index < notes.size() and notes[next_index][0] < time:
@@ -95,8 +95,7 @@ func _process(delta: float) -> void:
 		
 	if time > 10.0:
 		next_index = 0
-		$AudioStreamPlayer.play()
-		time_begin = Time.get_ticks_usec()
+		reset_times()
 
 
 var marvelous_count = 0

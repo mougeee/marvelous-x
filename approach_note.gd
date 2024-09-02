@@ -58,7 +58,6 @@ func _process(delta: float) -> void:
 					pressed.emit(i)
 					break
 			queue_free()
-			print(dt)
 		elif dt > judgement_info[Judgements.MISS][2]:
 			pressed.emit(Judgements.MISS)
 			processed = true
@@ -73,8 +72,8 @@ func _draw():
 	
 	draw_arc(
 		Vector2.ZERO, radius,
-		-coverage/2, coverage/2, coverage * 50, color, width*2,
+		-coverage/2, coverage/2, coverage * 50, color, width,
 		true
 	)
-	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width, color, true, -1, true)
-	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width, color, true, -1, true)
+	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, -1, true)
+	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, -1, true)
