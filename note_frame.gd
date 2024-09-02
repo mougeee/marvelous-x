@@ -32,13 +32,12 @@ func _process(delta: float) -> void:
 		pass
 
 
-
 func _draw():
 	# note frame
 	draw_circle(Vector2.ZERO, radius, Color.WHITE, false, 2, true)
 	
 	# center
-	draw_circle(Vector2.ZERO, 2, Color.WHITE, true, -1, true)
+	draw_circle(Vector2.ZERO, 20, Color.WHITE, false, 1, true)
 	
 	# frame cursor
 	draw_arc(
