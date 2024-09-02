@@ -57,7 +57,6 @@ func _process(delta: float) -> void:
 				if abs(dt) <= judgement_info[i][2]:
 					pressed.emit(i)
 					break
-			print(dt)
 			queue_free()
 		elif dt > judgement_info[Judgements.MISS][2]:
 			pressed.emit(Judgements.MISS)
