@@ -26,8 +26,14 @@ func _ready() -> void:
 	position = get_window().size / 2
 
 
+func is_covered() -> bool:
+	var frame = get_parent().get_node("NoteFrame")
+	var dr = abs(angle_difference(frame.rotation, rotation))
+	var dc = abs(angle_difference(frame.coverage, coverage)) / 2
+	return dr <= dc
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
 func _process(delta: float) -> void:
 	process += speed * delta
 	
@@ -37,20 +43,28 @@ func _process(delta: float) -> void:
 	
 	var dt = (process - 1.0) * speed
 	if not processed:
-		if dt > 0.0:
-			coverage = PI
-		if abs(dt) < 0.2 and (
-			key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
-			or key == Keys.RIGHT and Input.is_action_just_pressed("RightPress")
-			or key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
+		if abs(dt) <= 0.100 and (
+			key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
+			or is_covered() and (
+				key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
+				or key == Keys.RIGHT and Input.is_action_just_pressed("RightPress")
+			)
 		):
 			processed = true
-			print(dt)
-		elif dt > 0.2:
-			print("MISS")
+			if abs(dt) <= 0.020:
+				print('Marvelous ', dt)
+			elif abs(dt) <= 0.040:
+				print('Splendid ', dt)
+			elif abs(dt) <= 0.070:
+				print('Great ', dt)
+			else:
+				print('OK ', dt)
+			queue_free()
+		elif dt > 0.100:
+			print("Miss")
 			processed = true
 			
-	if dt > 0.2 and radius > (get_window().size/2).length():
+	if dt > 0.065 and radius > (get_window().size/2).length():
 		queue_free()
 
 
