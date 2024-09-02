@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 	radius = frame_radius * pow(process, 4)
 	queue_redraw()
 	
-	var dt = (process - 1.0) * speed
+	var dt = (process - 1.0) / speed
 	if not processed:
 		if abs(dt) <= judgement_info[Judgements.MISS][2] and (
 			key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
@@ -58,11 +58,12 @@ func _process(delta: float) -> void:
 					pressed.emit(i)
 					break
 			queue_free()
+			print(dt)
 		elif dt > judgement_info[Judgements.MISS][2]:
 			pressed.emit(Judgements.MISS)
 			processed = true
 	
-	if dt > judgement_info[Judgements.MISS][2] and radius > (get_window().size/2).length():
+	if dt > judgement_info[Judgements.MISS][2] and radius > (get_window().size/2).length() + width * 2:
 		queue_free()
 
 
