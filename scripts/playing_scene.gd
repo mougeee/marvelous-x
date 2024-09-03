@@ -4,6 +4,7 @@ const Judgements = preload("res://scripts/globals.gd").Judgements
 const judgement_info = preload("res://scripts/globals.gd").judgement_info
 
 var ApproachNote = preload("res://nodes/approach_note.tscn")
+var LongNote = preload("res://nodes/long_note.tscn")
 var Judgement = preload("res://nodes/judgement.tscn")
 var time_begin
 var offset = 0.090
@@ -104,7 +105,11 @@ func _process(delta: float) -> void:
 			approach_note.pressed.connect(_on_approach_note_pressed)
 			add_child(approach_note)
 		elif note['y'] == NoteTypes.LONG:
-			pass
+			var long_note = LongNote.instantiate()
+			long_note.path = note['p']
+			long_note.speed = note['s']
+			long_note.key = note['k']
+			add_child(long_note)
 		
 		next_index += 1
 		
