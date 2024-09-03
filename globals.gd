@@ -15,3 +15,5 @@ const judgement_info = {
 	Judgements.OK: [Judgements.OK, "OK", 0.100, 20],
 	Judgements.MISS: [Judgements.MISS, "Miss", 0.100, 0],
 }
+
+enum NoteTypes {APPROACH, LONG}

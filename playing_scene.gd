@@ -8,10 +8,11 @@ var Judgement = preload("res://judgement.tscn")
 var time_begin
 var offset = 0.090
 
-
 const Keys = preload("res://globals.gd").Keys
 var notes = []
 var next_index = 0
+
+const NoteTypes = preload("res://globals.gd").NoteTypes
 
 var note_start_time = 0
 var info_path = "res://20240902001.json"
@@ -41,7 +42,7 @@ func _ready() -> void:
 	
 	# preprocess notes
 	for raw_note in raw_notes:
-		var time = raw_note[0] - 1 / raw_note[3]
+		var time = raw_note["t"] - 1 / raw_note["s"]
 		note_start_time = min(note_start_time, time)
 		
 		# get correct position (by binary search)
@@ -53,24 +54,28 @@ func _ready() -> void:
 			anchor = (left + right) / 2
 			var mid_value = notes[anchor]
 			
-			if mid_value[0] <= time:
+			if mid_value["summon_time"] <= time:
 				left = anchor + 1
 			else:
 				right = anchor
 		
 		# correct key
-		if raw_note[4] == 0:
-			raw_note[4] = Keys.LEFT
-		elif raw_note[4] == 1:
-			raw_note[4] = Keys.RIGHT
-		else:
-			raw_note[4] = Keys.CRITICAL
+		if raw_note["k"] == 0:
+			raw_note['k'] = Keys.LEFT
+		elif raw_note['k'] == 1:
+			raw_note['k'] = Keys.RIGHT
+		elif raw_note['k'] == 2:
+			raw_note['k'] = Keys.CRITICAL
+			
+		# correct note type
+		if raw_note["y"] == 0:
+			raw_note['y'] = NoteTypes.APPROACH
+		elif raw_note['y'] == 1:
+			raw_note['y'] = NoteTypes.LONG
 			
 		# insert
-		raw_note.insert(0, time)
+		raw_note["summon_time"] = time
 		notes.insert(left, raw_note)
-		
-		# [summon_time, time, angle, coverage, speed, key]
 		
 	$AudioStreamPlayer.stream = load(audio_path)
 	reset_times()
@@ -87,16 +92,19 @@ func _process(delta: float) -> void:
 	if not $AudioStreamPlayer.playing and time > -offset:
 		$AudioStreamPlayer.play()
 	
-	while next_index < notes.size() and notes[next_index][0] < time:
+	while next_index < notes.size() and notes[next_index]["summon_time"] < time:
 		var note = notes[next_index]
 		
-		var approach_note = ApproachNote.instantiate()
-		approach_note.rotation = note[2]
-		approach_note.coverage = note[3]
-		approach_note.speed = note[4]
-		approach_note.key = note[5]
-		approach_note.pressed.connect(_on_approach_note_pressed)
-		add_child(approach_note)
+		if note['y'] == NoteTypes.APPROACH:
+			var approach_note = ApproachNote.instantiate()
+			approach_note.rotation = note["r"]
+			approach_note.coverage = note['c']
+			approach_note.speed = note['s']
+			approach_note.key = note['k']
+			approach_note.pressed.connect(_on_approach_note_pressed)
+			add_child(approach_note)
+		elif note['y'] == NoteTypes.LONG:
+			pass
 		
 		next_index += 1
 		
