@@ -1,19 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvcdkjhhm24wr"]
+[gd_scene load_steps=7 format=3 uid="uid://dvcdkjhhm24wr"]
 
 [ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/note_frame.tscn" id="1_2g1bc"]
 [ext_resource type="Script" path="res://scripts/playing_scene.gd" id="1_o3yjq"]
 [ext_resource type="AudioStream" uid="uid://bimqd7djxxy2l" path="res://res/20240902001.mp3" id="3_gwyby"]
+[ext_resource type="PackedScene" uid="uid://bgfyeoxtfn5in" path="res://nodes/animated_number.tscn" id="4_1n1rm"]
+[ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="4_lofq0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_y41ep"]
+font = ExtResource("4_lofq0")
+font_size = 24
 
 [node name="PlayingScene" type="Node2D"]
 script = ExtResource("1_o3yjq")
 
-[node name="BackgroundThumbnail" type="Sprite2D" parent="."]
+[node name="Centering" type="Node2D" parent="."]
 
-[node name="NoteFrame" parent="." instance=ExtResource("1_2g1bc")]
+[node name="BackgroundThumbnail" type="Sprite2D" parent="Centering"]
+
+[node name="NoteFrame" parent="Centering" instance=ExtResource("1_2g1bc")]
+
+[node name="Accuracy" parent="." instance=ExtResource("4_1n1rm")]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 43.0
+label_settings = SubResource("LabelSettings_y41ep")
+number = 100.0
+format = "%.2f%%"
+lerp_ratio = 0.2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_gwyby")
-
-[node name="Accuracy" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0

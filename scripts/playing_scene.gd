@@ -27,7 +27,7 @@ func reset_times() -> void:
 	
 
 func resize() -> void:
-	position = get_viewport_rect().size / 2
+	$Centering.position = get_viewport_rect().size / 2
 	
 	
 func load_chart() -> Dictionary:
@@ -81,14 +81,17 @@ func preprocess_notes(raw_notes: Array):
 func _ready() -> void:
 	get_tree().get_root().size_changed.connect(resize)
 	
-	position = get_viewport_rect().size / 2
+	$Centering.position = get_viewport_rect().size / 2
 	
 	# preprocess notes
 	var chart = load_chart()
-	$BackgroundThumbnail.texture = load(chart.thumbnail)
-	$BackgroundThumbnail.modulate.a = 0.1
 	preprocess_notes(chart["notes"])
-		
+	
+	# backgroung thumbnail
+	$Centering/BackgroundThumbnail.texture = load(chart.thumbnail)
+	$Centering/BackgroundThumbnail.modulate.a = 0.1
+	
+	# reset chart
 	$AudioStreamPlayer.stream = load(audio_path)
 	reset_times()
 
@@ -114,14 +117,14 @@ func _process(delta: float) -> void:
 			approach_note.speed = note['s']
 			approach_note.key = note['k']
 			approach_note.pressed.connect(_on_note_pressed)
-			add_child(approach_note)
+			$Centering.add_child(approach_note)
 		elif note['y'] == NoteTypes.LONG:
 			var long_note = LongNote.instantiate()
 			long_note.path = note['p']
 			long_note.speed = note['s']
 			long_note.key = note['k']
 			long_note.pressed.connect(_on_note_pressed)
-			add_child(long_note)
+			$Centering.add_child(long_note)
 		
 		next_index += 1
 		
@@ -156,7 +159,7 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) ->
 	judgement_node.set_judgement(j_info["judgement"])
 	if not is_critical:
 		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
-	add_child(judgement_node)
+	$Centering.add_child(judgement_node)
 		
 	var accuracy = (float) (
 		marvelous_count * judgement_info[Judgements.MARVELOUS]["accuracy"]
@@ -166,4 +169,4 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) ->
 		+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
 	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
 	
-	$Accuracy.text = str(accuracy)
+	$Accuracy.number = accuracy

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgfyeoxtfn5in"]
+
+[ext_resource type="Script" path="res://scripts/animated_number.gd" id="1_p5v8u"]
+
+[node name="AnimatedNumber" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_p5v8u")
