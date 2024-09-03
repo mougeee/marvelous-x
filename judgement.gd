@@ -6,12 +6,15 @@ const Judgements = preload("res://globals.gd").Judgements
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	transform = Transform2D(0.0, Vector2(0.5, 0.5), 0.0, Vector2(0.0, 0.0))
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	modulate.a = lerp(modulate.a, 0.0, 0.05)
+	modulate.a = lerp(modulate.a, -0.05, 0.05)
+	
+	if modulate.a < 0.0:
+		queue_free()
 
 
 func set_judgement(judgement: Judgements) -> void:

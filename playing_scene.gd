@@ -4,6 +4,7 @@ const Judgements = preload("res://globals.gd").Judgements
 const judgement_info = preload("res://globals.gd").judgement_info
 
 var ApproachNote = preload("res://approach_note.tscn")
+var Judgement = preload("res://judgement.tscn")
 var time_begin
 var offset = 0.090
 
@@ -111,7 +112,7 @@ var ok_count = 0
 var miss_count = 0
 
 
-func _on_approach_note_pressed(judgement: Judgements):
+func _on_approach_note_pressed(judgement: Judgements, angle: float, is_critical: bool) -> void:
 	var j_info = judgement_info[judgement]
 	
 	if j_info[0] == Judgements.MARVELOUS:
@@ -125,12 +126,18 @@ func _on_approach_note_pressed(judgement: Judgements):
 	if j_info[0] == Judgements.MISS:
 		miss_count += 1
 	
-	$Judgement.set_judgement(j_info[0])
+	var judgement_node = Judgement.instantiate()
+	judgement_node.set_judgement(j_info[0])
+	if not is_critical:
+		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
+	add_child(judgement_node)
 		
-	#var accuracy = (float) (
-		#marvelous_count * judgement_info[Judgements.MARVELOUS][3]
-		#+ splendid_count * judgement_info[Judgements.SPLENDID][3]
-		#+ great_count * judgement_info[Judgements.GREAT][3]
-		#+ ok_count * judgement_info[Judgements.OK][3]
-		#+ miss_count * judgement_info[Judgements.MISS][3]
-	#) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
+	var accuracy = (float) (
+		marvelous_count * judgement_info[Judgements.MARVELOUS][3]
+		+ splendid_count * judgement_info[Judgements.SPLENDID][3]
+		+ great_count * judgement_info[Judgements.GREAT][3]
+		+ ok_count * judgement_info[Judgements.OK][3]
+		+ miss_count * judgement_info[Judgements.MISS][3]
+	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
+	
+	$Accuracy.text = str(accuracy)

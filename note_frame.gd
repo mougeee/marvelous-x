@@ -1,8 +1,11 @@
 extends Node2D
 
-var radius = 600
+var Keys = preload("res://globals.gd").Keys
+var key_info = preload("res://globals.gd").key_info
+
+var radius = 0
 var coverage = 1.0
-var width = 20
+var width = 0
 var cursor_color = Color.WHITE
 
 
@@ -31,11 +34,11 @@ func _process(delta: float) -> void:
 		pass
 	
 	if Input.is_action_just_pressed("LeftPress"):
-		cursor_color = Color.RED
+		cursor_color = key_info[Keys.LEFT][0]
 	elif Input.is_action_just_pressed("RightPress"):
-		cursor_color = Color.BLUE
+		cursor_color = key_info[Keys.RIGHT][0]
 	elif Input.is_action_just_pressed("CriticalPress"):
-		cursor_color = Color.YELLOW
+		cursor_color = key_info[Keys.CRITICAL][0]
 		
 	cursor_color.r = lerp(cursor_color.r, Color.WHITE.r, 0.05)
 	cursor_color.g = lerp(cursor_color.g, Color.WHITE.g, 0.05)

@@ -1,7 +1,7 @@
 extends Node2D
 
 const Keys = preload("res://globals.gd").Keys
-const color_map = preload("res://globals.gd").color_map
+const key_info = preload("res://globals.gd").key_info
 const Judgements = preload("res://globals.gd").Judgements
 const judgement_info = preload("res://globals.gd").judgement_info
 
@@ -64,11 +64,11 @@ func _process(delta: float) -> void:
 			processed = true
 			for i in range(judgement_info.size() - 1):
 				if abs(dt) <= judgement_info[i][2]:
-					pressed.emit(i)
+					pressed.emit(i, rotation, key == Keys.CRITICAL)
 					break
 			queue_free()
 		elif dt > judgement_info[Judgements.MISS][2]:
-			pressed.emit(Judgements.MISS)
+			pressed.emit(Judgements.MISS, rotation, key == Keys.CRITICAL)
 			processed = true
 	
 	if dt > judgement_info[Judgements.MISS][2] and radius > (get_window().size/2).length() + width * 2:
@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 
 
 func _draw():
-	var color = color_map[key]
+	var color = key_info[key][0]
 	
 	draw_arc(
 		Vector2.ZERO, radius,

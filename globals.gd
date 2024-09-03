@@ -1,8 +1,9 @@
 enum Keys {LEFT, RIGHT, CRITICAL}
-const color_map = {
-	Keys.LEFT: Color.RED,
-	Keys.RIGHT: Color.BLUE,
-	Keys.CRITICAL: Color.YELLOW
+# [Color]
+const key_info = {
+	Keys.LEFT: [Color(188/255.0, 59/255.0, 59/255.0)],
+	Keys.RIGHT: [Color(60/255.0, 112/255.0, 186/255.0)],
+	Keys.CRITICAL: [Color(255/255.0, 206/255.0, 0.0)],
 }
 
 enum Judgements {MARVELOUS, SPLENDID, GREAT, OK, MISS}

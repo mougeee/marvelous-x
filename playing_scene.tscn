@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvcdkjhhm24wr"]
+[gd_scene load_steps=4 format=3 uid="uid://dvcdkjhhm24wr"]
 
 [ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://note_frame.tscn" id="1_2g1bc"]
 [ext_resource type="Script" path="res://playing_scene.gd" id="1_o3yjq"]
 [ext_resource type="AudioStream" uid="uid://bimqd7djxxy2l" path="res://20240902001.mp3" id="3_gwyby"]
-[ext_resource type="Script" path="res://judgement.gd" id="4_1lsa2"]
 
 [node name="PlayingScene" type="Node2D"]
 script = ExtResource("1_o3yjq")
@@ -13,5 +12,6 @@ script = ExtResource("1_o3yjq")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_gwyby")
 
-[node name="Judgement" type="Sprite2D" parent="."]
-script = ExtResource("4_1lsa2")
+[node name="Accuracy" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
