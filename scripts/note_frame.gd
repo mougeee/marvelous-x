@@ -7,6 +7,7 @@ var radius = 0
 var coverage = 1.0
 var width = 0
 var cursor_color = Color.WHITE
+var critical_highlight_color = key_info[Keys.CRITICAL][0]
 
 
 func resize():
@@ -22,6 +23,8 @@ func _ready() -> void:
 	get_tree().get_root().size_changed.connect(resize)
 	
 	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
+	critical_highlight_color.a = 0.0
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,11 +41,12 @@ func _process(delta: float) -> void:
 	elif Input.is_action_just_pressed("RightPress"):
 		cursor_color = key_info[Keys.RIGHT][0]
 	elif Input.is_action_just_pressed("CriticalPress"):
-		cursor_color = key_info[Keys.CRITICAL][0]
+		critical_highlight_color.a = 1.0
 		
 	cursor_color.r = lerp(cursor_color.r, Color.WHITE.r, 0.05)
 	cursor_color.g = lerp(cursor_color.g, Color.WHITE.g, 0.05)
 	cursor_color.b = lerp(cursor_color.b, Color.WHITE.b, 0.05)
+	critical_highlight_color.a = lerp(critical_highlight_color.a, 0.0, 0.05)
 	queue_redraw()
 
 
@@ -61,3 +65,6 @@ func _draw():
 	)
 	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, cursor_color, true, -1, true)
 	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, cursor_color, true, -1, true)
+	
+	# critical highlight
+	draw_circle(Vector2.ZERO, radius, critical_highlight_color, false, width, true)
