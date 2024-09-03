@@ -30,15 +30,15 @@ func resize() -> void:
 	position = get_viewport_rect().size / 2
 	
 	
-func load_chart() -> Array:
+func load_chart() -> Dictionary:
 	var file = FileAccess.open(info_path, FileAccess.READ)
-	var raw_notes = JSON.parse_string(file.get_as_text())["notes"]
+	var chart = JSON.parse_string(file.get_as_text())
 	file.close()
 	
-	return raw_notes
+	return chart
 	
 
-func preprocess_chart(raw_notes: Array):
+func preprocess_notes(raw_notes: Array):
 	for raw_note in raw_notes:
 		var time = raw_note["t"] - 1 / raw_note["s"]
 		note_start_time = min(note_start_time, time)
@@ -84,7 +84,10 @@ func _ready() -> void:
 	position = get_viewport_rect().size / 2
 	
 	# preprocess notes
-	preprocess_chart(load_chart())
+	var chart = load_chart()
+	$BackgroundThumbnail.texture = load(chart.thumbnail)
+	$BackgroundThumbnail.modulate.a = 0.1
+	preprocess_notes(chart["notes"])
 		
 	$AudioStreamPlayer.stream = load(audio_path)
 	reset_times()
@@ -125,7 +128,7 @@ func _process(delta: float) -> void:
 	if time > 10.0:
 		next_index = 0
 		reset_times()
-		preprocess_chart(load_chart())
+		preprocess_notes(load_chart()['notes'])
 
 
 var marvelous_count = 0
