@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6syootjwbrwp"
-path="res://.godot/imported/mougee.svg-699511447ddd868c4a6d878a59acf22c.ctex"
+uid="uid://cs5rninru6fgr"
+path="res://.godot/imported/judgements_great.svg-3cb1f45fa31025917be539d466d27a6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mougee.svg"
-dest_files=["res://.godot/imported/mougee.svg-699511447ddd868c4a6d878a59acf22c.ctex"]
+source_file="res://res/judgements_great.svg"
+dest_files=["res://.godot/imported/judgements_great.svg-3cb1f45fa31025917be539d466d27a6a.ctex"]
 
 [params]
 

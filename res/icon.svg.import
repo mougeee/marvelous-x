@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bljdg4yvj6hjy"
-path="res://.godot/imported/judgements_splendid.svg-16c831c6c53462d69c5fc6bd2be4376f.ctex"
+uid="uid://dmk5jl0x166sd"
+path="res://.godot/imported/icon.svg-5c80e0664e1e38955cfe0b0b977aef8e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://judgements_splendid.svg"
-dest_files=["res://.godot/imported/judgements_splendid.svg-16c831c6c53462d69c5fc6bd2be4376f.ctex"]
+source_file="res://res/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-5c80e0664e1e38955cfe0b0b977aef8e.ctex"]
 
 [params]
 

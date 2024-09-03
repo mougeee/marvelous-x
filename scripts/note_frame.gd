@@ -1,7 +1,7 @@
 extends Node2D
 
-var Keys = preload("res://globals.gd").Keys
-var key_info = preload("res://globals.gd").key_info
+var Keys = preload("res://scripts/globals.gd").Keys
+var key_info = preload("res://scripts/globals.gd").key_info
 
 var radius = 0
 var coverage = 1.0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://caxfwik0g663r"
-path="res://.godot/imported/judgements_miss.svg-809784a5b3e887ae535095c7a255ada9.ctex"
+uid="uid://4fu6qt06q1h8"
+path="res://.godot/imported/judgements_ok.svg-361e9986e0990210b96c93cee36ae1d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://judgements_miss.svg"
-dest_files=["res://.godot/imported/judgements_miss.svg-809784a5b3e887ae535095c7a255ada9.ctex"]
+source_file="res://res/judgements_ok.svg"
+dest_files=["res://.godot/imported/judgements_ok.svg-361e9986e0990210b96c93cee36ae1d4.ctex"]
 
 [params]
 

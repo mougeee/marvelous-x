@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4fu6qt06q1h8"
-path="res://.godot/imported/judgements_ok.svg-2fdd727e5cf8ce0e69210ad9a0730087.ctex"
+uid="uid://dk1cmycjjeilb"
+path="res://.godot/imported/judgements_marvelous.svg-fab4467e3dd344d2d8a0133a9a5e293a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://judgements_ok.svg"
-dest_files=["res://.godot/imported/judgements_ok.svg-2fdd727e5cf8ce0e69210ad9a0730087.ctex"]
+source_file="res://res/judgements_marvelous.svg"
+dest_files=["res://.godot/imported/judgements_marvelous.svg-fab4467e3dd344d2d8a0133a9a5e293a.ctex"]
 
 [params]
 

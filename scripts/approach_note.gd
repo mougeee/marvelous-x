@@ -1,9 +1,9 @@
 extends Node2D
 
-const Keys = preload("res://globals.gd").Keys
-const key_info = preload("res://globals.gd").key_info
-const Judgements = preload("res://globals.gd").Judgements
-const judgement_info = preload("res://globals.gd").judgement_info
+const Keys = preload("res://scripts/globals.gd").Keys
+const key_info = preload("res://scripts/globals.gd").key_info
+const Judgements = preload("res://scripts/globals.gd").Judgements
+const judgement_info = preload("res://scripts/globals.gd").judgement_info
 
 var radius = 0
 var coverage = 0.4

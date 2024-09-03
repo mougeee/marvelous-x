@@ -1,22 +1,22 @@
 extends Node2D
 
-const Judgements = preload("res://globals.gd").Judgements
-const judgement_info = preload("res://globals.gd").judgement_info
+const Judgements = preload("res://scripts/globals.gd").Judgements
+const judgement_info = preload("res://scripts/globals.gd").judgement_info
 
-var ApproachNote = preload("res://approach_note.tscn")
-var Judgement = preload("res://judgement.tscn")
+var ApproachNote = preload("res://nodes/approach_note.tscn")
+var Judgement = preload("res://nodes/judgement.tscn")
 var time_begin
 var offset = 0.090
 
-const Keys = preload("res://globals.gd").Keys
+const Keys = preload("res://scripts/globals.gd").Keys
 var notes = []
 var next_index = 0
 
-const NoteTypes = preload("res://globals.gd").NoteTypes
+const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 
 var note_start_time = 0
-var info_path = "res://20240902001.json"
-var audio_path = "res://20240902001.mp3"
+var info_path = "res://res/20240902001.json"
+var audio_path = "res://res/20240902001.mp3"
 
 
 func reset_times() -> void:

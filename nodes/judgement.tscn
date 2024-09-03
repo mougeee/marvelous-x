@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjiihob7ntfeb"]
 
-[ext_resource type="Script" path="res://judgement.gd" id="1_l0cc0"]
+[ext_resource type="Script" path="res://scripts/judgement.gd" id="1_l0cc0"]
 
 [node name="Judgement" type="Sprite2D"]
 scale = Vector2(0.5, 0.5)
