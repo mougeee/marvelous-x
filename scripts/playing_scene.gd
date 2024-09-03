@@ -12,6 +12,7 @@ var offset = 0.090
 const Keys = preload("res://scripts/globals.gd").Keys
 var notes = []
 var next_index = 0
+var last_time = -INF
 
 const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 
@@ -25,10 +26,6 @@ func reset_times() -> void:
 		$AudioStreamPlayer.stop()
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	
-
-func resize() -> void:
-	$Centering.position = get_viewport_rect().size / 2
-	
 	
 func load_chart() -> Dictionary:
 	var file = FileAccess.open(info_path, FileAccess.READ)
@@ -40,6 +37,8 @@ func load_chart() -> Dictionary:
 
 func preprocess_notes(raw_notes: Array):
 	for raw_note in raw_notes:
+		last_time = max(last_time, raw_note['t'])
+		
 		var time = raw_note["t"] - 1 / raw_note["s"]
 		note_start_time = min(note_start_time, time)
 		
@@ -79,10 +78,6 @@ func preprocess_notes(raw_notes: Array):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_tree().get_root().size_changed.connect(resize)
-	
-	$Centering.position = get_viewport_rect().size / 2
-	
 	# preprocess notes
 	var chart = load_chart()
 	preprocess_notes(chart["notes"])
@@ -128,11 +123,8 @@ func _process(delta: float) -> void:
 		
 		next_index += 1
 		
-	if time > 10.0:
-		next_index = 0
-		reset_times()
-		notes.clear()
-		preprocess_notes(load_chart()['notes'])
+	if time > last_time + 3.0:
+		get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
 
 
 var marvelous_count = 0

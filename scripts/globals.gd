@@ -1,3 +1,6 @@
+const CUSTOM_WHITE = Color("#f7f7f9")
+
+
 enum Keys {LEFT, RIGHT, CRITICAL}
 const key_info = {
 	Keys.LEFT: {

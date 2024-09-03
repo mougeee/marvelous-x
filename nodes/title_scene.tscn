@@ -1,0 +1,18 @@
+[gd_scene load_steps=6 format=3 uid="uid://dchd7jyverxw0"]
+
+[ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/centering.tscn" id="1_bpy7k"]
+[ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/note_frame.tscn" id="1_d1agj"]
+[ext_resource type="Script" path="res://scripts/title_scene.gd" id="1_d2by7"]
+[ext_resource type="PackedScene" uid="uid://bkjikw1mkxf44" path="res://nodes/menu.tscn" id="3_6hopp"]
+[ext_resource type="PackedScene" uid="uid://b8hh7erdmresl" path="res://nodes/cursor.tscn" id="3_tqd7y"]
+
+[node name="TitleScene" type="Node2D"]
+script = ExtResource("1_d2by7")
+
+[node name="Centering" parent="." instance=ExtResource("1_bpy7k")]
+
+[node name="NoteFrame" parent="Centering" instance=ExtResource("1_d1agj")]
+
+[node name="MenuGame" parent="Centering" instance=ExtResource("3_6hopp")]
+
+[node name="Cursor" parent="." instance=ExtResource("3_tqd7y")]

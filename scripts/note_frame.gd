@@ -1,12 +1,13 @@
 extends Node2D
 
-var Keys = preload("res://scripts/globals.gd").Keys
-var key_info = preload("res://scripts/globals.gd").key_info
+const globals = preload("res://scripts/globals.gd")
+var Keys = globals.Keys
+var key_info = globals.key_info
 
 var radius = 0
 var coverage = 1.0
 var width = 0
-var cursor_color = Color.WHITE
+var cursor_color = globals.CUSTOM_WHITE
 var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
 
 
@@ -21,9 +22,7 @@ func _ready() -> void:
 	resize()
 	
 	get_tree().get_root().size_changed.connect(resize)
-	
-	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	
+		
 	critical_highlight_color.a = 0.0
 
 
@@ -43,19 +42,19 @@ func _process(delta: float) -> void:
 	elif Input.is_action_just_pressed("CriticalPress"):
 		critical_highlight_color.a = 1.0
 		
-	cursor_color.r = lerp(cursor_color.r, Color.WHITE.r, 0.05)
-	cursor_color.g = lerp(cursor_color.g, Color.WHITE.g, 0.05)
-	cursor_color.b = lerp(cursor_color.b, Color.WHITE.b, 0.05)
+	cursor_color.r = lerp(cursor_color.r, globals.CUSTOM_WHITE.r, 0.05)
+	cursor_color.g = lerp(cursor_color.g, globals.CUSTOM_WHITE.g, 0.05)
+	cursor_color.b = lerp(cursor_color.b, globals.CUSTOM_WHITE.b, 0.05)
 	critical_highlight_color.a = lerp(critical_highlight_color.a, 0.0, 0.05)
 	queue_redraw()
 
 
 func _draw():
 	# note frame
-	draw_circle(Vector2.ZERO, radius, Color.WHITE, false, 2, true)
+	draw_circle(Vector2.ZERO, radius, globals.CUSTOM_WHITE, false, 2, true)
 	
 	# center
-	draw_circle(Vector2.ZERO, 20, Color.WHITE, false, 1, true)
+	draw_circle(Vector2.ZERO, 20, globals.CUSTOM_WHITE, false, 1, true)
 		
 	# cursor
 	draw_arc(
