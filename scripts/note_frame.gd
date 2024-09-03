@@ -7,7 +7,7 @@ var radius = 0
 var coverage = 1.0
 var width = 0
 var cursor_color = Color.WHITE
-var critical_highlight_color = key_info[Keys.CRITICAL][0]
+var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
 
 
 func resize():
@@ -37,9 +37,9 @@ func _process(delta: float) -> void:
 		pass
 	
 	if Input.is_action_just_pressed("LeftPress"):
-		cursor_color = key_info[Keys.LEFT][0]
+		cursor_color = key_info[Keys.LEFT]['color']
 	elif Input.is_action_just_pressed("RightPress"):
-		cursor_color = key_info[Keys.RIGHT][0]
+		cursor_color = key_info[Keys.RIGHT]['color']
 	elif Input.is_action_just_pressed("CriticalPress"):
 		critical_highlight_color.a = 1.0
 		

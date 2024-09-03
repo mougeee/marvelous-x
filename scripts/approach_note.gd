@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 	
 	var dt = (process - 1.0) / speed
 	if not processed:
-		if abs(dt) <= judgement_info[Judgements.MISS][2] and (
+		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and (
 			key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
 			or is_covered() and (
 				key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
@@ -63,21 +63,21 @@ func _process(delta: float) -> void:
 		):
 			processed = true
 			for i in range(judgement_info.size() - 1):
-				if abs(dt) <= judgement_info[i][2]:
+				if abs(dt) <= judgement_info[i]["precision"]:
 					pressed.emit(i, rotation, key == Keys.CRITICAL)
 					break
 			queue_free()
-		elif dt > judgement_info[Judgements.MISS][2]:
+		elif dt > judgement_info[Judgements.MISS]["precision"]:
 			pressed.emit(Judgements.MISS, rotation, key == Keys.CRITICAL)
 			processed = true
 	
-	if dt > judgement_info[Judgements.MISS][2] and radius > (get_window().size/2).length() + width * 2:
+	if dt > judgement_info[Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
 		queue_free()
 
 
 
 func _draw():
-	var color = key_info[key][0]
+	var color = key_info[key]["color"]
 	
 	draw_arc(
 		Vector2.ZERO, radius,

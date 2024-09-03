@@ -138,29 +138,29 @@ var miss_count = 0
 func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) -> void:
 	var j_info = judgement_info[judgement]
 	
-	if j_info[0] == Judgements.MARVELOUS:
+	if j_info["judgement"] == Judgements.MARVELOUS:
 		marvelous_count += 1
-	if j_info[0] == Judgements.SPLENDID:
+	if j_info["judgement"] == Judgements.SPLENDID:
 		splendid_count += 1
-	if j_info[0] == Judgements.GREAT:
+	if j_info["judgement"] == Judgements.GREAT:
 		great_count += 1
-	if j_info[0] == Judgements.OK:
+	if j_info["judgement"] == Judgements.OK:
 		ok_count += 1
-	if j_info[0] == Judgements.MISS:
+	if j_info["judgement"] == Judgements.MISS:
 		miss_count += 1
 	
 	var judgement_node = Judgement.instantiate()
-	judgement_node.set_judgement(j_info[0])
+	judgement_node.set_judgement(j_info["judgement"])
 	if not is_critical:
 		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
 	add_child(judgement_node)
 		
 	var accuracy = (float) (
-		marvelous_count * judgement_info[Judgements.MARVELOUS][3]
-		+ splendid_count * judgement_info[Judgements.SPLENDID][3]
-		+ great_count * judgement_info[Judgements.GREAT][3]
-		+ ok_count * judgement_info[Judgements.OK][3]
-		+ miss_count * judgement_info[Judgements.MISS][3]
+		marvelous_count * judgement_info[Judgements.MARVELOUS]["accuracy"]
+		+ splendid_count * judgement_info[Judgements.SPLENDID]["accuracy"]
+		+ great_count * judgement_info[Judgements.GREAT]["accuracy"]
+		+ ok_count * judgement_info[Judgements.OK]["accuracy"]
+		+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
 	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
 	
 	$Accuracy.text = str(accuracy)

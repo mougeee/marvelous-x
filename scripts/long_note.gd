@@ -61,18 +61,18 @@ func _process(delta: float) -> void:
 			)
 			
 			if (
-				abs(p['dt']) <= judgement_info[Judgements.MISS][2]
+				abs(p['dt']) <= judgement_info[Judgements.MISS]["precision"]
 				and is_covered(i)
 				and (i == 0 and is_first_keypressed or i == path.size() - 1 and is_last_keyreleased)
 				and not last_missed
 			):
 				p['processed'] = true
 				for j in range(judgement_info.size() - 1):
-					if abs(p['dt']) <= judgement_info[j][2]:
+					if abs(p['dt']) <= judgement_info[j]["precision"]:
 						pressed.emit(j, p['r'], false)
 						p['visible'] = false
 						break
-			if p['dt'] > judgement_info[Judgements.MISS][2] and (i == 0 or i == path.size() - 1 and not last_missed):
+			if p['dt'] > judgement_info[Judgements.MISS]["precision"] and (i == 0 or i == path.size() - 1 and not last_missed):
 				p['processed'] = true
 				p['visible'] = false
 				pressed.emit(Judgements.MISS, p['r'], false)
@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
 	
 
 func _draw():
-	var color = key_info[key][0]
+	var color = key_info[key]['color']
 
 	for i in range(path.size() - 1):
 		var p = path[i]
