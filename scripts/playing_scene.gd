@@ -28,20 +28,17 @@ func reset_times() -> void:
 
 func resize() -> void:
 	position = get_viewport_rect().size / 2
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	get_tree().get_root().size_changed.connect(resize)
 	
-	position = get_viewport_rect().size / 2
 	
-	# load notes from file
+func load_chart() -> Array:
 	var file = FileAccess.open(info_path, FileAccess.READ)
 	var raw_notes = JSON.parse_string(file.get_as_text())["notes"]
 	file.close()
 	
-	# preprocess notes
+	return raw_notes
+	
+
+func preprocess_chart(raw_notes: Array):
 	for raw_note in raw_notes:
 		var time = raw_note["t"] - 1 / raw_note["s"]
 		note_start_time = min(note_start_time, time)
@@ -77,6 +74,17 @@ func _ready() -> void:
 		# insert
 		raw_note["summon_time"] = time
 		notes.insert(left, raw_note)
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	get_tree().get_root().size_changed.connect(resize)
+	
+	position = get_viewport_rect().size / 2
+	
+	# preprocess notes
+	preprocess_chart(load_chart())
 		
 	$AudioStreamPlayer.stream = load(audio_path)
 	reset_times()
@@ -102,13 +110,14 @@ func _process(delta: float) -> void:
 			approach_note.coverage = note['c']
 			approach_note.speed = note['s']
 			approach_note.key = note['k']
-			approach_note.pressed.connect(_on_approach_note_pressed)
+			approach_note.pressed.connect(_on_note_pressed)
 			add_child(approach_note)
 		elif note['y'] == NoteTypes.LONG:
 			var long_note = LongNote.instantiate()
 			long_note.path = note['p']
 			long_note.speed = note['s']
 			long_note.key = note['k']
+			long_note.pressed.connect(_on_note_pressed)
 			add_child(long_note)
 		
 		next_index += 1
@@ -116,6 +125,7 @@ func _process(delta: float) -> void:
 	if time > 10.0:
 		next_index = 0
 		reset_times()
+		preprocess_chart(load_chart())
 
 
 var marvelous_count = 0
@@ -125,7 +135,7 @@ var ok_count = 0
 var miss_count = 0
 
 
-func _on_approach_note_pressed(judgement: Judgements, angle: float, is_critical: bool) -> void:
+func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) -> void:
 	var j_info = judgement_info[judgement]
 	
 	if j_info[0] == Judgements.MARVELOUS:
