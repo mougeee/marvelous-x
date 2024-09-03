@@ -17,8 +17,8 @@ var last_time = -INF
 const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 
 var note_start_time = 0
-var info_path = "res://res/20240902001.json"
-var audio_path = "res://res/20240902001.mp3"
+var info_path = "res://res/demo1.json"
+var audio_path = "res://res/demo1.mp3"
 
 
 func reset_times() -> void:
