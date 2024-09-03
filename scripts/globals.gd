@@ -1,5 +1,6 @@
-const CUSTOM_WHITE = Color("#f7f7f9")
+const offset = 0.090
 
+const CUSTOM_WHITE = Color("#f7f7f9")
 
 enum Keys {LEFT, RIGHT, CRITICAL}
 const key_info = {

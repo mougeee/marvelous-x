@@ -7,7 +7,7 @@ var ApproachNote = preload("res://nodes/approach_note.tscn")
 var LongNote = preload("res://nodes/long_note.tscn")
 var Judgement = preload("res://nodes/judgement.tscn")
 var time_begin
-var offset = 0.090
+var offset = preload("res://scripts/globals.gd").offset
 
 const Keys = preload("res://scripts/globals.gd").Keys
 var notes = []

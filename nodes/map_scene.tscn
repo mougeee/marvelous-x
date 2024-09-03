@@ -81,7 +81,8 @@ offset_left = 537.0
 offset_top = 22.0
 offset_right = 613.0
 offset_bottom = 53.0
-text = "Tap BPM"
+disabled = true
+text = "Tap BPM (B)"
 
 [node name="TapBPMInfo" type="Label" parent="."]
 offset_left = 537.0
@@ -98,6 +99,7 @@ offset_bottom = 51.0
 button_pressed = true
 text = "Metronome"
 
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="drag_started" from="Timeline" to="." method="_on_timeline_drag_started"]
 [connection signal="pressed" from="LoadAudio" to="." method="_on_load_audio_pressed"]

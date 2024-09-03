@@ -2,6 +2,8 @@ extends Node2D
 
 var audio_playing = false
 
+var offset = preload("res://scripts/globals.gd").offset
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,6 +18,8 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_pressed("MapPlayPause"):
 		_on_play_pause_pressed()
+	if Input.is_action_just_pressed("MapTapBPM"):
+		_on_tap_bpm_button_pressed()
 
 
 func _on_back_pressed() -> void:
@@ -59,14 +63,12 @@ func _on_tap_bpm_button_pressed() -> void:
 	var predicted_bpm = 60.0 * 4 * total_delta / interval_count
 	
 	var offset_sum = 0.0
-	print("A")
 	for time in pressed_log:
-		var offset = fposmod(time - Time.get_ticks_msec() / 1_000.0 + $AudioStreamPlayer.get_playback_position(), $Metronome.beat_duration)
-		var offset2 = offset - $Metronome.beat_duration
-		if abs(offset2) < abs(offset):
-			offset = offset2
-		offset_sum += offset
-		print(offset)
+		var o = fposmod(time - offset - (Time.get_ticks_usec() / 1_000_000.0 - $AudioStreamPlayer.get_playback_position()), $Metronome.beat_duration)
+		var o2 = o - $Metronome.beat_duration
+		if abs(o2) < abs(o):
+			o = o2
+		offset_sum += o
 	var predicted_offset = offset_sum / pressed_log.size()
 	
 	$TapBPMInfo.text = "%d BPM, %.1fms" % [predicted_bpm, predicted_offset * 1000.0]
@@ -78,3 +80,7 @@ func _on_metronome_on_pressed() -> void:
 
 func _on_bpm_text_changed(new_text: String) -> void:
 	$Metronome.set_bpm(float(new_text))
+
+
+func _on_audio_stream_player_finished() -> void:
+	_on_play_pause_pressed()
