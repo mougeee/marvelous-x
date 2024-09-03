@@ -131,6 +131,7 @@ func _process(delta: float) -> void:
 	if time > 10.0:
 		next_index = 0
 		reset_times()
+		notes.clear()
 		preprocess_notes(load_chart()['notes'])
 
 
@@ -141,7 +142,7 @@ var ok_count = 0
 var miss_count = 0
 
 
-func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) -> void:
+func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt: float) -> void:
 	var j_info = judgement_info[judgement]
 	
 	if j_info["judgement"] == Judgements.MARVELOUS:
@@ -159,6 +160,8 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool) ->
 	judgement_node.set_judgement(j_info["judgement"])
 	if not is_critical:
 		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
+	if j_info['judgement'] != Judgements.MISS:
+		judgement_node.get_node("Offset").text = "%.1fms" % [dt * 1000.0]
 	$Centering.add_child(judgement_node)
 		
 	var accuracy = (float) (

@@ -64,11 +64,11 @@ func _process(delta: float) -> void:
 			processed = true
 			for i in range(judgement_info.size() - 1):
 				if abs(dt) <= judgement_info[i]["precision"]:
-					pressed.emit(i, rotation, key == Keys.CRITICAL)
+					pressed.emit(i, rotation, key == Keys.CRITICAL, dt)
 					break
 			queue_free()
 		elif dt > judgement_info[Judgements.MISS]["precision"]:
-			pressed.emit(Judgements.MISS, rotation, key == Keys.CRITICAL)
+			pressed.emit(Judgements.MISS, rotation, key == Keys.CRITICAL, dt)
 			processed = true
 	
 	if dt > judgement_info[Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:

@@ -69,13 +69,13 @@ func _process(delta: float) -> void:
 				p['processed'] = true
 				for j in range(judgement_info.size() - 1):
 					if abs(p['dt']) <= judgement_info[j]["precision"]:
-						pressed.emit(j, p['r'], false)
+						pressed.emit(j, p['r'], false, p['dt'])
 						p['visible'] = false
 						break
 			if p['dt'] > judgement_info[Judgements.MISS]["precision"] and (i == 0 or i == path.size() - 1 and not last_missed):
 				p['processed'] = true
 				p['visible'] = false
-				pressed.emit(Judgements.MISS, p['r'], false)
+				pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
 		
 		elif not p['processed'] and not (i == 0 or i == path.size() - 1):
 			var is_keypressing = (
@@ -88,7 +88,7 @@ func _process(delta: float) -> void:
 				p['visible'] = false
 				if (not is_covered(i) or not is_keypressing):
 					last_missed = true
-					pressed.emit(Judgements.MISS, p['r'], false)
+					pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
 		
 		last_process = min(last_process, p['process'])
 	queue_redraw()

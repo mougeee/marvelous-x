@@ -1,7 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjiihob7ntfeb"]
+[gd_scene load_steps=5 format=3 uid="uid://bjiihob7ntfeb"]
 
 [ext_resource type="Script" path="res://scripts/judgement.gd" id="1_l0cc0"]
+[ext_resource type="Texture2D" uid="uid://dk1cmycjjeilb" path="res://res/judgements_marvelous.svg" id="1_ykxoi"]
+[ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="3_3ssaj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i5r7x"]
+font = ExtResource("3_3ssaj")
+font_size = 24
 
 [node name="Judgement" type="Sprite2D"]
 scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_ykxoi")
 script = ExtResource("1_l0cc0")
+
+[node name="Offset" type="Label" parent="."]
+offset_left = -150.0
+offset_top = 38.0
+offset_right = 150.0
+offset_bottom = 82.0
+label_settings = SubResource("LabelSettings_i5r7x")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
