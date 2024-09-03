@@ -15,4 +15,7 @@ script = ExtResource("1_d2by7")
 
 [node name="MenuGame" parent="Centering" instance=ExtResource("3_6hopp")]
 
+[node name="MenuMap" parent="Centering" instance=ExtResource("3_6hopp")]
+angle = 1.571
+
 [node name="Cursor" parent="." instance=ExtResource("3_tqd7y")]

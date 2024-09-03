@@ -7,7 +7,7 @@ func resize() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	resize()	
+	resize()
 	get_tree().get_root().size_changed.connect(resize)
 
 

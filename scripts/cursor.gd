@@ -28,3 +28,8 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10 + radius_delta, fill_color, true, -1, false)
 	draw_circle(Vector2.ZERO, 10 + radius_delta, CUSTOM_WHITE, false, 2, true)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
