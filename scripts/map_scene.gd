@@ -12,6 +12,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if audio_playing:
 		$Timeline.value = $AudioStreamPlayer.get_playback_position() * 1000.0
+		
+	if Input.is_action_just_pressed("MapPlayPause"):
+		_on_play_pause_pressed()
 
 
 func _on_back_pressed() -> void:
