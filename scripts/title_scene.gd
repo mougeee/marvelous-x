@@ -7,10 +7,6 @@ func on_menu_game_pressed() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var frame_radius = $Centering/NoteFrame.radius
-	
-	$Centering/MenuGame.radius = frame_radius
-	
 	$Centering/MenuGame.pressed.connect(on_menu_game_pressed)
 
 

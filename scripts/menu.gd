@@ -18,15 +18,21 @@ func is_hover() -> bool:
 	var angle = atan2(mouse_position.y, mouse_position.x)
 	
 	return abs(angle) < coverage / 2 and distance <= radius
-
+	
+	
+func resize() -> void:
+	radius = get_parent().get_node("NoteFrame").radius
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	rotation = angle
 	background_color.a = 0.0
+	
+	resize()
+	get_tree().get_root().size_changed.connect(resize)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if is_hover():
 		background_color.a = lerp(background_color.a, 0.2, 0.1)
