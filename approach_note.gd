@@ -14,6 +14,7 @@ var frame_radius
 @export var key = Keys.LEFT
 @export var speed = 1.0
 var processed = false
+var begin_time
 
 signal pressed
 
@@ -32,6 +33,8 @@ func _ready() -> void:
 	
 	if key == Keys.CRITICAL:
 		coverage = TAU
+		
+	begin_time = Time.get_ticks_usec()
 
 
 func is_covered() -> bool:
@@ -43,7 +46,7 @@ func is_covered() -> bool:
 
 
 func _process(delta: float) -> void:
-	process += speed * delta
+	process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
 	
 	width = pow(process, 3) * note_width
 	radius = frame_radius * pow(process, 4)
