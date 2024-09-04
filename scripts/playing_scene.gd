@@ -13,6 +13,7 @@ const Keys = preload("res://scripts/globals.gd").Keys
 var notes = []
 var next_index = 0
 var last_time = -INF
+var chart
 
 const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 
@@ -27,19 +28,17 @@ func reset_times() -> void:
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	
 	
-func load_chart() -> Dictionary:
+func load_chart():
 	var file = FileAccess.open(info_path, FileAccess.READ)
-	var chart = JSON.parse_string(file.get_as_text())
+	chart = JSON.parse_string(file.get_as_text())
 	file.close()
-	
-	return chart
 	
 
 func preprocess_notes(raw_notes: Array):
 	for raw_note in raw_notes:
 		last_time = max(last_time, raw_note['t'])
 		
-		var time = raw_note["t"] - 1 / raw_note["s"]
+		var time = raw_note["t"] - 1 / chart['speed']
 		note_start_time = min(note_start_time, time)
 		
 		# get correct position (by binary search)
@@ -79,7 +78,7 @@ func preprocess_notes(raw_notes: Array):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# preprocess notes
-	var chart = load_chart()
+	load_chart()
 	preprocess_notes(chart["notes"])
 	
 	# backgroung thumbnail
@@ -109,14 +108,14 @@ func _process(delta: float) -> void:
 			var approach_note = ApproachNote.instantiate()
 			approach_note.rotation = note["r"]
 			approach_note.coverage = note['c']
-			approach_note.speed = note['s']
+			approach_note.speed = chart['speed']
 			approach_note.key = note['k']
 			approach_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(approach_note)
 		elif note['y'] == NoteTypes.LONG:
 			var long_note = LongNote.instantiate()
 			long_note.path = note['p']
-			long_note.speed = note['s']
+			long_note.speed = chart['speed']
 			long_note.key = note['k']
 			long_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(long_note)

@@ -14,6 +14,7 @@ var offset = preload("res://scripts/globals.gd").offset
 
 var notes = []
 var note_nodes = []
+var chart
 
 
 # Called when the node enters the scene tree for the first time.
@@ -47,8 +48,8 @@ func _process(_delta: float) -> void:
 	var time = $Timeline.value / 1000.0
 	var frame = $Centering/NoteFrame
 	for note in notes:
-		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"] and note['t'] - 1.0 / note['s'] <= time:
-			var process = (time - note['t']) * note['s'] + 1.0
+		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"] and note['t'] - 1.0 / chart['speed'] <= time:
+			var process = (time - note['t']) * chart['speed'] + 1.0
 			if process > 0.0 and process < 2.0:
 				var note_node = ApproachNote.instantiate()
 				note_nodes.append(note_node)
@@ -62,12 +63,12 @@ func _process(_delta: float) -> void:
 				note_node.queue_redraw()
 				$Centering.add_child(note_node)
 		elif note["y"] == note_type_info[NoteTypes.LONG]["code"]:
-			var begin_process = (time - note['t']) * note['s'] + 1.0
+			var begin_process = (time - note['t']) * chart['speed'] + 1.0
 			if begin_process > 0.0:
 				var note_node = LongNote.instantiate()
 				note_nodes.append(note_node)
-				note_node.speed = note['s']
 				note_node.path = note['p']
+				note_node.speed = chart['speed']
 				note_node.manual = true
 				note_node.begin_process = begin_process
 				note_node.key = process_key(note['k'])
@@ -149,17 +150,15 @@ func _on_offset_text_changed(new_text: String) -> void:
 	$Metronome.anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0
 
 
-func load_chart(info_path: String) -> Dictionary:
+func load_chart(info_path: String):
 	var file = FileAccess.open(info_path, FileAccess.READ)
-	var chart = JSON.parse_string(file.get_as_text())
+	chart = JSON.parse_string(file.get_as_text())
 	file.close()
-	
-	return chart
 
 
 func _on_load_chart_pressed() -> void:
 	if not ResourceLoader.exists($ChartSourcePath.text):
 		return
-	var chart = load_chart($ChartSourcePath.text)
+	load_chart($ChartSourcePath.text)
 	notes = chart["notes"]
 	$LoadedChartPath.text = $ChartSourcePath.text
