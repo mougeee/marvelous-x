@@ -31,7 +31,7 @@ func process_key(key_code: int) -> Keys:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if audio_playing:
 		$Timeline.value = $AudioStreamPlayer.get_playback_position() * 1000.0
 		

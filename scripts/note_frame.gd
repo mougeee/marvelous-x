@@ -12,8 +12,8 @@ var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
 
 
 func resize():
-	radius = get_window().size.y / 3
-	width = radius / 20
+	radius = get_window().size.y / 3.0
+	width = radius / 20.0
 	queue_redraw()
 
 
@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var mouse_delta = get_global_mouse_position() - get_viewport_rect().size / 2
 	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
 	
@@ -62,8 +62,8 @@ func _draw():
 		-coverage/2, coverage/2, coverage * 50, cursor_color, width,
 		true
 	)
-	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, cursor_color, true, -1, true)
-	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, cursor_color, true, -1, true)
+	draw_circle(radius * Vector2(cos(-coverage/2.0), sin(-coverage/2.0)), width / 2.0, cursor_color, true, -1, true)
+	draw_circle(radius * Vector2(cos(coverage/2.0), sin(coverage/2.0)), width / 2.0, cursor_color, true, -1, true)
 	
 	# critical highlight
 	draw_circle(Vector2.ZERO, radius, critical_highlight_color, false, width, true)

@@ -51,7 +51,7 @@ func render():
 	queue_redraw()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not manual:
 		process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
 	

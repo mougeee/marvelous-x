@@ -98,7 +98,7 @@ func process_notes() -> float:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not manual:
 		begin_process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
 	
@@ -124,7 +124,7 @@ func _draw():
 			var process = lerp(p.get('process', 0), np.get('process', 0), j/divides)
 			var radius = frame_radius * pow(process, 4)
 			var angle = lerp_angle(p['r'], np['r'], j/divides)
-			var coverage = lerp(p['c'], np['c'], j/divides)
+			#var coverage = lerp(p['c'], np['c'], j/divides)
 			points.append(Vector2(radius, 0.0).rotated(angle))
 		draw_polyline(points, color, 2, true)
 
