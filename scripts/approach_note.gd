@@ -15,6 +15,7 @@ var frame_radius
 @export var speed = 1.0
 var processed = false
 var begin_time
+@export var manual = false
 
 signal pressed
 
@@ -44,13 +45,17 @@ func is_covered() -> bool:
 	return dr <= dc
 
 
-
-func _process(delta: float) -> void:
-	process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
-	
+func render():
 	width = pow(process, 3) * note_width
 	radius = frame_radius * pow(process, 4)
 	queue_redraw()
+
+
+func _process(delta: float) -> void:
+	if not manual:
+		process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
+	
+	render()
 	
 	var dt = (process - 1.0) / speed
 	if not processed:

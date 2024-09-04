@@ -5,13 +5,16 @@ const CUSTOM_WHITE = Color("#f7f7f9")
 enum Keys {LEFT, RIGHT, CRITICAL}
 const key_info = {
 	Keys.LEFT: {
-		"color": Color(60 / 255.0, 112 / 255.0, 186 / 255.0)
+		"color": Color(60 / 255.0, 112 / 255.0, 186 / 255.0),
+		"code": 0
 	},
 	Keys.RIGHT: {
-		"color": Color(188 / 255.0, 59 / 255.0, 59 / 255.0)
+		"color": Color(188 / 255.0, 59 / 255.0, 59 / 255.0),
+		"code": 1
 	},
 	Keys.CRITICAL: {
-		"color": Color(255 / 255.0, 206 / 255.0, 0 / 0.0)
+		"color": Color(255 / 255.0, 206 / 255.0, 0 / 0.0),
+		"code": 2
 	},
 }
 
@@ -50,3 +53,7 @@ const judgement_info = {
 }
 
 enum NoteTypes {APPROACH, LONG}
+const note_type_info = {
+	NoteTypes.APPROACH: {"code": 0},
+	NoteTypes.LONG: {"code": 1},
+}

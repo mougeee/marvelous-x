@@ -12,6 +12,8 @@ var key
 var frame_radius
 var begin_time
 var last_missed = false
+var manual = false
+var begin_process
 
 signal pressed
 
@@ -26,18 +28,16 @@ func _ready() -> void:
 	
 	
 func is_covered(index: int) -> bool:
+	if manual:
+		return false
 	var frame = get_parent().get_node("NoteFrame")
 	var dr = abs(angle_difference(frame.rotation, path[index]['r']))
 	var dc = abs(angle_difference(frame.coverage, path[index]['c'])) / 2
 	return dr <= dc
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	var begin_process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
 	
-	# process notes
+	
+	
+func process_notes() -> float:
 	var last_process = INF
 	for i in range(path.size()):
 		var p = path[i]
@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 		
 		p['dt'] = (p['process'] - 1.0) / speed
 		p['processed'] = p.get('processed', false)
-		p['visible'] = p.get('visible', true)
+		p['visible'] = manual or p.get('visible', true)
 		
 		if not p['processed'] and (i == 0 or i == path.size() - 1):
 			var is_first_keypressed = (
@@ -93,7 +93,17 @@ func _process(delta: float) -> void:
 		last_process = min(last_process, p['process'])
 	queue_redraw()
 	
-	# DEBUG
+	return last_process
+
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	if not manual:
+		begin_process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
+	
+	var last_process = process_notes()
+	
 	if last_process > 2.0:
 		queue_free()
 	

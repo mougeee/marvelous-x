@@ -30,17 +30,17 @@ size_flags_horizontal = 3
 
 [node name="AudioSourcePath" type="LineEdit" parent="."]
 offset_left = 20.0
-offset_top = 77.0
+offset_top = 83.0
 offset_right = 447.0
-offset_bottom = 108.0
-text = "res://res/20240902001.mp3"
-placeholder_text = "res://res/20240902001.mp3"
+offset_bottom = 114.0
+text = "res://res/demo1.mp3"
+placeholder_text = "Audio Stream Source"
 
 [node name="LoadAudio" type="Button" parent="."]
 offset_left = 450.0
-offset_top = 76.0
+offset_top = 82.0
 offset_right = 496.0
-offset_bottom = 107.0
+offset_bottom = 113.0
 text = "Load"
 
 [node name="PlayPause" type="Button" parent="."]
@@ -53,26 +53,26 @@ text = "Play/Pause (Enter)
 
 [node name="LoadedAudioStreamPath" type="Label" parent="."]
 offset_left = 20.0
-offset_top = 112.0
+offset_top = 118.0
 offset_right = 236.0
-offset_bottom = 135.0
+offset_bottom = 141.0
 text = "(Loaded Audio Stream Path)"
 
 [node name="Metronome" parent="." instance=ExtResource("4_rn1sg")]
 
 [node name="BPM" type="LineEdit" parent="."]
 offset_left = 20.0
-offset_top = 145.0
+offset_top = 226.0
 offset_right = 87.0625
-offset_bottom = 176.0
+offset_bottom = 257.0
 text = "120"
 placeholder_text = "BPM"
 
 [node name="Offset" type="LineEdit" parent="."]
 offset_left = 97.0
-offset_top = 145.0
+offset_top = 226.0
 offset_right = 205.0
-offset_bottom = 176.0
+offset_bottom = 257.0
 text = "0"
 placeholder_text = "Offset (ms)"
 
@@ -99,6 +99,28 @@ offset_bottom = 51.0
 button_pressed = true
 text = "Metronome"
 
+[node name="ChartSourcePath" type="LineEdit" parent="."]
+offset_left = 20.0
+offset_top = 155.0
+offset_right = 447.0
+offset_bottom = 186.0
+text = "res://res/demo1.json"
+placeholder_text = "Chart Path"
+
+[node name="LoadChart" type="Button" parent="."]
+offset_left = 450.0
+offset_top = 154.0
+offset_right = 496.0
+offset_bottom = 185.0
+text = "Load"
+
+[node name="LoadedChartPath" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 190.0
+offset_right = 236.0
+offset_bottom = 213.0
+text = "(Loaded Chart Path)"
+
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="drag_started" from="Timeline" to="." method="_on_timeline_drag_started"]
@@ -108,3 +130,4 @@ text = "Metronome"
 [connection signal="text_changed" from="Offset" to="." method="_on_offset_text_changed"]
 [connection signal="pressed" from="TapBPMButton" to="." method="_on_tap_bpm_button_pressed"]
 [connection signal="pressed" from="MetronomeOn" to="." method="_on_metronome_on_pressed"]
+[connection signal="pressed" from="LoadChart" to="." method="_on_load_chart_pressed"]
