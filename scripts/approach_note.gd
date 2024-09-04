@@ -82,7 +82,7 @@ func _process(_delta: float) -> void:
 
 
 func _draw():
-	var color = key_info[key]["color"]
+	var color = Color(key_info[key]["color"])
 	
 	draw_arc(
 		Vector2.ZERO, radius,

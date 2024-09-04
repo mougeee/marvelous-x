@@ -32,7 +32,7 @@ func process_key(key_code: int) -> Keys:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if audio_playing:
 		$Timeline.value = $AudioStreamPlayer.get_playback_position() * 1000.0
 		
@@ -49,7 +49,7 @@ func _process(_delta: float) -> void:
 	var frame = $Centering/NoteFrame
 	for note in notes:
 		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"] and note['t'] - 1.0 / chart['speed'] <= time:
-			var process = (time - note['t']) * chart['speed'] + 1.0
+			var process = (time - note['t'] - offset) * chart['speed'] + 1.0
 			if process > 0.0 and process < 2.0:
 				var note_node = ApproachNote.instantiate()
 				note_nodes.append(note_node)
@@ -63,7 +63,7 @@ func _process(_delta: float) -> void:
 				note_node.queue_redraw()
 				$Centering.add_child(note_node)
 		elif note["y"] == note_type_info[NoteTypes.LONG]["code"]:
-			var begin_process = (time - note['t']) * chart['speed'] + 1.0
+			var begin_process = (time - note['t'] - offset) * chart['speed'] + 1.0
 			if begin_process > 0.0:
 				var note_node = LongNote.instantiate()
 				note_nodes.append(note_node)
@@ -75,6 +75,11 @@ func _process(_delta: float) -> void:
 				note_node.frame_radius = frame.radius
 				note_node.process_notes()
 				$Centering.add_child(note_node)
+	
+	# beat line stop when song stopped
+	if not audio_playing:
+		for i in range($Centering/NoteFrame.beat_lines.size()):
+			$Centering/NoteFrame.beat_lines[i] += delta
 
 
 func _on_back_pressed() -> void:
@@ -93,14 +98,27 @@ func _on_load_audio_pressed() -> void:
 func _on_play_pause_pressed() -> void:
 	if not stream_loaded:
 		return
+		
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 	else:
-		$Metronome.set_anchor_position(Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int($Offset.text) / 1000.0)
+		var anchor_position = (
+			Time.get_ticks_usec() / 1_000_000.0
+			- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
+			- AudioServer.get_time_since_last_mix()
+			- AudioServer.get_output_latency()
+		)
+		var extra_delay = offset - 1.0 / chart['speed']
+		$Metronome.set_anchor_position(anchor_position)
+		$Centering/NoteFrame.metronome.set_anchor_position(anchor_position + extra_delay)
 		$AudioStreamPlayer.play($Timeline.value / 1000.0)
 		pressed_log.clear()
+		
+		$Centering/NoteFrame.beat_lines.clear()
+		
 	audio_playing = not audio_playing
 	$Metronome.sound = audio_playing and $MetronomeOn.button_pressed
+	$Centering/NoteFrame.beat_line = audio_playing
 
 
 func _on_timeline_drag_started() -> void:
@@ -108,6 +126,7 @@ func _on_timeline_drag_started() -> void:
 		$AudioStreamPlayer.stop()
 		audio_playing = false
 		$Metronome.sound = audio_playing
+	$Centering/NoteFrame.beat_lines.clear()
 
 
 var pressed_log = []
@@ -140,6 +159,7 @@ func _on_metronome_on_pressed() -> void:
 
 func _on_bpm_text_changed(new_text: String) -> void:
 	$Metronome.set_bpm(float(new_text))
+	$Centering/NoteFrame.metronome.set_bpm(float(new_text))
 
 
 func _on_audio_stream_player_finished() -> void:
@@ -148,6 +168,8 @@ func _on_audio_stream_player_finished() -> void:
 
 func _on_offset_text_changed(new_text: String) -> void:
 	$Metronome.set_anchor_position(Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0)
+	$Centering/NoteFrame.metronome.set_anchor_position(
+		Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0 - 1.0 / chart['speed'] + offset)
 
 
 func load_chart(info_path: String):
