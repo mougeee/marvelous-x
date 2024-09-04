@@ -96,18 +96,18 @@ func _on_play_pause_pressed() -> void:
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 	else:
-		$Metronome.anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
+		$Metronome.set_anchor_position(Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int($Offset.text) / 1000.0)
 		$AudioStreamPlayer.play($Timeline.value / 1000.0)
 		pressed_log.clear()
 	audio_playing = not audio_playing
-	$Metronome.running = audio_playing and $MetronomeOn.button_pressed
+	$Metronome.sound = audio_playing and $MetronomeOn.button_pressed
 
 
 func _on_timeline_drag_started() -> void:
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 		audio_playing = false
-		$Metronome.running = audio_playing
+		$Metronome.sound = audio_playing
 
 
 var pressed_log = []
@@ -135,7 +135,7 @@ func _on_tap_bpm_button_pressed() -> void:
 
 
 func _on_metronome_on_pressed() -> void:
-	$Metronome.running = audio_playing and $MetronomeOn.button_pressed
+	$Metronome.sound = audio_playing and $MetronomeOn.button_pressed
 
 
 func _on_bpm_text_changed(new_text: String) -> void:
@@ -147,7 +147,7 @@ func _on_audio_stream_player_finished() -> void:
 
 
 func _on_offset_text_changed(new_text: String) -> void:
-	$Metronome.anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0
+	$Metronome.set_anchor_position(Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0)
 
 
 func load_chart(info_path: String):

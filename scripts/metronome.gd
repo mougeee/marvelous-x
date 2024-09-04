@@ -1,25 +1,36 @@
 extends Node
 
-@export var bpm = 120.0
-@export var anchor_position = 0.0
+@export var _bpm = 120.0
+@export var _anchor_position = 0.0
 
 var beat_duration
-var running = false
+@export var sound = false
+var need = false
+var time = 0.0
 
 
 func set_bpm(b: float) -> void:
-	bpm = b
-	beat_duration = 60.0 / bpm
+	_bpm = b
+	beat_duration = 60.0 / _bpm
+	
+	
+func set_anchor_position(_anchor_position: float):
+	time = fposmod(Time.get_ticks_usec() / 1_000_000.0 - _anchor_position, beat_duration)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	beat_duration = 60.0 / bpm
+	beat_duration = 60.0 / _bpm
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if running:
-		var time = fposmod(Time.get_ticks_usec() / 1_000_000.0 - anchor_position, beat_duration)
-		if time <= beat_duration and beat_duration < time + delta:
-			$MainBeat.play()
+	if not need:
+		time += delta
+		if time >= beat_duration:
+			need = true
+			time -= beat_duration
+	
+	if sound and need:
+		$MainBeat.play()
+		need = false

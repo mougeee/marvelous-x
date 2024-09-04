@@ -20,12 +20,6 @@ const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 var note_start_time = 0
 var info_path = "res://res/demo1.json"
 var audio_path = "res://res/demo1.mp3"
-
-
-func reset_times() -> void:
-	if $AudioStreamPlayer.playing:
-		$AudioStreamPlayer.stop()
-	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	
 	
 func load_chart():
@@ -87,7 +81,10 @@ func _ready() -> void:
 	
 	# reset chart
 	$AudioStreamPlayer.stream = load(audio_path)
-	reset_times()
+	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
+	
+	var metronome_anchor = time_begin / 1e6 + AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency() + offset - 1.0 / chart['speed']
+	$Centering/NoteFrame.metronome.set_anchor_position(metronome_anchor)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -101,6 +98,7 @@ func _process(delta: float) -> void:
 	if not $AudioStreamPlayer.playing and time > -offset:
 		$AudioStreamPlayer.play()
 	
+	# summon notes
 	while next_index < notes.size() and notes[next_index]["summon_time"] < time:
 		var note = notes[next_index]
 		
@@ -122,7 +120,7 @@ func _process(delta: float) -> void:
 		
 		next_index += 1
 		
-	if time > last_time + 3.0:
+	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
 		get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
 
 

@@ -12,6 +12,7 @@ script = ExtResource("1_d2by7")
 [node name="Centering" parent="." instance=ExtResource("1_bpy7k")]
 
 [node name="NoteFrame" parent="Centering" instance=ExtResource("1_d1agj")]
+beat_line = false
 
 [node name="MenuGame" parent="Centering" instance=ExtResource("3_6hopp")]
 
