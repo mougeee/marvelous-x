@@ -1,6 +1,7 @@
 extends Node2D
 
 var audio_playing = false
+var stream_loaded = false
 
 var offset = preload("res://scripts/globals.gd").offset
 
@@ -27,17 +28,21 @@ func _on_back_pressed() -> void:
 
 
 func _on_load_audio_pressed() -> void:
+	if not ResourceLoader.exists($AudioSourcePath.text):
+		return
 	$AudioStreamPlayer.stream = load($AudioSourcePath.text)
 	$Timeline.max_value = $AudioStreamPlayer.stream.get_length() * 1000.0
 	$LoadedAudioStreamPath.text = $AudioSourcePath.text
+	stream_loaded = true
 
 
 func _on_play_pause_pressed() -> void:
+	if not stream_loaded:
+		return
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 	else:
 		$AudioStreamPlayer.play($Timeline.value / 1000.0)
-		$Metronome.anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
 		pressed_log.clear()
 	audio_playing = not audio_playing
 	$Metronome.running = audio_playing and $MetronomeOn.button_pressed
@@ -84,3 +89,7 @@ func _on_bpm_text_changed(new_text: String) -> void:
 
 func _on_audio_stream_player_finished() -> void:
 	_on_play_pause_pressed()
+
+
+func _on_offset_text_changed(new_text: String) -> void:
+	$Metronome.anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0

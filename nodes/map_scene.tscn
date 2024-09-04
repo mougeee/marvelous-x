@@ -44,11 +44,11 @@ offset_bottom = 107.0
 text = "Load"
 
 [node name="PlayPause" type="Button" parent="."]
-offset_left = 418.0
+offset_left = 361.0
 offset_top = 22.0
-offset_right = 511.0
+offset_right = 510.0
 offset_bottom = 53.0
-text = "Play/Pause
+text = "Play/Pause (Enter)
 "
 
 [node name="LoadedAudioStreamPath" type="Label" parent="."]
@@ -105,5 +105,6 @@ text = "Metronome"
 [connection signal="pressed" from="LoadAudio" to="." method="_on_load_audio_pressed"]
 [connection signal="pressed" from="PlayPause" to="." method="_on_play_pause_pressed"]
 [connection signal="text_changed" from="BPM" to="." method="_on_bpm_text_changed"]
+[connection signal="text_changed" from="Offset" to="." method="_on_offset_text_changed"]
 [connection signal="pressed" from="TapBPMButton" to="." method="_on_tap_bpm_button_pressed"]
 [connection signal="pressed" from="MetronomeOn" to="." method="_on_metronome_on_pressed"]
