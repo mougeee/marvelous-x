@@ -80,5 +80,5 @@ func _draw():
 			-coverage/2, coverage/2, coverage * 50, color, width,
 			true
 		)
-		draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, 1, true)
-		draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, 1, true)
+		draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, -1, true)
+		draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, -1, true)

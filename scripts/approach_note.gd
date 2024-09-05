@@ -1,9 +1,12 @@
 extends Node2D
 
-const Keys = preload("res://scripts/globals.gd").Keys
-const key_info = preload("res://scripts/globals.gd").key_info
-const Judgements = preload("res://scripts/globals.gd").Judgements
-const judgement_info = preload("res://scripts/globals.gd").judgement_info
+const globals = preload("res://scripts/globals.gd")
+const Keys = globals.Keys
+const key_info = globals.key_info
+const Judgements = globals.Judgements
+const judgement_info = globals.judgement_info
+const NoteTypes = globals.NoteTypes
+const note_type_info = globals.note_type_info
 
 var radius = 0
 var coverage = 0.4
@@ -19,6 +22,17 @@ var begin_time
 @export var temporary = false
 
 signal pressed
+
+
+func to_json(time: float) -> Dictionary:
+	#{"y": 0, "t": 8.0, "r": -2.0, "c": 0.0, "k": 2},
+	return {
+		"y": note_type_info[NoteTypes.APPROACH]['code'],
+		't': time,
+		'r': rotation,
+		'c': coverage,
+		'k': key_info[key]['code']
+	}
 
 
 func resize() -> void:

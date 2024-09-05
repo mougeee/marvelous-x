@@ -103,7 +103,7 @@ text = "Metronome"
 [node name="ChartSourcePath" type="LineEdit" parent="."]
 offset_left = 20.0
 offset_top = 155.0
-offset_right = 447.0
+offset_right = 392.0
 offset_bottom = 186.0
 text = "res://res/demo1.json"
 placeholder_text = "Chart Path"
@@ -135,14 +135,21 @@ offset_top = 280.0
 offset_right = 293.0
 offset_bottom = 296.0
 max_value = 20.0
-value = 1.0
+value = 4.0
 
 [node name="CreateNoteCoverageLabel" type="Label" parent="."]
 offset_left = 302.0
 offset_top = 275.0
 offset_right = 342.0
 offset_bottom = 298.0
-text = "0"
+text = "4"
+
+[node name="SaveChart" type="Button" parent="."]
+offset_left = 398.0
+offset_top = 154.0
+offset_right = 444.0
+offset_bottom = 185.0
+text = "Save"
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
@@ -156,3 +163,4 @@ text = "0"
 [connection signal="pressed" from="LoadChart" to="." method="_on_load_chart_pressed"]
 [connection signal="changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_changed"]
 [connection signal="value_changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_value_changed"]
+[connection signal="pressed" from="SaveChart" to="." method="_on_save_chart_pressed"]

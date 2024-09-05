@@ -148,6 +148,25 @@ func _process(delta: float) -> void:
 		note.render()
 		note_nodes.append(note)
 		$Centering.add_child(note)
+		
+		# insert note in correct position
+		if Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress"):
+			note.key = Keys.LEFT if Input.is_action_just_pressed("LeftPress") else Keys.RIGHT
+			var t = time + 1.0 - note.process / chart['speed'] - offset
+			var json = note.to_json(t)
+			
+			# insert in right position
+			var left = 0
+			var right = notes.size()
+			while left < right:
+				var mid_index = (left + right) / 2
+				var mid = notes[mid_index]['t']
+				
+				if mid < t:
+					left = mid_index + 1
+				else:
+					right = mid_index
+			notes.insert(left, json)
 	
 	# metronome bpm
 	if chart:
@@ -254,3 +273,7 @@ func _on_load_chart_pressed() -> void:
 
 func _on_create_note_coverage_value_changed(value: float) -> void:
 	$CreateNoteCoverageLabel.text = str(value)
+
+
+func _on_save_chart_pressed() -> void:
+	print(notes)
