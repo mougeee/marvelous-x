@@ -46,19 +46,37 @@ func process_bpm_index(index: int) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	# calculate time
 	if audio_playing:
 		$Timeline.value = $AudioStreamPlayer.get_playback_position() * 1000.0
 		
+	# key press event handles
 	if Input.is_action_just_pressed("MapPlayPause"):
 		_on_play_pause_pressed()
 	if Input.is_action_just_pressed("MapTapBPM"):
 		_on_tap_bpm_button_pressed()
 	
+	# redraw lines
+	var time = $Timeline.value / 1000.0
+	if chart:
+		$Centering/NoteFrame.beat_lines.clear()
+		for i in range(chart['bpm'].size()):
+			var bpm = chart['bpm'][i]
+			var timing = bpm['t']
+			var end_time = $Timeline.max_value / 1000.0 if i == chart['bpm'].size() - 1 else chart['bpm'][i+1]['t']
+			while timing - 1.0 / chart['speed'] < min(end_time, time):
+				var summon_time = timing - 1.0 / chart['speed'] + offset
+				var dt = time - summon_time
+				var process = dt / (1.0 / chart['speed'])
+				if 0.0 < process and process < 2.0:
+					$Centering/NoteFrame.beat_lines.append(process)
+				timing += 60.0 / bpm['b']
+	
+	# -- draw notes
 	for note_node in note_nodes:
 		note_node.queue_free()
 	note_nodes.clear()
 	
-	var time = $Timeline.value / 1000.0
 	var frame = $Centering/NoteFrame
 	for note in notes:
 		var process = (time - note['t'] - offset) * chart['speed'] + 1.0
@@ -101,6 +119,35 @@ func _process(delta: float) -> void:
 				note_node.note_width = frame.width
 				note_node.render()
 				$Centering.add_child(note_node)
+				
+	# create notes
+	if $CreateNotes.button_pressed:
+		var mouse_delta = get_global_mouse_position() - $Centering.position
+		var mouse_theta = atan2(mouse_delta.y, mouse_delta.x)
+		var mouse_distance = mouse_delta.length()
+		var coverage = pow($CreateNoteCoverage.value / 21.0, 2) * TAU
+		var process = pow(mouse_distance / frame.radius, 0.25)
+		
+		# process snap
+		for i in range($Centering/NoteFrame.beat_lines.size() - 1):
+			var p = $Centering/NoteFrame.beat_lines[i + 1]
+			var np = $Centering/NoteFrame.beat_lines[i]
+			if p <= process and process <= np:
+				process = p + round((process - p) / (np - p) * 4.0) / 4.0 * (np - p)
+				break
+		
+		# draw note
+		var note = ApproachNote.instantiate()
+		note.manual = true
+		note.rotation = mouse_theta
+		note.process = process
+		note.coverage = coverage
+		note.temporary = true
+		note.frame_radius = frame.radius
+		note.note_width = frame.width
+		note.render()
+		note_nodes.append(note)
+		$Centering.add_child(note)
 	
 	# metronome bpm
 	if chart:
@@ -108,21 +155,6 @@ func _process(delta: float) -> void:
 			if time > chart['bpm'][i]['t'] - delta and i not in bpm_processed_index:
 				process_bpm_index(i)
 				break
-	
-	# redraw lines
-	if chart:
-		$Centering/NoteFrame.beat_lines.clear()
-		for i in range(chart['bpm'].size()):
-			var bpm = chart['bpm'][i]
-			var timing = bpm['t']
-			var end_time = $Timeline.max_value / 1000.0 if i == chart['bpm'].size() - 1 else chart['bpm'][i+1]['t']
-			while timing - 1.0 / chart['speed'] < time:
-				var summon_time = timing - 1.0 / chart['speed'] + offset
-				var dt = time - summon_time
-				var process = dt / (1.0 / chart['speed'])
-				if 0.0 < process and process < 2.0:
-					$Centering/NoteFrame.beat_lines.append(process)
-				timing += 60.0 / bpm['b']
 
 
 func _on_back_pressed() -> void:
@@ -218,3 +250,7 @@ func _on_load_chart_pressed() -> void:
 	notes = chart["notes"]
 	$LoadedChartPath.text = $ChartSourcePath.text
 	$Centering/NoteFrame.speed = chart['speed']
+
+
+func _on_create_note_coverage_value_changed(value: float) -> void:
+	$CreateNoteCoverageLabel.text = str(value)

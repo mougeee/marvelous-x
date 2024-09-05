@@ -16,6 +16,7 @@ var frame_radius
 var processed = false
 var begin_time
 @export var manual = false
+@export var temporary = false
 
 signal pressed
 
@@ -84,6 +85,9 @@ func _process(_delta: float) -> void:
 func _draw():
 	if radius > 0 and process < 2.0:
 		var color = Color(key_info[key]["color"])
+		
+		if temporary:
+			color.a = 0.5
 		
 		draw_arc(
 			Vector2.ZERO, radius,

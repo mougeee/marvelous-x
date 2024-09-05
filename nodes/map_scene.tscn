@@ -122,6 +122,28 @@ offset_right = 236.0
 offset_bottom = 213.0
 text = "(Loaded Chart Path)"
 
+[node name="CreateNotes" type="CheckBox" parent="."]
+offset_left = 19.0
+offset_top = 271.0
+offset_right = 43.0
+offset_bottom = 295.0
+text = "Create Notes"
+
+[node name="CreateNoteCoverage" type="HSlider" parent="."]
+offset_left = 158.0
+offset_top = 280.0
+offset_right = 293.0
+offset_bottom = 296.0
+max_value = 20.0
+value = 1.0
+
+[node name="CreateNoteCoverageLabel" type="Label" parent="."]
+offset_left = 302.0
+offset_top = 275.0
+offset_right = 342.0
+offset_bottom = 298.0
+text = "0"
+
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="drag_started" from="Timeline" to="." method="_on_timeline_drag_started"]
@@ -132,3 +154,5 @@ text = "(Loaded Chart Path)"
 [connection signal="pressed" from="TapBPMButton" to="." method="_on_tap_bpm_button_pressed"]
 [connection signal="pressed" from="MetronomeOn" to="." method="_on_metronome_on_pressed"]
 [connection signal="pressed" from="LoadChart" to="." method="_on_load_chart_pressed"]
+[connection signal="changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_changed"]
+[connection signal="value_changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_value_changed"]
