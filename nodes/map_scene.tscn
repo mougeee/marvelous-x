@@ -34,7 +34,7 @@ offset_left = 20.0
 offset_top = 83.0
 offset_right = 447.0
 offset_bottom = 114.0
-text = "res://res/demo1.mp3"
+text = "res://res/demo1.wav"
 placeholder_text = "Audio Stream Source"
 
 [node name="LoadAudio" type="Button" parent="."]

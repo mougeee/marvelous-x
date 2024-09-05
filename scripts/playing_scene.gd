@@ -19,7 +19,7 @@ const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
 
 var note_start_time = 0
 var info_path = "res://res/demo1.json"
-var audio_path = "res://res/demo1.mp3"
+var audio_path = "res://res/demo1.wav"
 	
 	
 func load_chart():
