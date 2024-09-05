@@ -15,6 +15,7 @@ var offset = preload("res://scripts/globals.gd").offset
 var notes = []
 var note_nodes = []
 var chart
+var bpm_processed_index = []
 
 
 # Called when the node enters the scene tree for the first time.
@@ -76,6 +77,20 @@ func _process(delta: float) -> void:
 				note_node.process_notes()
 				$Centering.add_child(note_node)
 	
+	# metronome bpm
+	if chart:
+		for i in range(chart['bpm'].size()):
+			var bpm = chart['bpm'][i]
+			if time > bpm['t'] - delta and i not in bpm_processed_index:
+				$Metronome.set_bpm(bpm['b'])
+				var anchor_position = (
+					Time.get_ticks_usec() / 1_000_000.0
+					- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
+				)
+				$Metronome.set_anchor_position(anchor_position)
+				bpm_processed_index.append(i)
+				break
+	
 	# redraw lines
 	if chart:
 		$Centering/NoteFrame.beat_lines.clear()
@@ -112,12 +127,8 @@ func _on_play_pause_pressed() -> void:
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 	else:
-		var anchor_position = (
-			Time.get_ticks_usec() / 1_000_000.0
-			- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
-		)
-		$Metronome.set_anchor_position(anchor_position)
 		$AudioStreamPlayer.play($Timeline.value / 1000.0)
+		bpm_processed_index.clear()
 		pressed_log.clear()
 		
 	audio_playing = not audio_playing
