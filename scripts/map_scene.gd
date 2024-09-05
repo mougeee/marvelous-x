@@ -6,6 +6,7 @@ const NoteTypes = globals.NoteTypes
 const note_type_info = globals.note_type_info
 const ApproachNote = preload("res://nodes/approach_note.tscn")
 const LongNote = preload("res://nodes/long_note.tscn")
+const TrapNote = preload("res://nodes/trap_note.tscn")
 
 var audio_playing = false
 var stream_loaded = false
@@ -49,8 +50,8 @@ func _process(delta: float) -> void:
 	var time = $Timeline.value / 1000.0
 	var frame = $Centering/NoteFrame
 	for note in notes:
+		var process = (time - note['t'] - offset) * chart['speed'] + 1.0
 		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"] and note['t'] - 1.0 / chart['speed'] <= time:
-			var process = (time - note['t'] - offset) * chart['speed'] + 1.0
 			if process > 0.0 and process < 2.0:
 				var note_node = ApproachNote.instantiate()
 				note_nodes.append(note_node)
@@ -58,23 +59,36 @@ func _process(delta: float) -> void:
 				note_node.process = process
 				note_node.rotation = note['r']
 				note_node.key = process_key(note['k'])
+				note_node.coverage = note['c']
 				note_node.frame_radius = frame.radius
 				note_node.note_width = frame.width
 				note_node.render()
-				note_node.queue_redraw()
 				$Centering.add_child(note_node)
+				
 		elif note["y"] == note_type_info[NoteTypes.LONG]["code"]:
-			var begin_process = (time - note['t'] - offset) * chart['speed'] + 1.0
-			if begin_process > 0.0:
+			if process > 0.0:
 				var note_node = LongNote.instantiate()
 				note_nodes.append(note_node)
 				note_node.path = note['p']
 				note_node.speed = chart['speed']
 				note_node.manual = true
-				note_node.begin_process = begin_process
+				note_node.begin_process = process
 				note_node.key = process_key(note['k'])
 				note_node.frame_radius = frame.radius
 				note_node.process_notes()
+				$Centering.add_child(note_node)
+				
+		elif note['y'] == note_type_info[NoteTypes.TRAP]['code']:
+			if process > 0.0 and process < 2.0:
+				var note_node = TrapNote.instantiate()
+				note_nodes.append(note_node)
+				note_node.manual = true
+				note_node.process = process
+				note_node.rotation = note['r']
+				note_node.coverage = note['c']
+				note_node.frame_radius = frame.radius
+				note_node.note_width = frame.width
+				note_node.render()
 				$Centering.add_child(note_node)
 	
 	# metronome bpm

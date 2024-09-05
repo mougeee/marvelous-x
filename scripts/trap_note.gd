@@ -11,19 +11,18 @@ var width = 0
 var note_width = 0
 var process = 0.0
 var frame_radius
-@export var key = Keys.LEFT
 @export var speed = 1.0
 var processed = false
 var begin_time
 @export var manual = false
 
-signal pressed
+signal passed
 
 
 func resize() -> void:
 	var frame = get_parent().get_node("NoteFrame")
 	frame_radius = frame.radius
-	note_width = frame.width
+	note_width = frame.width / 2
 
 
 # Called when the node enters the scene tree for the first time.
@@ -31,14 +30,18 @@ func _ready() -> void:
 	get_tree().get_root().size_changed.connect(resize)
 	
 	resize()
-	
-	if key == Keys.CRITICAL:
-		coverage = TAU
 		
 	begin_time = Time.get_ticks_usec()
 
 
-func is_covered() -> bool:
+func is_kinda_covered() -> bool:
+	var frame = get_parent().get_node("NoteFrame")
+	var dr = abs(angle_difference(frame.rotation, rotation))
+	var dc = abs(frame.coverage + coverage) / 2
+	return dr <= dc
+
+
+func is_well_covered() -> bool:
 	var frame = get_parent().get_node("NoteFrame")
 	var dr = abs(angle_difference(frame.rotation, rotation))
 	var dc = abs(angle_difference(frame.coverage, coverage)) / 2
@@ -55,40 +58,27 @@ func _process(_delta: float) -> void:
 	if not manual:
 		process = (Time.get_ticks_usec() - begin_time) / 1_000_000.0 * speed
 	
+	if process >= 1.0 and not processed:
+		if is_well_covered():
+			passed.emit(Judgements.MISS, rotation, false, 0.0)
+		elif is_kinda_covered():
+			passed.emit(Judgements.OK, rotation, false, 0.0)
+		else:
+			passed.emit(Judgements.MARVELOUS, rotation, false, 0.0)
+		processed = true
+	
 	render()
-	
-	var dt = (process - 1.0) / speed
-	if not processed:
-		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and (
-			key == Keys.CRITICAL and Input.is_action_just_pressed("CriticalPress")
-			or is_covered() and (
-				key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
-				or key == Keys.RIGHT and Input.is_action_just_pressed("RightPress")
-			)
-		):
-			processed = true
-			for i in range(judgement_info.size() - 1):
-				if abs(dt) <= judgement_info[i]["precision"]:
-					pressed.emit(i, rotation, key == Keys.CRITICAL, dt)
-					break
-			queue_free()
-		elif dt > judgement_info[Judgements.MISS]["precision"]:
-			pressed.emit(Judgements.MISS, rotation, key == Keys.CRITICAL, dt)
-			processed = true
-	
-	if dt > judgement_info[Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
-		queue_free()
 
 
 
 func _draw():
+	var color = Color.WHITE
+	
 	if radius > 0 and process < 2.0:
-		var color = Color(key_info[key]["color"])
-		
 		draw_arc(
 			Vector2.ZERO, radius,
 			-coverage/2, coverage/2, coverage * 50, color, width,
 			true
 		)
-		draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, -1, true)
-		draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, -1, true)
+		draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, 1, true)
+		draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, 1, true)

@@ -23,7 +23,7 @@ const judgement_info = {
 	Judgements.MARVELOUS: {
 		"judgement": Judgements.MARVELOUS,
 		"label": "Marvelous",
-		"precision": 0.020,
+		"precision": 0.015,
 		"accuracy": 100
 	},
 	Judgements.SPLENDID: {
@@ -52,8 +52,9 @@ const judgement_info = {
 	},
 }
 
-enum NoteTypes {APPROACH, LONG}
+enum NoteTypes {APPROACH, LONG, TRAP}
 const note_type_info = {
 	NoteTypes.APPROACH: {"code": 0},
 	NoteTypes.LONG: {"code": 1},
+	NoteTypes.TRAP: {"code": 2},
 }

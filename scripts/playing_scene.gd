@@ -1,21 +1,24 @@
 extends Node2D
 
-const Judgements = preload("res://scripts/globals.gd").Judgements
-const judgement_info = preload("res://scripts/globals.gd").judgement_info
+const global = preload("res://scripts/globals.gd")
+const Judgements = global.Judgements
+const judgement_info = global.judgement_info
 
 var ApproachNote = preload("res://nodes/approach_note.tscn")
 var LongNote = preload("res://nodes/long_note.tscn")
+var TrapNote = preload("res://nodes/trap_note.tscn")
 var Judgement = preload("res://nodes/judgement.tscn")
 var time_begin
-var offset = preload("res://scripts/globals.gd").offset
+var offset = global.offset
 
-const Keys = preload("res://scripts/globals.gd").Keys
+const Keys = global.Keys
 var notes = []
 var next_index = 0
 var last_time = -INF
 var chart
 
-const NoteTypes = preload("res://scripts/globals.gd").NoteTypes
+const NoteTypes = global.NoteTypes
+const note_type_info = global.note_type_info
 
 var note_start_time = 0
 var info_path = "res://res/demo1.json"
@@ -51,22 +54,26 @@ func preprocess_notes(raw_notes: Array):
 				left = anchor + 1
 			else:
 				right = anchor
-		
-		# correct key
-		if raw_note["k"] == 0:
-			raw_note['k'] = Keys.LEFT
-		elif raw_note['k'] == 1:
-			raw_note['k'] = Keys.RIGHT
-		elif raw_note['k'] == 2:
-			raw_note['k'] = Keys.CRITICAL
 			
 		# correct note type
-		if raw_note["y"] == 0:
+		if raw_note["y"] == note_type_info[NoteTypes.APPROACH]['code']:
 			raw_note['y'] = NoteTypes.APPROACH
 			note_count += 1
-		elif raw_note['y'] == 1:
+		elif raw_note['y'] == note_type_info[NoteTypes.LONG]['code']:
 			raw_note['y'] = NoteTypes.LONG
 			note_count += 2
+		elif raw_note['y'] == note_type_info[NoteTypes.TRAP]['code']:
+			raw_note['y'] = NoteTypes.TRAP
+			note_count += 1
+		
+		# correct key
+		if raw_note.get('k', -1) != -1:
+			if raw_note["k"] == 0:
+				raw_note['k'] = Keys.LEFT
+			elif raw_note['k'] == 1:
+				raw_note['k'] = Keys.RIGHT
+			elif raw_note['k'] == 2:
+				raw_note['k'] = Keys.CRITICAL
 			
 		# insert
 		raw_note["summon_time"] = time
@@ -128,6 +135,7 @@ func _process(delta: float) -> void:
 			approach_note.key = note['k']
 			approach_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(approach_note)
+			
 		elif note['y'] == NoteTypes.LONG:
 			var long_note = LongNote.instantiate()
 			long_note.path = note['p']
@@ -135,6 +143,14 @@ func _process(delta: float) -> void:
 			long_note.key = note['k']
 			long_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(long_note)
+		
+		elif note['y'] == NoteTypes.TRAP:
+			var trap_note = TrapNote.instantiate()
+			trap_note.rotation = note['r']
+			trap_note.coverage = note['c']
+			trap_note.speed = chart['speed']
+			trap_note.passed.connect(_on_note_pressed)
+			$Centering.add_child(trap_note)
 		
 		next_index += 1
 	
@@ -168,7 +184,7 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt
 	judgement_node.set_judgement(j_info["judgement"])
 	if not is_critical:
 		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
-	if j_info['judgement'] != Judgements.MISS:
+	if j_info['judgement'] != Judgements.MISS and dt:
 		judgement_node.get_node("Offset").text = "%.1fms" % [dt * 1000.0]
 	$Centering.add_child(judgement_node)
 		
