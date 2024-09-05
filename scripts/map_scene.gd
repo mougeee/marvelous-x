@@ -31,6 +31,17 @@ func process_key(key_code: int) -> Keys:
 		return Keys.RIGHT
 	else:
 		return Keys.CRITICAL
+	
+	
+func process_bpm_index(index: int) -> void:
+	var bpm = chart['bpm'][index]
+	$Metronome.set_bpm(bpm['b'])
+	var anchor_position = (
+		Time.get_ticks_usec() / 1_000_000.0
+		- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
+	)
+	$Metronome.set_anchor_position(anchor_position)
+	bpm_processed_index.append(index)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -94,15 +105,8 @@ func _process(delta: float) -> void:
 	# metronome bpm
 	if chart:
 		for i in range(chart['bpm'].size()):
-			var bpm = chart['bpm'][i]
-			if time > bpm['t'] - delta and i not in bpm_processed_index:
-				$Metronome.set_bpm(bpm['b'])
-				var anchor_position = (
-					Time.get_ticks_usec() / 1_000_000.0
-					- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
-				)
-				$Metronome.set_anchor_position(anchor_position)
-				bpm_processed_index.append(i)
+			if time > chart['bpm'][i]['t'] - delta and i not in bpm_processed_index:
+				process_bpm_index(i)
 				break
 	
 	# redraw lines
@@ -183,6 +187,7 @@ func _on_tap_bpm_button_pressed() -> void:
 
 func _on_metronome_on_pressed() -> void:
 	$Metronome.sound = audio_playing and $MetronomeOn.button_pressed
+	process_bpm_index(bpm_processed_index[bpm_processed_index.size() - 1])
 
 
 func _on_bpm_text_changed(new_text: String) -> void:
