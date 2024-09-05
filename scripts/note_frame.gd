@@ -11,11 +11,12 @@ var width = 0
 var cursor_color = CUSTOM_WHITE
 var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
 
+@export var speed = 1.0
 const Metronome = preload("res://nodes/metronome.tscn")
 var beat_lines = []
-@export var beat_line = true
-@export var speed = 1.0
+@export var beat_line_manual = false
 var metronome
+@export var beat_line = true
 
 
 func resize():
@@ -33,11 +34,12 @@ func _ready() -> void:
 	critical_highlight_color.a = 0.0
 	
 	metronome = Metronome.instantiate()
+	metronome.sound = false
 	add_child(metronome)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var mouse_delta = get_global_mouse_position() - get_viewport_rect().size / 2
 	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
 	
@@ -57,22 +59,28 @@ func _process(_delta: float) -> void:
 	cursor_color.b = lerp(cursor_color.b, CUSTOM_WHITE.b, 0.05)
 	critical_highlight_color.a = lerp(critical_highlight_color.a, 0.0, 0.05)
 	
-	# beat lines
+	queue_redraw()
+	
+	# beat line
 	if beat_line:
 		var now = Time.get_ticks_usec() / 1_000_000.0
 		if metronome.need:
-			beat_lines.append(now + 1.0 / speed)
+			beat_lines.append(0.0)
 			metronome.need = false
-
+		#
+		increase_beat_lines(delta)
+		# remove beat lines
 		var index_offset = 0
 		for i in range(beat_lines.size()):
 			i -= index_offset
-			var beat_line = beat_lines[i]
-			if beat_line + 1.0 < now:
+			if beat_lines[i] >= 2.0:
 				beat_lines.pop_at(i)
 				index_offset += 1
-	
-	queue_redraw()
+
+
+func increase_beat_lines(delta):
+	for i in range(beat_lines.size()):
+		beat_lines[i] += delta * speed
 
 
 func _draw():
@@ -83,12 +91,12 @@ func _draw():
 	draw_circle(Vector2.ZERO, 20, CUSTOM_WHITE, false, 1, true)
 	
 	# beat lines
-	var now = Time.get_ticks_usec() / 1_000_000.0
-	for beat_line in beat_lines:
-		var process = 1.0 - (beat_line - now) / speed
-		var r = pow(process, 4) * radius
-		draw_circle(Vector2.ZERO, r, Color(1.0, 1.0, 1.0, 0.1), false, 1, true)
-		
+	var beat_line_color = Color(CUSTOM_WHITE)
+	beat_line_color.a = 0.1
+	for b in beat_lines:
+		var r = radius * pow(b, 4)
+		draw_circle(Vector2.ZERO, r, beat_line_color, false, 1, true)
+	
 	# cursor
 	draw_arc(
 		Vector2.ZERO, radius,

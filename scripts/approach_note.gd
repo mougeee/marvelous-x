@@ -84,10 +84,11 @@ func _process(_delta: float) -> void:
 func _draw():
 	var color = Color(key_info[key]["color"])
 	
-	draw_arc(
-		Vector2.ZERO, radius,
-		-coverage/2, coverage/2, coverage * 50, color, width,
-		true
-	)
-	draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, -1, true)
-	draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, -1, true)
+	if radius > 0 and process < 2.0:
+		draw_arc(
+			Vector2.ZERO, radius,
+			-coverage/2, coverage/2, coverage * 50, color, width,
+			true
+		)
+		draw_circle(radius * Vector2(cos(-coverage/2), sin(-coverage/2)), width / 2, color, true, -1, true)
+		draw_circle(radius * Vector2(cos(coverage/2), sin(coverage/2)), width / 2, color, true, -1, true)

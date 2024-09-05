@@ -76,10 +76,20 @@ func _process(delta: float) -> void:
 				note_node.process_notes()
 				$Centering.add_child(note_node)
 	
-	# beat line stop when song stopped
-	if not audio_playing:
-		for i in range($Centering/NoteFrame.beat_lines.size()):
-			$Centering/NoteFrame.beat_lines[i] += delta
+	# redraw lines
+	if chart:
+		$Centering/NoteFrame.beat_lines.clear()
+		for i in range(chart['bpm'].size()):
+			var bpm = chart['bpm'][i]
+			var timing = bpm['t']
+			var end_time = $Timeline.max_value / 1000.0 if i == chart['bpm'].size() - 1 else chart['bpm'][i+1]['t']
+			while timing - 1.0 / chart['speed'] < time:
+				var summon_time = timing - 1.0 / chart['speed'] + offset
+				var dt = time - summon_time
+				var process = dt / (1.0 / chart['speed'])
+				if 0.0 < process and process < 2.0:
+					$Centering/NoteFrame.beat_lines.append(process)
+				timing += 60.0 / bpm['b']
 
 
 func _on_back_pressed() -> void:
@@ -105,20 +115,13 @@ func _on_play_pause_pressed() -> void:
 		var anchor_position = (
 			Time.get_ticks_usec() / 1_000_000.0
 			- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
-			- AudioServer.get_time_since_last_mix()
-			- AudioServer.get_output_latency()
 		)
-		var extra_delay = offset - 1.0 / chart['speed']
 		$Metronome.set_anchor_position(anchor_position)
-		$Centering/NoteFrame.metronome.set_anchor_position(anchor_position + extra_delay)
 		$AudioStreamPlayer.play($Timeline.value / 1000.0)
 		pressed_log.clear()
 		
-		$Centering/NoteFrame.beat_lines.clear()
-		
 	audio_playing = not audio_playing
 	$Metronome.sound = audio_playing and $MetronomeOn.button_pressed
-	$Centering/NoteFrame.beat_line = audio_playing
 
 
 func _on_timeline_drag_started() -> void:
@@ -126,7 +129,7 @@ func _on_timeline_drag_started() -> void:
 		$AudioStreamPlayer.stop()
 		audio_playing = false
 		$Metronome.sound = audio_playing
-	$Centering/NoteFrame.beat_lines.clear()
+		$Centering/NoteFrame.beat_lines.clear()
 
 
 var pressed_log = []
@@ -184,3 +187,4 @@ func _on_load_chart_pressed() -> void:
 	load_chart($ChartSourcePath.text)
 	notes = chart["notes"]
 	$LoadedChartPath.text = $ChartSourcePath.text
+	$Centering/NoteFrame.speed = chart['speed']

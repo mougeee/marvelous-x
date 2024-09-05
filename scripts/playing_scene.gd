@@ -86,11 +86,21 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	# get audio play time
 	var time = (Time.get_ticks_usec() - time_begin) / 1e6
 	#var time = $AudioStreamPlayer.get_playback_position()
 	time -= AudioServer.get_time_since_last_mix()
 	time -= AudioServer.get_output_latency()
 	time -= offset
+	
+	# beat lines timing
+	for bpm in chart['bpm']:
+		if bpm['t'] - 1.0 / chart['speed'] <= time and not bpm.get('processed', false):
+			$Centering/NoteFrame.metronome.set_bpm(bpm['b'])
+			$Centering/NoteFrame.metronome.set_anchor_position(
+				time_begin / 1_000_000.0 - 1.0 / chart['speed'] + AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency() + offset
+			)
+	
 	
 	if not $AudioStreamPlayer.playing and time > -offset:
 		$AudioStreamPlayer.play()
@@ -120,17 +130,6 @@ func _process(delta: float) -> void:
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
 		get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
-	
-	# bpm metronome anchor setting
-	#var metronome_anchor = time_begin / 1e6 + AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency() + offset - 1.0 / chart['speed']
-	#$Centering/NoteFrame.metronome.set_anchor_position(metronome_anchor)
-	for bpm_info in chart['bpm']:
-		var processed = bpm_info.get('processed', false)
-		if not processed and time + 1.0 / chart['speed'] > bpm_info['t']:
-			var metronome_anchor = time_begin / 1e6 + bpm_info['t'] + AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency() + offset - 1.0 / chart['speed']
-			$Centering/NoteFrame.metronome.set_bpm(bpm_info['b'])
-			$Centering/NoteFrame.metronome.set_anchor_position(metronome_anchor)
-			bpm_info['processed'] = true
 
 
 var marvelous_count = 0
