@@ -82,6 +82,7 @@ func _ready() -> void:
 	# reset chart
 	$AudioStreamPlayer.stream = load(audio_path)
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
+	$Centering/NoteFrame.speed = chart['speed']
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -98,7 +99,11 @@ func _process(delta: float) -> void:
 		if bpm['t'] - 1.0 / chart['speed'] <= time and not bpm.get('processed', false):
 			$Centering/NoteFrame.metronome.set_bpm(bpm['b'])
 			$Centering/NoteFrame.metronome.set_anchor_position(
-				time_begin / 1_000_000.0 - 1.0 / chart['speed'] + AudioServer.get_time_since_last_mix() + AudioServer.get_output_latency() + offset
+				bpm['t']
+				- 1.0 / chart['speed']
+				+ AudioServer.get_time_since_last_mix()
+				+ AudioServer.get_output_latency()
+				+ offset
 			)
 	
 	
