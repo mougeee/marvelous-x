@@ -28,7 +28,10 @@ func load_chart():
 	file.close()
 	
 
+var note_count
+
 func preprocess_notes(raw_notes: Array):
+	note_count = 0
 	for raw_note in raw_notes:
 		last_time = max(last_time, raw_note['t'])
 		
@@ -60,8 +63,10 @@ func preprocess_notes(raw_notes: Array):
 		# correct note type
 		if raw_note["y"] == 0:
 			raw_note['y'] = NoteTypes.APPROACH
+			note_count += 1
 		elif raw_note['y'] == 1:
 			raw_note['y'] = NoteTypes.LONG
+			note_count += 2
 			
 		# insert
 		raw_note["summon_time"] = time
@@ -99,7 +104,8 @@ func _process(delta: float) -> void:
 		if bpm['t'] - 1.0 / chart['speed'] <= time and not bpm.get('processed', false):
 			$Centering/NoteFrame.metronome.set_bpm(bpm['b'])
 			$Centering/NoteFrame.metronome.set_anchor_position(
-				bpm['t']
+				time_begin / 1_000_000.0
+				+ bpm['t']
 				- 1.0 / chart['speed']
 				+ AudioServer.get_time_since_last_mix()
 				+ AudioServer.get_output_latency()
@@ -111,7 +117,7 @@ func _process(delta: float) -> void:
 		$AudioStreamPlayer.play()
 	
 	# summon notes
-	while next_index < notes.size() and notes[next_index]["summon_time"] < time:
+	while next_index < notes.size() and time > notes[next_index]["summon_time"]:
 		var note = notes[next_index]
 		
 		if note['y'] == NoteTypes.APPROACH:
@@ -173,5 +179,13 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt
 		+ ok_count * judgement_info[Judgements.OK]["accuracy"]
 		+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
 	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
-	
 	$Accuracy.number = accuracy
+	
+	#var score = (float) (
+		#marvelous_count * judgement_info[Judgements.MARVELOUS]["accuracy"]
+		#+ splendid_count * judgement_info[Judgements.SPLENDID]["accuracy"]
+		#+ great_count * judgement_info[Judgements.GREAT]["accuracy"]
+		#+ ok_count * judgement_info[Judgements.OK]["accuracy"]
+		#+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
+	#) / note_count * 10000.0
+	#$Accuracy.number = score
