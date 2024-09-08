@@ -158,8 +158,18 @@ func _process(delta: float) -> void:
 		$Centering.add_child(note)
 		
 		# insert note in correct position
-		if Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress"):
-			note.key = Keys.LEFT if Input.is_action_just_pressed("LeftPress") else Keys.RIGHT
+		if (
+			Input.is_action_just_pressed("LeftPress")
+			or Input.is_action_just_pressed("RightPress")
+			or Input.is_action_just_pressed("CriticalPress")
+		):
+			if Input.is_action_just_pressed("LeftPress"):
+				note.key = Keys.LEFT
+			if Input.is_action_just_pressed("RightPress"):
+				note.key = Keys.RIGHT
+			if Input.is_action_just_pressed("CriticalPress"):
+				note.key = Keys.CRITICAL
+			
 			var t = time + 1.0 - note.process / chart['speed'] - offset
 			var json = note.to_json(t)
 			
