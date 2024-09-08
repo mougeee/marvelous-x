@@ -15,7 +15,14 @@ var offset = preload("res://scripts/globals.gd").offset
 
 var notes = []
 var note_nodes = []
-var chart
+var chart = {
+	"version": 1,
+	"notes": [],
+	"thumbnail": "res://res/thumbnail.svg",
+	"speed": 1.0,
+	"bpm": [{"t": 0.0, "b": 120.0}]
+}
+
 var bpm_processed_index = []
 
 
