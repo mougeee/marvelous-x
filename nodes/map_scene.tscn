@@ -61,22 +61,6 @@ text = "(Loaded Audio Stream Path)"
 
 [node name="Metronome" parent="." instance=ExtResource("4_rn1sg")]
 
-[node name="BPM" type="LineEdit" parent="."]
-offset_left = 20.0
-offset_top = 226.0
-offset_right = 87.0625
-offset_bottom = 257.0
-text = "120"
-placeholder_text = "BPM"
-
-[node name="Offset" type="LineEdit" parent="."]
-offset_left = 97.0
-offset_top = 226.0
-offset_right = 205.0
-offset_bottom = 257.0
-text = "0"
-placeholder_text = "Offset (ms)"
-
 [node name="TapBPMButton" type="Button" parent="."]
 offset_left = 537.0
 offset_top = 22.0
@@ -124,24 +108,24 @@ text = "(Loaded Chart Path)"
 
 [node name="CreateNotes" type="CheckBox" parent="."]
 offset_left = 19.0
-offset_top = 271.0
-offset_right = 43.0
-offset_bottom = 295.0
+offset_top = 227.0
+offset_right = 148.0
+offset_bottom = 258.0
 text = "Create Notes"
 
 [node name="CreateNoteCoverage" type="HSlider" parent="."]
 offset_left = 158.0
-offset_top = 280.0
+offset_top = 236.0
 offset_right = 293.0
-offset_bottom = 296.0
+offset_bottom = 252.0
 max_value = 20.0
 value = 4.0
 
 [node name="CreateNoteCoverageLabel" type="Label" parent="."]
 offset_left = 302.0
-offset_top = 275.0
+offset_top = 231.0
 offset_right = 342.0
-offset_bottom = 298.0
+offset_bottom = 254.0
 text = "4"
 
 [node name="SaveChart" type="Button" parent="."]
@@ -156,8 +140,6 @@ text = "Save"
 [connection signal="drag_started" from="Timeline" to="." method="_on_timeline_drag_started"]
 [connection signal="pressed" from="LoadAudio" to="." method="_on_load_audio_pressed"]
 [connection signal="pressed" from="PlayPause" to="." method="_on_play_pause_pressed"]
-[connection signal="text_changed" from="BPM" to="." method="_on_bpm_text_changed"]
-[connection signal="text_changed" from="Offset" to="." method="_on_offset_text_changed"]
 [connection signal="pressed" from="TapBPMButton" to="." method="_on_tap_bpm_button_pressed"]
 [connection signal="pressed" from="MetronomeOn" to="." method="_on_metronome_on_pressed"]
 [connection signal="pressed" from="LoadChart" to="." method="_on_load_chart_pressed"]

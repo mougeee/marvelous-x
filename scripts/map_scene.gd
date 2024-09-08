@@ -38,7 +38,8 @@ func process_bpm_index(index: int) -> void:
 	$Metronome.set_bpm(bpm['b'])
 	var anchor_position = (
 		Time.get_ticks_usec() / 1_000_000.0
-		- $Timeline.value / 1000.0 + int($Offset.text) / 1000.0
+		- $Timeline.value / 1000.0
+		#+ int($Offset.text) / 1000.0
 	)
 	$Metronome.set_anchor_position(anchor_position)
 	bpm_processed_index.append(index)
@@ -241,19 +242,9 @@ func _on_metronome_on_pressed() -> void:
 	process_bpm_index(bpm_processed_index[bpm_processed_index.size() - 1])
 
 
-func _on_bpm_text_changed(new_text: String) -> void:
-	$Metronome.set_bpm(float(new_text))
-	$Centering/NoteFrame.metronome.set_bpm(float(new_text))
-
 
 func _on_audio_stream_player_finished() -> void:
 	_on_play_pause_pressed()
-
-
-func _on_offset_text_changed(new_text: String) -> void:
-	$Metronome.set_anchor_position(Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0)
-	$Centering/NoteFrame.metronome.set_anchor_position(
-		Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value / 1000.0 + int(new_text) / 1000.0 - 1.0 / chart['speed'] + offset)
 
 
 func load_chart(info_path: String):
@@ -276,4 +267,7 @@ func _on_create_note_coverage_value_changed(value: float) -> void:
 
 
 func _on_save_chart_pressed() -> void:
-	print(notes)
+	chart['notes'] = notes
+	var file = FileAccess.open($ChartSourcePath.text, FileAccess.WRITE)
+	file.store_string(JSON.stringify(chart))
+	file.close()
