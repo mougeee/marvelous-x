@@ -28,8 +28,9 @@ var bpm_processed_index = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
+	var chart_duplicate = JSON.parse_string(JSON.stringify(chart))
+	chart_duplicate.erase("notes")
+	$ChartRawEdit.text = JSON.stringify(chart_duplicate, ' ')
 
 func process_key(key_code: int) -> Keys:
 	if key_code == 0:
@@ -268,6 +269,10 @@ func load_chart(info_path: String):
 	var file = FileAccess.open(info_path, FileAccess.READ)
 	chart = JSON.parse_string(file.get_as_text())
 	file.close()
+	
+	var chart_duplicate = JSON.parse_string(JSON.stringify(chart))
+	chart_duplicate.erase("notes")
+	$ChartRawEdit.text = JSON.stringify(chart_duplicate, ' ')
 
 
 func _on_load_chart_pressed() -> void:
@@ -288,3 +293,8 @@ func _on_save_chart_pressed() -> void:
 	var file = FileAccess.open($ChartSourcePath.text, FileAccess.WRITE)
 	file.store_string(JSON.stringify(chart))
 	file.close()
+
+
+func _on_chart_raw_edit_focus_exited() -> void:
+	chart = JSON.parse_string($ChartRawEdit.text)
+	chart['notes'] = notes

@@ -135,6 +135,12 @@ offset_right = 444.0
 offset_bottom = 185.0
 text = "Save"
 
+[node name="ChartRawEdit" type="TextEdit" parent="."]
+offset_left = 22.0
+offset_top = 272.0
+offset_right = 233.0
+offset_bottom = 529.0
+
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="drag_started" from="Timeline" to="." method="_on_timeline_drag_started"]
@@ -146,3 +152,4 @@ text = "Save"
 [connection signal="changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_changed"]
 [connection signal="value_changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_value_changed"]
 [connection signal="pressed" from="SaveChart" to="." method="_on_save_chart_pressed"]
+[connection signal="focus_exited" from="ChartRawEdit" to="." method="_on_chart_raw_edit_focus_exited"]
