@@ -20,7 +20,8 @@ var chart = {
 	"notes": [],
 	"thumbnail": "res://res/thumbnail.svg",
 	"speed": 1.0,
-	"bpm": [{"t": 0.0, "b": 120.0}]
+	"bpm": [{"t": 0.0, "b": 120.0}],
+	"cursor": [{"t": 0.0, "c": 1.0}]
 }
 
 var bpm_processed_index = []
@@ -193,6 +194,14 @@ func _process(delta: float) -> void:
 			if time > chart['bpm'][i]['t'] - delta and i not in bpm_processed_index:
 				process_bpm_index(i)
 				break
+	
+	# cursor coverage
+	var last_cursor_info
+	for cursor_info in chart['cursor']:
+		if time - offset >= cursor_info['t']:
+			last_cursor_info = cursor_info
+	if last_cursor_info:
+		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
 
 
 func _on_back_pressed() -> void:

@@ -154,6 +154,14 @@ func _process(delta: float) -> void:
 		
 		next_index += 1
 	
+	# cursor size change
+	var last_cursor_info
+	for cursor_info in chart['cursor']:
+		if time > cursor_info['t']:
+			last_cursor_info = cursor_info
+	if last_cursor_info:
+		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
+	
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
 		get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
