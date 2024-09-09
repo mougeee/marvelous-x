@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	position = get_global_mouse_position()
 	
 	fill_color.a = lerp(fill_color.a, 0.0, 0.2)

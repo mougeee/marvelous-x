@@ -47,7 +47,7 @@ func preprocess_notes(raw_notes: Array):
 		var anchor = 0
 		
 		while left < right:
-			anchor = (left + right) / 2
+			anchor = (left + right) / 2.0
 			var mid_value = notes[anchor]
 			
 			if mid_value["summon_time"] <= time:
@@ -98,7 +98,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# get audio play time
 	var time = (Time.get_ticks_usec() - time_begin) / 1e6
 	#var time = $AudioStreamPlayer.get_playback_position()

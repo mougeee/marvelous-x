@@ -63,7 +63,6 @@ func _process(delta: float) -> void:
 	
 	# beat line
 	if beat_line:
-		var now = Time.get_ticks_usec() / 1_000_000.0
 		if metronome.need:
 			beat_lines.append(0.0)
 			metronome.need = false

@@ -114,17 +114,17 @@ offset_bottom = 258.0
 text = "Create Notes"
 
 [node name="CreateNoteCoverage" type="HSlider" parent="."]
-offset_left = 158.0
+offset_left = 309.0
 offset_top = 236.0
-offset_right = 293.0
+offset_right = 444.0
 offset_bottom = 252.0
 max_value = 20.0
 value = 4.0
 
 [node name="CreateNoteCoverageLabel" type="Label" parent="."]
-offset_left = 302.0
+offset_left = 453.0
 offset_top = 231.0
-offset_right = 342.0
+offset_right = 493.0
 offset_bottom = 254.0
 text = "4"
 
@@ -143,9 +143,9 @@ offset_bottom = 581.0
 
 [node name="CreateLongNotes" type="CheckBox" parent="."]
 offset_left = 19.0
-offset_top = 265.0
+offset_top = 261.0
 offset_right = 190.0
-offset_bottom = 296.0
+offset_bottom = 292.0
 text = "Create Long Notes"
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

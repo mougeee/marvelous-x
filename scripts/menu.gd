@@ -15,9 +15,9 @@ signal pressed
 func is_hover() -> bool:
 	var mouse_position = get_local_mouse_position()
 	var distance = mouse_position.length()
-	var angle = atan2(mouse_position.y, mouse_position.x)
+	var theta = atan2(mouse_position.y, mouse_position.x)
 	
-	return abs(angle) < coverage / 2 and distance <= radius
+	return abs(theta) < coverage / 2 and distance <= radius
 	
 	
 func resize() -> void:
@@ -33,7 +33,7 @@ func _ready() -> void:
 	get_tree().get_root().size_changed.connect(resize)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_hover():
 		background_color.a = lerp(background_color.a, 0.2, 0.1)
 	else:

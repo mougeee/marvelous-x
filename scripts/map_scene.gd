@@ -188,7 +188,7 @@ func _process(delta: float) -> void:
 			var left = 0
 			var right = notes.size()
 			while left < right:
-				var mid_index = (left + right) / 2
+				var mid_index = (left + right) / 2.0
 				var mid = notes[mid_index]['t']
 				
 				if mid < t:
@@ -239,7 +239,7 @@ func _process(delta: float) -> void:
 	for cursor_info in chart['cursor']:
 		if time - offset >= cursor_info['t']:
 			last_cursor_info = cursor_info
-	if last_cursor_info:
+	
 		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
 
 
