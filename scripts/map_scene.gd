@@ -19,7 +19,7 @@ var chart = {
 	"version": 1,
 	"notes": [],
 	"thumbnail": "res://res/thumbnail.svg",
-	"speed": 1.0,
+	"speed": 0.5,
 	"bpm": [{"t": 0.0, "b": 120.0}],
 	"cursor": [{"t": 0.0, "c": 1.0}]
 }
@@ -52,6 +52,40 @@ func process_bpm_index(index: int) -> void:
 	)
 	$Metronome.set_anchor_position(anchor_position)
 	bpm_processed_index.append(index)
+
+
+func draw_temporary_note(frame):
+	var mouse_delta = get_global_mouse_position() - $Centering.position
+	var mouse_theta = atan2(mouse_delta.y, mouse_delta.x)
+	var mouse_distance = mouse_delta.length()
+	var coverage = pow($CreateNoteCoverage.value / 21.0, 2) * TAU
+	var process = pow(mouse_distance / frame.radius, 0.25)
+	
+	# process snap
+	for i in range($Centering/NoteFrame.beat_lines.size() - 1):
+		var p = $Centering/NoteFrame.beat_lines[i + 1]
+		var np = $Centering/NoteFrame.beat_lines[i]
+		if p <= process and process <= np:
+			process = p + round((process - p) / (np - p) * 4.0) / 4.0 * (np - p)
+			break
+	
+	# draw note
+	var note = ApproachNote.instantiate()
+	note.manual = true
+	note.rotation = mouse_theta
+	note.process = process
+	note.coverage = coverage
+	note.temporary = true
+	note.frame_radius = frame.radius
+	note.note_width = frame.width
+	note.render()
+	note_nodes.append(note)
+	$Centering.add_child(note)
+	
+	return note
+
+
+var creating_long_note = []
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -132,32 +166,7 @@ func _process(delta: float) -> void:
 				
 	# create notes
 	if $CreateNotes.button_pressed:
-		var mouse_delta = get_global_mouse_position() - $Centering.position
-		var mouse_theta = atan2(mouse_delta.y, mouse_delta.x)
-		var mouse_distance = mouse_delta.length()
-		var coverage = pow($CreateNoteCoverage.value / 21.0, 2) * TAU
-		var process = pow(mouse_distance / frame.radius, 0.25)
-		
-		# process snap
-		for i in range($Centering/NoteFrame.beat_lines.size() - 1):
-			var p = $Centering/NoteFrame.beat_lines[i + 1]
-			var np = $Centering/NoteFrame.beat_lines[i]
-			if p <= process and process <= np:
-				process = p + round((process - p) / (np - p) * 4.0) / 4.0 * (np - p)
-				break
-		
-		# draw note
-		var note = ApproachNote.instantiate()
-		note.manual = true
-		note.rotation = mouse_theta
-		note.process = process
-		note.coverage = coverage
-		note.temporary = true
-		note.frame_radius = frame.radius
-		note.note_width = frame.width
-		note.render()
-		note_nodes.append(note)
-		$Centering.add_child(note)
+		var note = draw_temporary_note(frame)
 		
 		# insert note in correct position
 		if (
@@ -172,7 +181,7 @@ func _process(delta: float) -> void:
 			if Input.is_action_just_pressed("CriticalPress"):
 				note.key = Keys.CRITICAL
 			
-			var t = time + 1.0 - note.process / chart['speed'] - offset
+			var t = time + 2.0 - note.process / chart['speed'] - offset
 			var json = note.to_json(t)
 			
 			# insert in right position
@@ -187,6 +196,36 @@ func _process(delta: float) -> void:
 				else:
 					right = mid_index
 			notes.insert(left, json)
+	
+	# create long notes
+	if $CreateLongNotes.button_pressed:
+		var note = draw_temporary_note(frame)
+		var t = time + 2.0 - note.process / chart['speed'] - offset
+		
+		if Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress"):
+			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
+			
+		if Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress"):
+			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
+			
+			# preprocess creating_long_note
+			var start_time = creating_long_note[0]['t']
+			for i in range(creating_long_note.size()):
+				creating_long_note[i]['t'] -= start_time
+			
+			# insert long note to the position
+			notes.append({
+				'y': note_type_info[NoteTypes.LONG]['code'],
+				't': start_time,
+				'k': Keys.LEFT,
+				'p': JSON.parse_string(JSON.stringify(creating_long_note))
+			})
+			
+			print(creating_long_note)
+			print(notes)
+			
+			#
+			creating_long_note.clear()
 	
 	# metronome bpm
 	if chart:
