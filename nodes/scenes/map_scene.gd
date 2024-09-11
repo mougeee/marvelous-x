@@ -46,11 +46,7 @@ func process_key(key_code: int) -> Keys:
 func process_bpm_index(index: int) -> void:
 	var bpm = chart['bpm'][index]
 	$Metronome.set_bpm(bpm['b'])
-	var anchor_position = (
-		Time.get_ticks_usec() / 1_000_000.0
-		- $Timeline.value / 1000.0
-		#+ int($Offset.text) / 1000.0
-	)
+	var anchor_position = Time.get_ticks_usec() / 1_000_000.0 - $Timeline.value
 	$Metronome.set_anchor_position(anchor_position)
 	bpm_processed_index.append(index)
 
@@ -96,7 +92,7 @@ var selected_note_radius
 func _process(delta: float) -> void:
 	# calculate time
 	if audio_playing:
-		$Timeline.value = $AudioStreamPlayer.get_playback_position() * 1000.0
+		$Timeline.value = $AudioStreamPlayer.get_playback_position()
 		
 	# key press event handles
 	if Input.is_action_just_pressed("MapPlayPause"):
@@ -105,13 +101,13 @@ func _process(delta: float) -> void:
 		_on_tap_bpm_button_pressed()
 	
 	# redraw lines
-	var time = $Timeline.value / 1000.0
+	var time = $Timeline.value
 	if chart:
 		$Centering/NoteFrame.beat_lines.clear()
 		for i in range(chart['bpm'].size()):
 			var bpm = chart['bpm'][i]
 			var timing = bpm['t']
-			var end_time = $Timeline.max_value / 1000.0 if i == chart['bpm'].size() - 1 else chart['bpm'][i+1]['t']
+			var end_time = $Timeline.max_value if i == chart['bpm'].size() - 1 else chart['bpm'][i+1]['t']
 			while timing - 1.0 / chart['speed'] < min(end_time, time):
 				var summon_time = timing - 1.0 / chart['speed'] + offset
 				var dt = time - summon_time
@@ -288,7 +284,7 @@ func _on_load_audio_pressed() -> void:
 	if not ResourceLoader.exists($AudioSourcePath.text):
 		return
 	$AudioStreamPlayer.stream = load($AudioSourcePath.text)
-	$Timeline.max_value = $AudioStreamPlayer.stream.get_length() * 1000.0
+	$Timeline.max_value = $AudioStreamPlayer.stream.get_length() 
 	$LoadedAudioStreamPath.text = $AudioSourcePath.text
 	stream_loaded = true
 
@@ -300,7 +296,7 @@ func _on_play_pause_pressed() -> void:
 	if audio_playing:
 		$AudioStreamPlayer.stop()
 	else:
-		$AudioStreamPlayer.play($Timeline.value / 1000.0)
+		$AudioStreamPlayer.play($Timeline.value)
 		bpm_processed_index.clear()
 		pressed_log.clear()
 		
