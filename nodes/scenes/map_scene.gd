@@ -185,7 +185,7 @@ func _process(delta: float) -> void:
 			if Input.is_action_just_pressed("CriticalPress"):
 				note.key = Keys.CRITICAL
 			
-			var t = time + 2.0 - note.process / chart['speed'] - offset
+			var t = time + (1.0 - note.process) / chart['speed'] - offset
 			var json = note.to_json(t)
 			
 			# insert in right position
