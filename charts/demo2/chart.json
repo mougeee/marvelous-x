@@ -94,25 +94,13 @@
    "p": [
 	{
 	 "c": 0.356189643264149,
-	 "dt": 4.99683211678832,
-	 "process": 1.99936642335766,
-	 "processed": true,
 	 "r": 1.31670784950256,
-	 "radius": 5752.70466461116,
-	 "t": 0,
-	 "visible": true,
-	 "width": 287.635233230558
+	 "t": 0
 	},
 	{
 	 "c": 0.356189643264149,
-	 "dt": 4.77785401459854,
-	 "process": 1.95557080291971,
-	 "processed": true,
 	 "r": 2.38750958442688,
-	 "radius": 5264.97943169828,
-	 "t": 0.21897810218978,
-	 "visible": true,
-	 "width": 263.248971584914
+	 "t": 0.21897810218978
 	}
    ],
    "t": 8.32116788321168,
@@ -193,6 +181,7 @@
   }
  ],
  "speed": 0.7,
- "thumbnail": "res://res/thumbnail.svg",
- "version": 1
+ "version": 1,
+ "song": "res://charts/demo2/song.wav",
+ "thumbnail": "res://charts/demo2/thumbnail.svg"
 }

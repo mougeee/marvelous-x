@@ -11,8 +11,6 @@ script = ExtResource("1_xk433")
 [node name="Centering" parent="." instance=ExtResource("2_it4uu")]
 
 [node name="NoteFrame" parent="Centering" instance=ExtResource("3_l0kpi")]
-speed = null
-beat_line_manual = null
 beat_line = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

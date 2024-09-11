@@ -36,6 +36,10 @@ func _ready() -> void:
 	metronome = Metronome.instantiate()
 	metronome.sound = false
 	add_child(metronome)
+	
+	
+var mouse_radius = 100.0
+@export var mouse_lock = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,9 +47,8 @@ func _process(delta: float) -> void:
 	var mouse_delta = get_global_mouse_position() - get_viewport_rect().size / 2
 	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
 	
-	if mouse_delta.length() > radius:
-		#Input.warp_mouse(get_parent().position + mouse_delta.normalized() * radius)
-		pass
+	if mouse_lock and mouse_delta.length() > mouse_radius:
+		Input.warp_mouse(get_parent().position + mouse_delta.normalized() * mouse_radius)
 	
 	if Input.is_action_just_pressed("LeftPress"):
 		cursor_color = key_info[Keys.LEFT]['color']

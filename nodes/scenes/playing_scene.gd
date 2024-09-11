@@ -21,10 +21,9 @@ const NoteTypes = global.NoteTypes
 const note_type_info = global.note_type_info
 
 var note_start_time = 0
-var info_path = "res://res/demo1.json"
-var audio_path = "res://res/demo1.wav"
-	
-	
+var info_path = "res://charts/demo2/chart.json"
+
+
 func load_chart():
 	var file = FileAccess.open(info_path, FileAccess.READ)
 	chart = JSON.parse_string(file.get_as_text())
@@ -92,7 +91,7 @@ func _ready() -> void:
 	$Centering/BackgroundThumbnail.modulate.a = 0.1
 	
 	# reset chart
-	$AudioStreamPlayer.stream = load(audio_path)
+	$AudioStreamPlayer.stream = load(chart['song'])
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	$Centering/NoteFrame.speed = chart['speed']
 
