@@ -1,7 +1,7 @@
 extends Sprite2D
 
 
-const Judgements = preload("res://scripts/globals.gd").Judgements
+const Judgements = preload("res://nodes/globals.gd").Judgements
 
 
 # Called when the node enters the scene tree for the first time.

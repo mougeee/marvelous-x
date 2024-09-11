@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://djcbvrojlng0"]
 
-[ext_resource type="Script" path="res://scripts/metronome.gd" id="1_1edww"]
+[ext_resource type="Script" path="res://nodes/utils/metronome.gd" id="1_1edww"]
 [ext_resource type="AudioStream" uid="uid://csqgydoqn8xea" path="res://res/metronome1.wav" id="2_gkuih"]
 
 [node name="Metronome" type="Node"]

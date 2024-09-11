@@ -1,6 +1,6 @@
 extends Node2D
 
-const globals = preload("res://scripts/globals.gd")
+const globals = preload("res://nodes/globals.gd")
 var Keys = globals.Keys
 var key_info = globals.key_info
 const CUSTOM_WHITE = globals.CUSTOM_WHITE
@@ -12,7 +12,7 @@ var cursor_color = CUSTOM_WHITE
 var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
 
 @export var speed = 1.0
-const Metronome = preload("res://nodes/metronome.tscn")
+const Metronome = preload("res://nodes/utils/metronome.tscn")
 var beat_lines = []
 @export var beat_line_manual = false
 var metronome

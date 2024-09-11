@@ -1,16 +1,18 @@
 [gd_scene load_steps=5 format=3 uid="uid://dust1y0r170t7"]
 
-[ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/note_frame.tscn" id="1_54jwe"]
-[ext_resource type="Script" path="res://scripts/map_scene.gd" id="1_58207"]
-[ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/centering.tscn" id="1_rhl41"]
-[ext_resource type="PackedScene" uid="uid://djcbvrojlng0" path="res://nodes/metronome.tscn" id="4_rn1sg"]
+[ext_resource type="Script" path="res://nodes/scenes/map_scene.gd" id="1_xk433"]
+[ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/utils/centering.tscn" id="2_it4uu"]
+[ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="3_l0kpi"]
+[ext_resource type="PackedScene" uid="uid://djcbvrojlng0" path="res://nodes/utils/metronome.tscn" id="4_flohd"]
 
 [node name="MapScene" type="Node2D"]
-script = ExtResource("1_58207")
+script = ExtResource("1_xk433")
 
-[node name="Centering" parent="." instance=ExtResource("1_rhl41")]
+[node name="Centering" parent="." instance=ExtResource("2_it4uu")]
 
-[node name="NoteFrame" parent="Centering" instance=ExtResource("1_54jwe")]
+[node name="NoteFrame" parent="Centering" instance=ExtResource("3_l0kpi")]
+speed = null
+beat_line_manual = null
 beat_line = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -59,7 +61,7 @@ offset_right = 236.0
 offset_bottom = 141.0
 text = "(Loaded Audio Stream Path)"
 
-[node name="Metronome" parent="." instance=ExtResource("4_rn1sg")]
+[node name="Metronome" parent="." instance=ExtResource("4_flohd")]
 
 [node name="TapBPMButton" type="Button" parent="."]
 offset_left = 537.0
@@ -137,9 +139,9 @@ text = "Save"
 
 [node name="ChartRawEdit" type="TextEdit" parent="."]
 offset_left = 22.0
-offset_top = 324.0
+offset_top = 367.0
 offset_right = 233.0
-offset_bottom = 581.0
+offset_bottom = 624.0
 
 [node name="CreateLongNotes" type="CheckBox" parent="."]
 offset_left = 19.0
@@ -147,6 +149,13 @@ offset_top = 261.0
 offset_right = 190.0
 offset_bottom = 292.0
 text = "Create Long Notes"
+
+[node name="RemoveNotes" type="CheckBox" parent="."]
+offset_left = 19.0
+offset_top = 296.0
+offset_right = 190.0
+offset_bottom = 327.0
+text = "Remove Notes"
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bjiihob7ntfeb"]
 
-[ext_resource type="Script" path="res://scripts/judgement.gd" id="1_l0cc0"]
+[ext_resource type="Script" path="res://nodes/objects/judgement.gd" id="1_l0cc0"]
 [ext_resource type="Texture2D" uid="uid://dk1cmycjjeilb" path="res://res/judgements_marvelous.svg" id="1_ykxoi"]
 [ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="3_3ssaj"]
 

@@ -1,17 +1,17 @@
 extends Node2D
 
-const globals = preload("res://scripts/globals.gd")
+const globals = preload("res://nodes/globals.gd")
 const Keys = globals.Keys
 const NoteTypes = globals.NoteTypes
 const note_type_info = globals.note_type_info
-const ApproachNote = preload("res://nodes/approach_note.tscn")
-const LongNote = preload("res://nodes/long_note.tscn")
-const TrapNote = preload("res://nodes/trap_note.tscn")
+const ApproachNote = preload("res://nodes/objects/approach_note.tscn")
+const LongNote = preload("res://nodes/objects/long_note.tscn")
+const TrapNote = preload("res://nodes/objects/trap_note.tscn")
 
 var audio_playing = false
 var stream_loaded = false
 
-var offset = preload("res://scripts/globals.gd").offset
+var offset = globals.offset
 
 var notes = []
 var note_nodes = []
@@ -86,6 +86,8 @@ func draw_temporary_note(frame):
 
 
 var creating_long_note = []
+var selected_note
+var selected_note_distance
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -239,12 +241,27 @@ func _process(delta: float) -> void:
 	for cursor_info in chart['cursor']:
 		if time - offset >= cursor_info['t']:
 			last_cursor_info = cursor_info
-	
+	if last_cursor_info:
 		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
+	
+	# remove notes
+	if $RemoveNotes.button_pressed:
+		selected_note_distance = INF
+		var mouse_pos = get_global_mouse_position() - get_viewport_rect().size / 2
+		for note in notes:
+			if note['y'] == note_type_info[NoteTypes.APPROACH]['code']:
+				var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
+				var distance = pow(process, 4) * frame['radius']
+				var pos = Vector2(distance, 0).rotated(note['r'])
+				var distance_between_mouse = (pos - mouse_pos).length()
+				
+				if not selected_note_distance or distance_between_mouse < selected_note_distance:
+					selected_note = note
+					selected_note_distance = distance_between_mouse
 
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
+	get_tree().change_scene_to_file("res://nodes/scenes/title_scene.tscn")
 
 
 func _on_load_audio_pressed() -> void:

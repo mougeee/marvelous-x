@@ -4,10 +4,10 @@ const global = preload("res://scripts/globals.gd")
 const Judgements = global.Judgements
 const judgement_info = global.judgement_info
 
-var ApproachNote = preload("res://nodes/approach_note.tscn")
-var LongNote = preload("res://nodes/long_note.tscn")
-var TrapNote = preload("res://nodes/trap_note.tscn")
-var Judgement = preload("res://nodes/judgement.tscn")
+var ApproachNote = preload("res://nodes/objects/approach_note.tscn")
+var LongNote = preload("res://nodes/objects/long_note.tscn")
+var TrapNote = preload("res://nodes/objects/trap_note.tscn")
+var Judgement = preload("res://nodes/objects/judgement.tscn")
 var time_begin
 var offset = global.offset
 
@@ -164,7 +164,7 @@ func _process(_delta: float) -> void:
 	
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
-		get_tree().change_scene_to_file("res://nodes/title_scene.tscn")
+		get_tree().change_scene_to_file("res://nodes/scenes/title_scene.tscn")
 
 
 var marvelous_count = 0

@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://dchd7jyverxw0"]
+
+[ext_resource type="Script" path="res://nodes/scenes/title_scene.gd" id="1_s6t7h"]
+[ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/utils/centering.tscn" id="2_hjfw1"]
+[ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="3_kehp1"]
+[ext_resource type="PackedScene" uid="uid://bkjikw1mkxf44" path="res://nodes/objects/menu.tscn" id="4_wutpc"]
+[ext_resource type="PackedScene" uid="uid://b8hh7erdmresl" path="res://nodes/objects/cursor.tscn" id="5_yitsy"]
+
+[node name="TitleScene" type="Node2D"]
+script = ExtResource("1_s6t7h")
+
+[node name="Centering" parent="." instance=ExtResource("2_hjfw1")]
+
+[node name="NoteFrame" parent="Centering" instance=ExtResource("3_kehp1")]
+speed = null
+beat_line_manual = null
+beat_line = false
+
+[node name="MenuGame" parent="Centering" instance=ExtResource("4_wutpc")]
+angle = 0.0
+coverage = 1.5708
+radius = 0.0
+
+[node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
+angle = 1.571
+coverage = 1.5708
+radius = 0.0
+
+[node name="Cursor" parent="." instance=ExtResource("5_yitsy")]

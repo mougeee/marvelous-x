@@ -1,6 +1,6 @@
 extends Node2D
 
-const globals = preload("res://scripts/globals.gd")
+const globals = preload("res://nodes/globals.gd")
 const CUSTOM_WHITE = globals.CUSTOM_WHITE
 
 @export var angle = 0.0

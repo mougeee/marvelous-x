@@ -1,6 +1,6 @@
 extends Node2D
 
-const globals = preload("res://scripts/globals.gd")
+const globals = preload("res://nodes/globals.gd")
 const Keys = globals.Keys
 const key_info = globals.key_info
 const Judgements = globals.Judgements

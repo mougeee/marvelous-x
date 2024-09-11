@@ -1,9 +1,10 @@
 extends Node2D
 
-const Keys = preload("res://scripts/globals.gd").Keys
-const key_info = preload("res://scripts/globals.gd").key_info
-const Judgements = preload("res://scripts/globals.gd").Judgements
-const judgement_info = preload("res://scripts/globals.gd").judgement_info
+const globals = preload("res://nodes/globals.gd")
+const Keys = globals.Keys
+const key_info = globals.key_info
+const Judgements = globals.Judgements
+const judgement_info = globals.judgement_info
 
 var path
 var speed

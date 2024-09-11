@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdi4xmrahb1rc"]
 
-[ext_resource type="Script" path="res://scripts/trap_note.gd" id="1_trxl7"]
+[ext_resource type="Script" path="res://nodes/objects/trap_note.gd" id="1_trxl7"]
 
 [node name="TrapNote" type="Node2D"]
 script = ExtResource("1_trxl7")
