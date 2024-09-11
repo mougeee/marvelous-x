@@ -2,6 +2,7 @@ extends Node2D
 
 const globals = preload("res://nodes/globals.gd")
 const Keys = globals.Keys
+const key_info = globals.key_info
 const NoteTypes = globals.NoteTypes
 const note_type_info = globals.note_type_info
 const ApproachNote = preload("res://nodes/objects/approach_note.tscn")
@@ -88,6 +89,7 @@ func draw_temporary_note(frame):
 var creating_long_note = []
 var selected_note
 var selected_note_distance
+var selected_note_radius
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -248,16 +250,34 @@ func _process(delta: float) -> void:
 	if $RemoveNotes.button_pressed:
 		selected_note_distance = INF
 		var mouse_pos = get_global_mouse_position() - get_viewport_rect().size / 2
-		for note in notes:
+		var selected_note_index
+		for i in range(notes.size()):
+			var note = notes[i]
 			if note['y'] == note_type_info[NoteTypes.APPROACH]['code']:
 				var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
-				var distance = pow(process, 4) * frame['radius']
+				var distance = pow(process, 4) * frame.radius
 				var pos = Vector2(distance, 0).rotated(note['r'])
 				var distance_between_mouse = (pos - mouse_pos).length()
 				
 				if not selected_note_distance or distance_between_mouse < selected_note_distance:
 					selected_note = note
 					selected_note_distance = distance_between_mouse
+					selected_note_radius = distance
+					selected_note_index = i
+		
+		if (
+			selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
+			or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
+		):
+			notes.pop_at(selected_note_index)
+		
+		queue_redraw()
+
+
+func _draw():
+	if $RemoveNotes.button_pressed:
+		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(selected_note['r'])
+		draw_circle(pos, 100.0, Color.WHITE, false, 1, true)
 
 
 func _on_back_pressed() -> void:
