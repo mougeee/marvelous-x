@@ -142,7 +142,7 @@ func _process(delta: float) -> void:
 			if process > 0.0:
 				var note_node = LongNote.instantiate()
 				note_nodes.append(note_node)
-				note_node.path = note['p']
+				note_node.path = JSON.parse_string(JSON.stringify(note['p']))
 				note_node.speed = chart['speed']
 				note_node.manual = true
 				note_node.begin_process = process
@@ -200,7 +200,7 @@ func _process(delta: float) -> void:
 	# create long notes
 	if $CreateLongNotes.button_pressed:
 		var note = draw_temporary_note(frame)
-		var t = time + 2.0 - note.process / chart['speed'] - offset
+		var t = time + (1.0 - note.process) / chart['speed'] - offset
 		
 		if Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress"):
 			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
@@ -214,10 +214,15 @@ func _process(delta: float) -> void:
 				creating_long_note[i]['t'] -= start_time
 			
 			# insert long note to the position
+			var key_code
+			if Input.is_action_just_released("LeftPress"):
+				key_code = key_info[Keys.LEFT]['code']
+			elif Input.is_action_just_released("RightPress"):
+				key_code = key_info[Keys.RIGHT]['code']
 			notes.append({
 				'y': note_type_info[NoteTypes.LONG]['code'],
 				't': start_time,
-				'k': Keys.LEFT,
+				'k': key_code,
 				'p': JSON.parse_string(JSON.stringify(creating_long_note))
 			})
 			
