@@ -219,15 +219,25 @@ func _process(delta: float) -> void:
 				key_code = key_info[Keys.LEFT]['code']
 			elif Input.is_action_just_released("RightPress"):
 				key_code = key_info[Keys.RIGHT]['code']
-			notes.append({
+				
+				
+			# insert in right position
+			var left = 0
+			var right = notes.size()
+			while left < right:
+				var mid_index = (left + right) / 2.0
+				var mid = notes[mid_index]['t']
+				
+				if mid < t:
+					left = mid_index + 1
+				else:
+					right = mid_index
+			notes.insert(left, {
 				'y': note_type_info[NoteTypes.LONG]['code'],
 				't': start_time,
 				'k': key_code,
 				'p': JSON.parse_string(JSON.stringify(creating_long_note))
 			})
-			
-			print(creating_long_note)
-			print(notes)
 			
 			#
 			creating_long_note.clear()
