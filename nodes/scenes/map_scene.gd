@@ -27,6 +27,8 @@ var chart = {
 
 var bpm_processed_index = []
 
+signal scene_changed
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -292,7 +294,7 @@ func _draw():
 
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://nodes/scenes/title_scene.tscn")
+	scene_changed.emit("map", "title")
 
 
 func _on_load_audio_pressed() -> void:

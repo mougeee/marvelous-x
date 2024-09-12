@@ -1,16 +1,14 @@
 extends Node2D
 
-signal scene_changed(scene_name)
-
-@export var scene_name: String
+signal scene_changed
 
 
 func on_menu_game_pressed() -> void:
-	scene_changed.emit(scene_name)
+	scene_changed.emit("title", "select")
 
 
 func on_menu_map_pressed() -> void:
-	get_tree().change_scene_to_file("res://nodes/scenes/map_scene.tscn")
+	scene_changed.emit("title", "map")
 
 
 # Called when the node enters the scene tree for the first time.

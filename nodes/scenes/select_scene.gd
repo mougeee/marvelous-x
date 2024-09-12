@@ -6,6 +6,8 @@ var chart_names = []
 var selected_index = 0
 var menus = {}
 
+signal scene_changed
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -41,4 +43,4 @@ func _process(delta: float) -> void:
 
 
 func _on_back_menu_pressed() -> void:
-	get_tree().change_scene_to_file("res://nodes/scenes/title_scene.tscn")
+	scene_changed.emit("select", "title")
