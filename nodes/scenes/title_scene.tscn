@@ -18,5 +18,6 @@ beat_line = false
 
 [node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
 rotation = 1.5708
+target_rotation = 1.571
 
 [node name="Cursor" parent="." instance=ExtResource("5_yitsy")]

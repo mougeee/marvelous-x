@@ -16,7 +16,8 @@ beat_line = false
 
 [node name="BackMenu" parent="Centering" instance=ExtResource("4_eh2r3")]
 rotation = -1.5708
-coverage = 0.3
+target_coverage = 0.2
+target_rotation = -1.571
 
 [node name="Cursor" parent="." instance=ExtResource("5_6why3")]
 

@@ -3,12 +3,14 @@ extends Node2D
 const globals = preload("res://nodes/globals.gd")
 const CUSTOM_WHITE = globals.CUSTOM_WHITE
 
-@export var coverage = PI / 2
+@export var target_coverage = PI / 2
 @export var thumbnail: Texture2D
+@export var target_rotation = 0.0
 
 var background_color = CUSTOM_WHITE
 var original_radius = 0.0
 var radius = original_radius
+var coverage = target_coverage
 
 signal pressed
 
@@ -45,6 +47,9 @@ func _process(_delta: float) -> void:
 	
 	if is_hover() and Input.is_action_just_released('Click'):
 		pressed.emit()
+	
+	rotation = lerp_angle(rotation, target_rotation, 0.3)
+	coverage = lerp(coverage, target_coverage, 0.3)
 
 
 func _draw():
