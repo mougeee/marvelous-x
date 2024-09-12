@@ -1,6 +1,7 @@
-# Marvelous X
-
-![Marvelous X 로고](https://github.com/junhg0211/mougee/blob/master/res/icon.png?raw=true)
+<h1 align="center">Marvelous X</h1>
+<p align="center">
+   <img src="https://github.com/junhg0211/mougee/blob/master/res/icon.png?raw=true" alt="Marvelous X 로고" style="width: 200px;">
+</p>
 
 ## 실행 방법
 
