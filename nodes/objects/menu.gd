@@ -57,4 +57,5 @@ func _draw():
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), CUSTOM_WHITE, 2, true)
 	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, CUSTOM_WHITE, 2, true)
 	
-	#draw_texture(thumbnail, Vector2.ZERO)
+	#if thumbnail:
+		#draw_texture(thumbnail, Vector2.ZERO)

@@ -19,6 +19,11 @@ rotation = -1.5708
 target_coverage = 0.2
 target_rotation = -1.571
 
+[node name="PreviewThumbnail" type="Sprite2D" parent="Centering"]
+
 [node name="Cursor" parent="." instance=ExtResource("5_6why3")]
+
+[node name="PreviewAudio" type="AudioStreamPlayer" parent="."]
+autoplay = true
 
 [connection signal="pressed" from="Centering/BackMenu" to="." method="_on_back_menu_pressed"]

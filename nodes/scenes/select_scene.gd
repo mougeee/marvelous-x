@@ -13,6 +13,8 @@ signal scene_changed
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$Centering/PreviewThumbnail.modulate.a = 0.1
+	
 	var dir = DirAccess.open("charts")
 	chart_names.clear()
 	dir.list_dir_begin()
@@ -31,13 +33,25 @@ func _ready() -> void:
 			continue
 		
 		var chart_name = chart_names[index]
+		
 		var menu = Menu.instantiate()
 		menu.target_rotation = get_target_rotation(i)
 		menu.rotation = menu.target_rotation
 		menu.target_coverage = get_target_coverage(i)
 		menu.pressed.connect(change_selected_index_offset.bind(i))
+		menu.thumbnail = load("charts/" + chart_name + "/thumbnail.svg")
 		menus[i] = menu
 		$Centering.add_child(menu)
+	
+	var chart_name = chart_names[selected_index]
+	$PreviewAudio.stream = load("charts/" + chart_name + "/song.wav")
+	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
+	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/thumbnail.svg")
+
+
+func _process(delta: float) -> void:
+	if $PreviewAudio.get_playback_position() == 0:
+		$PreviewAudio.play()
 
 
 func change_selected_index_offset(offset: int):
@@ -81,6 +95,11 @@ func change_selected_index_offset(offset: int):
 	
 	menus = new_menus
 	selected_index += offset
+	
+	var chart_name = chart_names[selected_index]
+	$PreviewAudio.stream = load("charts/" + chart_name + "/song.wav")
+	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf())
+	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/thumbnail.svg")
 
 
 func get_target_coverage(index: int) -> float:
