@@ -15,9 +15,11 @@ script = ExtResource("1_s6t7h")
 beat_line = false
 
 [node name="MenuGame" parent="Centering" instance=ExtResource("4_wutpc")]
-
-[node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
 rotation = 1.5708
 target_rotation = 1.571
+
+[node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
+rotation = 3.14159
+target_rotation = 3.142
 
 [node name="Cursor" parent="." instance=ExtResource("5_yitsy")]
