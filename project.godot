@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="mougee"
+config/name="Marvelous X"
 run/main_scene="res://nodes/scenes/scene_switcher.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://res/icon.svg"
@@ -60,4 +60,5 @@ Escape={
 
 [rendering]
 
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.0470588, 0.0470588, 0.0470588, 1)
