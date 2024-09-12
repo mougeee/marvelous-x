@@ -21,11 +21,13 @@ const NoteTypes = global.NoteTypes
 const note_type_info = global.note_type_info
 
 var note_start_time = 0
-var info_path = "res://charts/demo2/chart.json"
+var scene_data = {}
+
+signal scene_changed
 
 
 func load_chart():
-	var file = FileAccess.open(info_path, FileAccess.READ)
+	var file = FileAccess.open(scene_data.chart, FileAccess.READ)
 	chart = JSON.parse_string(file.get_as_text())
 	file.close()
 	
@@ -163,7 +165,7 @@ func _process(_delta: float) -> void:
 	
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
-		get_tree().change_scene_to_file("res://nodes/scenes/title_scene.tscn")
+		scene_changed.emit("playing", "title")
 
 
 var marvelous_count = 0

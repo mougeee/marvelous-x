@@ -17,6 +17,6 @@ beat_line = false
 [node name="MenuGame" parent="Centering" instance=ExtResource("4_wutpc")]
 
 [node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
-angle = 1.571
+rotation = 1.5708
 
 [node name="Cursor" parent="." instance=ExtResource("5_yitsy")]

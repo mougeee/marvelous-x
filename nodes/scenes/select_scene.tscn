@@ -15,7 +15,7 @@ script = ExtResource("1_515g8")
 beat_line = false
 
 [node name="BackMenu" parent="Centering" instance=ExtResource("4_eh2r3")]
-angle = -1.571
+rotation = -1.5708
 coverage = 0.3
 
 [node name="Cursor" parent="." instance=ExtResource("5_6why3")]

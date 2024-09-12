@@ -27,6 +27,8 @@ var chart = {
 
 var bpm_processed_index = []
 
+var scene_data
+
 signal scene_changed
 
 

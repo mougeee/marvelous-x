@@ -3,7 +3,6 @@ extends Node2D
 const globals = preload("res://nodes/globals.gd")
 const CUSTOM_WHITE = globals.CUSTOM_WHITE
 
-@export var angle = 0.0
 @export var coverage = PI / 2
 @export var thumbnail: Texture2D
 
@@ -25,11 +24,10 @@ func is_hover() -> bool:
 func resize() -> void:
 	original_radius = get_parent().get_node("NoteFrame").radius
 	radius = original_radius
-	
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	rotation = angle
 	background_color.a = 0.0
 	
 	resize()
@@ -53,10 +51,5 @@ func _draw():
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(-coverage/2), CUSTOM_WHITE, 2, true)
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), CUSTOM_WHITE, 2, true)
 	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, CUSTOM_WHITE, 2, true)
-	
-	var points = [Vector2.ZERO]
-	for i in range(coverage * (50.0+1)):
-		points.append(Vector2(radius, 0.0).rotated(lerp(-coverage/2, coverage/2, i / (coverage * 50.0))))
-	draw_colored_polygon(points, background_color)
 	
 	#draw_texture(thumbnail, Vector2.ZERO)

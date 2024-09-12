@@ -6,6 +6,8 @@ var chart_names = []
 var selected_index = 0
 var menus = {}
 
+var scene_data
+
 signal scene_changed
 
 
@@ -24,6 +26,27 @@ func _ready() -> void:
 	dir.list_dir_end()
 
 
+func change_selected_index_offset(offset: int):
+	if offset == 0:
+		scene_changed.emit("select", "playing", {
+			'chart': 'res://charts/' + chart_names[selected_index] + '/chart.json'
+		})
+		return
+	
+	var new_menus = {}
+	for key in menus:
+		var new_key = key - offset
+		if abs(new_key) > 5:
+			menus[key].queue_free()
+			continue
+		menus[key].pressed.disconnect(change_selected_index_offset.bind(key))
+		menus[key].pressed.connect(change_selected_index_offset.bind(new_key))
+		menus[key].rotation = PI / 2.0 - new_key / 2.0
+		new_menus[new_key] = menus[key]
+	menus = new_menus
+	selected_index += offset
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if not menus:
@@ -34,12 +57,11 @@ func _process(delta: float) -> void:
 			
 			var chart_name = chart_names[index]
 			var menu = Menu.instantiate()
-			menu.angle = PI/2 + i / 2
-			menu.coverage = 1.0
-			menus[index] = menu
+			menu.rotation = PI / 2.0 - i / 2.0
+			menu.coverage = 1.0 / 2.0
+			menu.pressed.connect(change_selected_index_offset.bind(i))
+			menus[i] = menu
 			$Centering.add_child(menu)
-		
-		print("update, ", menus)
 
 
 func _on_back_menu_pressed() -> void:

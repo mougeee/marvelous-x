@@ -1,5 +1,7 @@
 extends Node2D
 
+var scene_data
+
 signal scene_changed
 
 
