@@ -5,9 +5,11 @@ const CUSTOM_WHITE = globals.CUSTOM_WHITE
 
 @export var angle = 0.0
 @export var coverage = PI / 2
-@export var radius = 0.0
+@export var thumbnail: Texture2D
 
 var background_color = CUSTOM_WHITE
+var original_radius = 0.0
+var radius = original_radius
 
 signal pressed
 
@@ -21,7 +23,8 @@ func is_hover() -> bool:
 	
 	
 func resize() -> void:
-	radius = get_parent().get_node("NoteFrame").radius
+	original_radius = get_parent().get_node("NoteFrame").radius
+	radius = original_radius
 	
 
 # Called when the node enters the scene tree for the first time.
@@ -36,8 +39,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if is_hover():
 		background_color.a = lerp(background_color.a, 0.2, 0.1)
+		radius = lerp(radius, original_radius * 1.1, 0.1)
 	else:
 		background_color.a = lerp(background_color.a, 0.0, 0.1)
+		radius = lerp(radius, original_radius, 0.1)
 	queue_redraw()
 	
 	if is_hover() and Input.is_action_just_released('Click'):
@@ -47,8 +52,11 @@ func _process(_delta: float) -> void:
 func _draw():
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(-coverage/2), CUSTOM_WHITE, 2, true)
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), CUSTOM_WHITE, 2, true)
+	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, CUSTOM_WHITE, 2, true)
 	
 	var points = [Vector2.ZERO]
 	for i in range(coverage * (50.0+1)):
 		points.append(Vector2(radius, 0.0).rotated(lerp(-coverage/2, coverage/2, i / (coverage * 50.0))))
 	draw_colored_polygon(points, background_color)
+	
+	#draw_texture(thumbnail, Vector2.ZERO)
