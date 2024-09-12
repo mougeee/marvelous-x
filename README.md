@@ -3,7 +3,7 @@
    <img src="https://github.com/junhg0211/mougee/blob/master/res/icon.png?raw=true" alt="Marvelous X 로고" style="width: 200px;">
 </p>
 
-## 실행 방법
+## 개발 버전으로 실행하는 방법
 
 1. [Godot 게임 엔진](https://godotengine.org)을 다운로드합니다.
 1. 레포지토리를 다운로드하여 Godot 게임 엔진으로 레포지토리를 불러옵니다.
