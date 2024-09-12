@@ -182,6 +182,6 @@
  ],
  "speed": 0.7,
  "version": 1,
- "song": "res://charts/demo2/song.wav",
- "thumbnail": "res://charts/demo2/thumbnail.svg"
+ "song": "charts/demo2/song.wav",
+ "thumbnail": "charts/demo2/thumbnail.svg"
 }

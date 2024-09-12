@@ -7,3 +7,5 @@
 script = ExtResource("1_n6nho")
 
 [node name="TitleScene" parent="." instance=ExtResource("1_s8rr0")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
