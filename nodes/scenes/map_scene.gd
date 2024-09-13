@@ -332,6 +332,12 @@ func _process(delta: float) -> void:
 					notes.sort_custom(func(a, b): return a['t'] < b['t'])
 		
 		queue_redraw()
+	
+	# control coverage by shortcut
+	if Input.is_action_just_pressed("MapDecreaseCoverage"):
+		$CreateNoteCoverage.value -= 1
+	if Input.is_action_just_pressed("MapIncreaseCoverage"):
+		$CreateNoteCoverage.value += 1
 
 
 func _draw():
