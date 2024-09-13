@@ -25,7 +25,7 @@ var cursor_path = []
 func resize():
 	radius = get_window().size.y / 3.0
 	width = radius / 20.0
-	queue_redraw()
+	redraw_path()
 
 
 # Called when the node enters the scene tree for the first time.
