@@ -283,7 +283,7 @@ func _process(delta: float) -> void:
 		if time - offset >= cursor_info['t']:
 			last_cursor_info = cursor_info
 	if last_cursor_info:
-		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
+		$Centering/NoteFrame.set_coverage(last_cursor_info['c'])
 	
 	# remove/edit notes
 	if $RemoveNotes.button_pressed or $EditNotes.button_pressed:

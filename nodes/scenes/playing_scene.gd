@@ -166,7 +166,7 @@ func _process(_delta: float) -> void:
 		if time > cursor_info['t']:
 			last_cursor_info = cursor_info
 	if last_cursor_info:
-		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
+		$Centering/NoteFrame.set_coverage(last_cursor_info['c'])
 	
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
