@@ -76,7 +76,11 @@ func _process(delta: float) -> void:
 		redraw_path()
 		
 	# highlight cursor by pressing keys
-	if Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress") or Input.is_action_just_pressed("Click"):
+	if (
+		Input.is_action_pressed("LeftPress")
+		or Input.is_action_pressed("RightPress")
+		or Input.is_action_pressed("Click")
+	):
 		cursor_highlight_color = CUSTOM_WHITE
 	elif Input.is_action_pressed("CriticalPress"):
 		cursor_highlight_color = CUSTOM_YELLOW
