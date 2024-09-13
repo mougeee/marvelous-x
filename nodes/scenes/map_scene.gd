@@ -449,3 +449,11 @@ func _on_save_chart_pressed() -> void:
 func _on_chart_raw_edit_focus_exited() -> void:
 	chart = JSON.parse_string($ChartRawEdit.text)
 	chart['notes'] = notes
+
+
+func _on_remove_notes_button_up() -> void:
+	queue_redraw()
+
+
+func _on_edit_notes_button_up() -> void:
+	queue_redraw()

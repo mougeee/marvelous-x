@@ -184,3 +184,5 @@ text = "Edit Notes"
 [connection signal="value_changed" from="CreateNoteCoverage" to="." method="_on_create_note_coverage_value_changed"]
 [connection signal="pressed" from="SaveChart" to="." method="_on_save_chart_pressed"]
 [connection signal="focus_exited" from="ChartRawEdit" to="." method="_on_chart_raw_edit_focus_exited"]
+[connection signal="button_up" from="RemoveNotes" to="." method="_on_remove_notes_button_up"]
+[connection signal="button_up" from="EditNotes" to="." method="_on_edit_notes_button_up"]
