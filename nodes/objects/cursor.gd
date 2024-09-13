@@ -7,7 +7,7 @@ var radius_delta = 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
 	fill_color.a = 0.0
 
@@ -25,9 +25,9 @@ func _process(_delta: float) -> void:
 	queue_redraw()
 
 
-func _draw() -> void:
-	draw_circle(Vector2.ZERO, 10 + radius_delta, fill_color, true, -1, false)
-	draw_circle(Vector2.ZERO, 10 + radius_delta, CUSTOM_WHITE, false, 2, true)
+#func _draw() -> void:
+	#draw_circle(Vector2.ZERO, 10 + radius_delta, fill_color, true, -1, false)
+	#draw_circle(Vector2.ZERO, 10 + radius_delta, CUSTOM_WHITE, false, 2, true)
 
 
 func _notification(what: int) -> void:
