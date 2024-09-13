@@ -15,6 +15,7 @@ signal scene_changed
 func _ready() -> void:
 	$Centering/PreviewThumbnail.modulate.a = 0.1
 	
+	# load chart names
 	var dir = DirAccess.open("charts")
 	chart_names.clear()
 	dir.list_dir_begin()
@@ -27,6 +28,9 @@ func _ready() -> void:
 		chart_names.append(filename)
 	dir.list_dir_end()
 	
+	selected_index = randi_range(0, chart_names.size() - 1)
+	
+	# draw chart menus
 	for i in range(-5, 5+1):
 		var index = selected_index + i
 		if index < 0 or index >= chart_names.size():
