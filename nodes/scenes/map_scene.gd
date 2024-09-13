@@ -266,7 +266,7 @@ func _process(delta: float) -> void:
 		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
 	
 	# remove notes
-	if $RemoveNotes.button_pressed:
+	if $RemoveNotes.button_pressed or $EditNotes.button_pressed:
 		selected_note_distance = INF
 		var mouse_pos = get_global_mouse_position() - get_viewport_rect().size / 2
 		var selected_note_index
@@ -285,16 +285,42 @@ func _process(delta: float) -> void:
 					selected_note_index = i
 		
 		if (
-			selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
-			or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
+			$RemoveNotes.button_pressed and (
+				selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
+				or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
+			)
 		):
 			notes.pop_at(selected_note_index)
+			
+		if $EditNotes.button_pressed:
+			var note = notes[selected_note_index]
+			if Input.is_action_pressed('LeftPress'):
+				var mouse_direction = atan2(mouse_pos.y, mouse_pos.x)
+				note['r'] = mouse_direction
+			if Input.is_action_pressed("RightPress"):
+				var mouse_process = pow(mouse_pos.length() / frame.radius, 0.25)
+				
+				# snap mouse_process
+				for i in range($Centering/NoteFrame.beat_lines.size() - 1):
+					var p = $Centering/NoteFrame.beat_lines[i + 1]
+					var np = $Centering/NoteFrame.beat_lines[i]
+					if p <= mouse_process and mouse_process <= np:
+						mouse_process = p + round((mouse_process - p) / (np - p) * 4.0) / 4.0 * (np - p)
+						break
+				
+				var new_t = time - (mouse_process - 1.0) / chart['speed'] - offset
+				var previous_t = note['t']
+				note['t'] = new_t
+				
+				# sort notes by time
+				if previous_t != new_t:
+					notes.sort_custom(func(a, b): return a['t'] < b['t'])
 		
 		queue_redraw()
 
 
 func _draw():
-	if $RemoveNotes.button_pressed:
+	if $RemoveNotes.button_pressed or $EditNotes.button_pressed:
 		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(selected_note['r'])
 		draw_circle(pos, 100.0, Color.WHITE, false, 1, true)
 
