@@ -277,8 +277,9 @@ func _process(delta: float) -> void:
 	if last_cursor_info:
 		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
 	
-	# remove notes
+	# remove/edit notes
 	if $RemoveNotes.button_pressed or $EditNotes.button_pressed:
+		# -- select note
 		selected_note_distance = INF
 		var mouse_pos = get_global_mouse_position() - get_viewport_rect().size / 2
 		var selected_note_index
@@ -299,14 +300,17 @@ func _process(delta: float) -> void:
 					selected_note_radius = distance
 					selected_note_index = i
 		
+		# -- remove note
 		if (
-			$RemoveNotes.button_pressed and selected_note_index and (
+			$RemoveNotes.button_pressed and selected_note_index != null and (
 				selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
 				or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
 			)
 		):
 			notes.pop_at(selected_note_index)
+			queue_redraw()
 		
+		# -- edit note
 		if $EditNotes.button_pressed and selected_note_index != null:
 			var note = notes[selected_note_index]
 			if Input.is_action_pressed('LeftPress'):
@@ -341,7 +345,7 @@ func _process(delta: float) -> void:
 
 
 func _draw():
-	if ($RemoveNotes.button_pressed or $EditNotes.button_pressed) and selected_note:
+	if ($RemoveNotes.button_pressed or $EditNotes.button_pressed) and selected_note and notes:
 		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(selected_note['r'])
 		draw_circle(pos, 100.0, Color.WHITE, false, 1, true)
 
