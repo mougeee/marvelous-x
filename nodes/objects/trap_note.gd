@@ -5,6 +5,8 @@ const Keys = globals.Keys
 const key_info = globals.key_info
 const Judgements = globals.Judgements
 const judgement_info = globals.judgement_info
+const NoteTypes = globals.NoteTypes
+const note_type_info = globals.note_type_info
 
 var radius = 0
 var coverage = 0.4
@@ -73,7 +75,7 @@ func _process(_delta: float) -> void:
 
 
 func _draw():
-	var color = Color.WHITE
+	var color = note_type_info[NoteTypes.TRAP]['color']
 	
 	if radius > 0 and process < 2.0:
 		draw_arc(

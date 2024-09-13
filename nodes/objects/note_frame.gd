@@ -4,12 +4,13 @@ const globals = preload("res://nodes/globals.gd")
 var Keys = globals.Keys
 var key_info = globals.key_info
 const CUSTOM_WHITE = globals.CUSTOM_WHITE
+const CUSTOM_YELLOW = globals.CUSTOM_YELLOW
 
 var radius = 0
 var coverage = 1.0
 var width = 0
 var cursor_color = CUSTOM_WHITE
-var critical_highlight_color = key_info[Keys.CRITICAL]["color"]
+var critical_highlight_color = CUSTOM_YELLOW
 
 @export var speed = 1.0
 const Metronome = preload("res://nodes/utils/metronome.tscn")
@@ -50,17 +51,17 @@ func _process(delta: float) -> void:
 	if mouse_lock and mouse_delta.length() > mouse_radius:
 		Input.warp_mouse(get_parent().position + mouse_delta.normalized() * mouse_radius)
 	
-	if Input.is_action_just_pressed("LeftPress"):
-		cursor_color = key_info[Keys.LEFT]['color']
-	elif Input.is_action_just_pressed("RightPress"):
-		cursor_color = key_info[Keys.RIGHT]['color']
-	elif Input.is_action_just_pressed("CriticalPress"):
-		critical_highlight_color.a = 1.0
-		
-	cursor_color.r = lerp(cursor_color.r, CUSTOM_WHITE.r, 0.05)
-	cursor_color.g = lerp(cursor_color.g, CUSTOM_WHITE.g, 0.05)
-	cursor_color.b = lerp(cursor_color.b, CUSTOM_WHITE.b, 0.05)
-	critical_highlight_color.a = lerp(critical_highlight_color.a, 0.0, 0.05)
+	#if Input.is_action_just_pressed("LeftPress"):
+		#cursor_color = key_info[Keys.LEFT]['color']
+	#elif Input.is_action_just_pressed("RightPress"):
+		#cursor_color = key_info[Keys.RIGHT]['color']
+	#elif Input.is_action_just_pressed("CriticalPress"):
+		#critical_highlight_color.a = 1.0
+		#
+	#cursor_color.r = lerp(cursor_color.r, CUSTOM_WHITE.r, 0.05)
+	#cursor_color.g = lerp(cursor_color.g, CUSTOM_WHITE.g, 0.05)
+	#cursor_color.b = lerp(cursor_color.b, CUSTOM_WHITE.b, 0.05)
+	#critical_highlight_color.a = lerp(critical_highlight_color.a, 0.0, 0.05)
 	
 	queue_redraw()
 	

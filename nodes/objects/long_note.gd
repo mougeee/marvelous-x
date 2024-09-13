@@ -5,10 +5,10 @@ const Keys = globals.Keys
 const key_info = globals.key_info
 const Judgements = globals.Judgements
 const judgement_info = globals.judgement_info
+const CUSTOM_WHITE = globals.CUSTOM_WHITE
 
 var path
 var speed
-var key
 
 var frame_radius
 var begin_time
@@ -52,14 +52,8 @@ func process_notes() -> float:
 		p['visible'] = manual or p.get('visible', true)
 		
 		if not p['processed'] and (i == 0 or i == path.size() - 1):
-			var is_first_keypressed = (
-				key == Keys.LEFT and Input.is_action_just_pressed("LeftPress")
-				or key == Keys.RIGHT and Input.is_action_just_pressed("RightPress")
-			)
-			var is_last_keyreleased = (
-				key == Keys.LEFT and Input.is_action_just_released("LeftPress")
-				or key == Keys.RIGHT and Input.is_action_just_released("RightPress")
-			)
+			var is_first_keypressed = Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress")
+			var is_last_keyreleased = Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress")
 			
 			if (
 				abs(p['dt']) <= judgement_info[Judgements.MISS]["precision"]
@@ -79,10 +73,7 @@ func process_notes() -> float:
 				pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
 		
 		elif not p['processed'] and not (i == 0 or i == path.size() - 1):
-			var is_keypressing = (
-				key == Keys.LEFT and Input.is_action_pressed("LeftPress")
-				or key == Keys.RIGHT and Input.is_action_pressed("RightPress")
-			)
+			var is_keypressing = Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress")
 			
 			if p['dt'] > 0.0:
 				p['processed'] = true
@@ -110,7 +101,7 @@ func _process(_delta: float) -> void:
 	
 
 func _draw():
-	var color = key_info[key]['color']
+	var color = CUSTOM_WHITE
 
 	for i in range(path.size() - 1):
 		var p = path[i]
