@@ -1,6 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://bkjikw1mkxf44"]
+[gd_scene load_steps=4 format=3 uid="uid://bkjikw1mkxf44"]
 
 [ext_resource type="Script" path="res://nodes/objects/menu.gd" id="1_5raog"]
+[ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="2_engng"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uy8qk"]
+font = ExtResource("2_engng")
+font_size = 24
 
 [node name="Menu" type="Node2D"]
 script = ExtResource("1_5raog")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 306.0
+offset_top = -11.5
+offset_right = 344.0
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+text = "Menu"
+label_settings = SubResource("LabelSettings_uy8qk")
+horizontal_alignment = 2
+vertical_alignment = 1

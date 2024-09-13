@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://15refmuuqg6m"]
+[gd_scene load_steps=2 format=3 uid="uid://dopm0xqpa7hko"]
 
 [ext_resource type="Script" path="res://nodes/objects/critical_note.gd" id="1_o8uv1"]
 

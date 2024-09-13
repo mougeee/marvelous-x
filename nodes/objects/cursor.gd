@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 	position = get_global_mouse_position()
 	
 	fill_color.a = lerp(fill_color.a, 0.0, 0.2)
-	if Input.is_action_pressed("Click"):
+	if Input.is_action_pressed("Click") or Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress"):
 		fill_color.a = 1.0
 		radius_delta = lerp(radius_delta, 4.0, 0.2)
 	else:

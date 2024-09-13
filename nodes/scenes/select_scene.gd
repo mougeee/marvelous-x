@@ -44,6 +44,7 @@ func _ready() -> void:
 		menu.target_coverage = get_target_coverage(i)
 		menu.pressed.connect(change_selected_index_offset.bind(i))
 		menu.thumbnail = load("charts/" + chart_name + "/thumbnail.svg")
+		menu.label = chart_name
 		menus[i] = menu
 		$Centering.add_child(menu)
 	
@@ -93,6 +94,7 @@ func change_selected_index_offset(offset: int):
 			menu.rotation = menu.target_rotation
 			menu.target_coverage = get_target_coverage(new_key)
 			menu.coverage = 0.0
+			menu.label = chart_name
 			menu.pressed.connect(change_selected_index_offset.bind(new_key))
 			new_menus[new_key] = menu
 			$Centering.add_child(menu)
