@@ -8,6 +8,7 @@ const note_type_info = globals.note_type_info
 const ApproachNote = preload("res://nodes/objects/approach_note.tscn")
 const LongNote = preload("res://nodes/objects/long_note.tscn")
 const TrapNote = preload("res://nodes/objects/trap_note.tscn")
+const CriticalNote = preload("res://nodes/objects/critical_note.tscn")
 
 var audio_playing = false
 var stream_loaded = false
@@ -73,9 +74,9 @@ func draw_temporary_note(frame):
 	# draw note
 	var note = ApproachNote.instantiate()
 	note.manual = true
-	note.rotation = mouse_theta
+	note.rotation = round(mouse_theta * 100.0) / 100.0
 	note.process = process
-	note.coverage = coverage
+	note.coverage = round(coverage * 100.0) / 100.0
 	note.temporary = true
 	note.frame_radius = frame.radius
 	note.note_width = frame.width
@@ -128,14 +129,16 @@ func _process(delta: float) -> void:
 	var frame = $Centering/NoteFrame
 	for note in notes:
 		var process = (time - note['t'] - offset) * chart['speed'] + 1.0
-		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"] and note['t'] - 1.0 / chart['speed'] <= time:
+		if not (note['t'] - 1.0 / chart['speed'] <= time):
+			continue
+			
+		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"]:
 			if process > 0.0 and process < 2.0:
 				var note_node = ApproachNote.instantiate()
 				note_nodes.append(note_node)
 				note_node.manual = true
 				note_node.process = process
 				note_node.rotation = note['r']
-				note_node.key = process_key(note['k'])
 				note_node.coverage = note['c']
 				note_node.frame_radius = frame.radius
 				note_node.note_width = frame.width
@@ -150,7 +153,6 @@ func _process(delta: float) -> void:
 				note_node.speed = chart['speed']
 				note_node.manual = true
 				note_node.begin_process = process
-				note_node.key = process_key(note['k'])
 				note_node.frame_radius = frame.radius
 				note_node.process_notes()
 				$Centering.add_child(note_node)
@@ -168,6 +170,17 @@ func _process(delta: float) -> void:
 				note_node.render()
 				$Centering.add_child(note_node)
 				
+		elif note['y'] == note_type_info[NoteTypes.CRITICAL]['code']:
+			if process > 0.0 and process < 2.0:
+				var note_node = CriticalNote.instantiate()
+				note_nodes.append(note_node)
+				note_node.manual = true
+				note_node.process = process
+				note_node.frame_radius = frame.radius
+				note_node.note_width = frame.width
+				note_node.render()
+				$Centering.add_child(note_node)
+				
 	# create notes
 	if $CreateNotes.button_pressed or $CreateTrapNotes.button_pressed:
 		var note = draw_temporary_note(frame)
@@ -178,19 +191,15 @@ func _process(delta: float) -> void:
 			or Input.is_action_just_pressed("RightPress")
 			or Input.is_action_just_pressed("CriticalPress")
 		):
-			if Input.is_action_just_pressed("LeftPress"):
-				note.key = Keys.LEFT
-			if Input.is_action_just_pressed("RightPress"):
-				note.key = Keys.RIGHT
-			if Input.is_action_just_pressed("CriticalPress"):
-				note.key = Keys.CRITICAL
-			
 			var t = time + (1.0 - note.process) / chart['speed'] - offset
 			var json = note.to_json(t)
 			if $CreateTrapNotes.button_pressed:
-				json = note.to_json(t)
 				json.erase("k")
 				json['y'] = note_type_info[NoteTypes.TRAP]['code']
+			elif Input.is_action_just_pressed("CriticalPress"):
+				json.erase("c")
+				json.erase("r")
+				json['y'] = note_type_info[NoteTypes.CRITICAL]['code']
 			
 			# insert in right position
 			var left = 0
@@ -255,7 +264,6 @@ func _process(delta: float) -> void:
 			notes.insert(left, {
 				'y': note_type_info[NoteTypes.LONG]['code'],
 				't': start_time,
-				'k': key_code,
 				'p': JSON.parse_string(JSON.stringify(creating_long_note))
 			})
 			
@@ -303,8 +311,7 @@ func _process(delta: float) -> void:
 		# -- remove note
 		if (
 			$RemoveNotes.button_pressed and selected_note_index != null and (
-				selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
-				or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
+				Input.is_action_just_pressed('LeftPress') or Input.is_action_just_pressed('RightPress')
 			)
 		):
 			notes.pop_at(selected_note_index)

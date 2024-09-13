@@ -13,7 +13,7 @@ var radius = 0
 var width = 0
 var note_width = 0
 var process = 0.0
-var frame_radius
+var frame_radius	
 @export var speed = 1.0
 var processed = false
 var begin_time
@@ -24,11 +24,9 @@ signal pressed
 
 
 func to_json(time: float) -> Dictionary:
-	#{"y": 0, "t": 8.0, "r": -2.0, "c": 0.0, "k": 2},
 	return {
 		"y": note_type_info[NoteTypes.CRITICAL]['code'],
 		't': time,
-		'r': rotation,
 	}
 
 
