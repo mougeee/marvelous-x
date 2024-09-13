@@ -45,7 +45,11 @@ func _process(_delta: float) -> void:
 		radius = lerp(radius, original_radius, 0.1)
 	queue_redraw()
 	
-	if is_hover() and Input.is_action_just_released('Click'):
+	if is_hover() and (
+		Input.is_action_just_released('Click')
+		or Input.is_action_just_released("LeftPress")
+		or Input.is_action_just_released("RightPress")
+	):
 		pressed.emit()
 	
 	rotation = lerp_angle(rotation, target_rotation, 0.3)
