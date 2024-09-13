@@ -169,7 +169,7 @@ func _process(delta: float) -> void:
 				$Centering.add_child(note_node)
 				
 	# create notes
-	if $CreateNotes.button_pressed:
+	if $CreateNotes.button_pressed or $CreateTrapNotes.button_pressed:
 		var note = draw_temporary_note(frame)
 		
 		# insert note in correct position
@@ -187,6 +187,10 @@ func _process(delta: float) -> void:
 			
 			var t = time + (1.0 - note.process) / chart['speed'] - offset
 			var json = note.to_json(t)
+			if $CreateTrapNotes.button_pressed:
+				json = note.to_json(t)
+				json.erase("k")
+				json['y'] = note_type_info[NoteTypes.TRAP]['code']
 			
 			# insert in right position
 			var left = 0
