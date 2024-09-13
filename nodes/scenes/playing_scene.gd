@@ -8,6 +8,7 @@ var ApproachNote = preload("res://nodes/objects/approach_note.tscn")
 var LongNote = preload("res://nodes/objects/long_note.tscn")
 var TrapNote = preload("res://nodes/objects/trap_note.tscn")
 var Judgement = preload("res://nodes/objects/judgement.tscn")
+var CriticalNote = preload("res://nodes/objects/critical_note.tscn")
 var time_begin
 var offset = global.offset
 
@@ -133,7 +134,6 @@ func _process(_delta: float) -> void:
 			approach_note.rotation = note["r"]
 			approach_note.coverage = note['c']
 			approach_note.speed = chart['speed']
-			approach_note.key = note['k']
 			approach_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(approach_note)
 			
@@ -141,7 +141,6 @@ func _process(_delta: float) -> void:
 			var long_note = LongNote.instantiate()
 			long_note.path = note['p']
 			long_note.speed = chart['speed']
-			long_note.key = note['k']
 			long_note.pressed.connect(_on_note_pressed)
 			$Centering.add_child(long_note)
 		
@@ -153,6 +152,12 @@ func _process(_delta: float) -> void:
 			trap_note.passed.connect(_on_note_pressed)
 			$Centering.add_child(trap_note)
 		
+		elif note['y'] == NoteTypes.CRITICAL:
+			var critical_note = CriticalNote.instantiate()
+			critical_note.speed = chart['speed']
+			critical_note.pressed.connect(_on_note_pressed)
+			$Centering.add_child(critical_note)
+		
 		next_index += 1
 	
 	# cursor size change
@@ -161,7 +166,7 @@ func _process(_delta: float) -> void:
 		if time > cursor_info['t']:
 			last_cursor_info = cursor_info
 	if last_cursor_info:
-		$Centering/NoteFrame.coverage = lerp($Centering/NoteFrame.coverage, last_cursor_info['c'], 0.1)
+		$Centering/NoteFrame.set_coverage(last_cursor_info['c'])
 	
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):

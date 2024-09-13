@@ -1,21 +1,16 @@
 const offset = 0.090
 
 const CUSTOM_WHITE = Color("#f7f7f9")
+const CUSTOM_RED = Color("#bc3b3b")
+const CUSTOM_BLUE = Color("#3c70ba")
+const CUSTOM_YELLOW = Color("#ffce00")
+
 
 enum Keys {LEFT, RIGHT, CRITICAL}
 const key_info = {
-	Keys.LEFT: {
-		"color": Color(60 / 255.0, 112 / 255.0, 186 / 255.0),
-		"code": 0
-	},
-	Keys.RIGHT: {
-		"color": Color(188 / 255.0, 59 / 255.0, 59 / 255.0),
-		"code": 1
-	},
-	Keys.CRITICAL: {
-		"color": Color(255 / 255.0, 206 / 255.0, 0 / 0.0),
-		"code": 2
-	},
+	Keys.LEFT: {"code": 0},
+	Keys.RIGHT: {"code": 1},
+	Keys.CRITICAL: {"code": 2},
 }
 
 enum Judgements {MARVELOUS, SPLENDID, GREAT, OK, MISS}
@@ -57,9 +52,22 @@ const judgement_info = {
 	},
 }
 
-enum NoteTypes {APPROACH, LONG, TRAP}
+enum NoteTypes {APPROACH, LONG, TRAP, CRITICAL}
 const note_type_info = {
-	NoteTypes.APPROACH: {"code": 0},
-	NoteTypes.LONG: {"code": 1},
-	NoteTypes.TRAP: {"code": 2},
+	NoteTypes.APPROACH: {
+		"code": 0,
+		'color': CUSTOM_WHITE
+	},
+	NoteTypes.LONG: {
+		"code": 1,
+		'color': CUSTOM_WHITE
+	},
+	NoteTypes.TRAP: {
+		"code": 2,
+		'color': CUSTOM_RED
+	},
+	NoteTypes.CRITICAL: {
+		'code': 3,
+		'color': CUSTOM_YELLOW
+	},
 }

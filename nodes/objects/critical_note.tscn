@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://15refmuuqg6m"]
+
+[ext_resource type="Script" path="res://nodes/objects/critical_note.gd" id="1_o8uv1"]
+
+[node name="CriticalNote" type="Node2D"]
+script = ExtResource("1_o8uv1")
