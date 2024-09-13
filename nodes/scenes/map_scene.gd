@@ -210,10 +210,22 @@ func _process(delta: float) -> void:
 		var note = draw_temporary_note(frame)
 		var t = time + (1.0 - note.process) / chart['speed'] - offset
 		
+		# start long note
 		if Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress"):
 			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
-			
-		if Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress"):
+		
+		# create middle long note
+		if (
+			Input.is_action_pressed("LeftPress") and Input.is_action_just_released("RightPress")
+			or Input.is_action_pressed("RightPress") and Input.is_action_just_released("LeftPress")
+		):
+			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
+		
+		# end long note
+		if (
+			not Input.is_action_pressed("RightPress") and Input.is_action_just_released("LeftPress")
+			or not Input.is_action_pressed("LeftPress") and Input.is_action_just_released("RightPress")
+		):
 			creating_long_note.append({'t': t, 'r': note.rotation, 'c': note.coverage})
 			
 			# preprocess creating_long_note
@@ -272,7 +284,10 @@ func _process(delta: float) -> void:
 		var selected_note_index
 		for i in range(notes.size()):
 			var note = notes[i]
-			if note['y'] == note_type_info[NoteTypes.APPROACH]['code']:
+			if (
+				note['y'] == note_type_info[NoteTypes.APPROACH]['code']
+				or note['y'] == note_type_info[NoteTypes.TRAP]['code']
+			):
 				var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
 				var distance = pow(process, 4) * frame.radius
 				var pos = Vector2(distance, 0).rotated(note['r'])
@@ -285,14 +300,14 @@ func _process(delta: float) -> void:
 					selected_note_index = i
 		
 		if (
-			$RemoveNotes.button_pressed and (
+			$RemoveNotes.button_pressed and selected_note_index and (
 				selected_note['k'] == key_info[Keys.LEFT]['code'] and Input.is_action_just_pressed('LeftPress')
 				or selected_note['k'] == key_info[Keys.RIGHT]['code'] and Input.is_action_just_pressed('RightPress')
 			)
 		):
 			notes.pop_at(selected_note_index)
-			
-		if $EditNotes.button_pressed:
+		
+		if $EditNotes.button_pressed and selected_note_index != null:
 			var note = notes[selected_note_index]
 			if Input.is_action_pressed('LeftPress'):
 				var mouse_direction = atan2(mouse_pos.y, mouse_pos.x)
@@ -320,7 +335,7 @@ func _process(delta: float) -> void:
 
 
 func _draw():
-	if $RemoveNotes.button_pressed or $EditNotes.button_pressed:
+	if ($RemoveNotes.button_pressed or $EditNotes.button_pressed) and selected_note:
 		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(selected_note['r'])
 		draw_circle(pos, 100.0, Color.WHITE, false, 1, true)
 
