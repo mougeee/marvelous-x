@@ -453,7 +453,7 @@ func _on_create_note_coverage_value_changed(value: float) -> void:
 func _on_save_chart_pressed() -> void:
 	chart['notes'] = notes
 	var file = FileAccess.open($ChartSourcePath.text, FileAccess.WRITE)
-	file.store_string(JSON.stringify(chart))
+	file.store_string(JSON.stringify(chart, " "))
 	file.close()
 
 
