@@ -3,6 +3,7 @@ extends Node2D
 const global = preload("res://nodes/globals.gd")
 const Judgements = global.Judgements
 const judgement_info = global.judgement_info
+const CUSTOM_WHITE = global.CUSTOM_WHITE
 
 var ApproachNote = preload("res://nodes/objects/approach_note.tscn")
 var LongNote = preload("res://nodes/objects/long_note.tscn")
@@ -99,6 +100,9 @@ func _ready() -> void:
 	$Centering/NoteFrame.speed = chart['speed']
 
 
+var progress
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# get audio play time
@@ -171,6 +175,15 @@ func _process(_delta: float) -> void:
 	# escape from the game
 	if time > last_time + 3.0 or Input.is_action_just_pressed("Escape"):
 		scene_changed.emit("playing", "title")
+	
+	progress = time / $AudioStreamPlayer.stream.get_length()
+	queue_redraw()
+
+
+func _draw():
+	var viewport_size = get_viewport_rect().size
+	var progress_width = lerp(0.0, viewport_size.x, progress)
+	draw_line(Vector2(0.0, viewport_size.y), Vector2(progress_width, viewport_size.y), CUSTOM_WHITE, 10, false)
 
 
 var marvelous_count = 0
@@ -210,12 +223,3 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt
 		+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
 	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
 	$Accuracy.number = accuracy
-	
-	#var score = (float) (
-		#marvelous_count * judgement_info[Judgements.MARVELOUS]["accuracy"]
-		#+ splendid_count * judgement_info[Judgements.SPLENDID]["accuracy"]
-		#+ great_count * judgement_info[Judgements.GREAT]["accuracy"]
-		#+ ok_count * judgement_info[Judgements.OK]["accuracy"]
-		#+ miss_count * judgement_info[Judgements.MISS]["accuracy"]
-	#) / note_count * 10000.0
-	#$Accuracy.number = score
