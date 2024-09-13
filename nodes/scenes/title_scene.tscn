@@ -24,4 +24,9 @@ rotation = 3.14159
 target_rotation = 3.142
 label = "Map Editor"
 
+[node name="MenuQuit" parent="Centering" instance=ExtResource("4_wutpc")]
+rotation = -1.5708
+target_rotation = -1.571
+label = "Quit"
+
 [node name="Cursor" parent="." instance=ExtResource("5_yitsy")]
