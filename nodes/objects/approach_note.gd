@@ -72,7 +72,7 @@ func _process(_delta: float) -> void:
 	if not processed:
 		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and (
 			is_covered() and (
-				Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress")
+				Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress") or Input.is_action_just_pressed("Click")
 			)
 		):
 			processed = true

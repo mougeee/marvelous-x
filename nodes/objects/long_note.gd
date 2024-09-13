@@ -52,8 +52,8 @@ func process_notes() -> float:
 		p['visible'] = manual or p.get('visible', true)
 		
 		if not p['processed'] and (i == 0 or i == path.size() - 1):
-			var is_first_keypressed = Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress")
-			var is_last_keyreleased = Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress")
+			var is_first_keypressed = Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress") or Input.is_action_just_pressed("Click")
+			var is_last_keyreleased = Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress") or Input.is_action_just_released("Click")
 			
 			if (
 				abs(p['dt']) <= judgement_info[Judgements.MISS]["precision"]
@@ -73,7 +73,7 @@ func process_notes() -> float:
 				pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
 		
 		elif not p['processed'] and not (i == 0 or i == path.size() - 1):
-			var is_keypressing = Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress")
+			var is_keypressing = Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress") or Input.is_action_pressed("Click")
 			
 			if p['dt'] > 0.0:
 				p['processed'] = true
