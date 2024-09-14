@@ -87,13 +87,13 @@ func _ready() -> void:
 	preprocess_notes(chart["notes"])
 	
 	# backgroung thumbnail
-	$Centering/BackgroundThumbnail.texture = load(chart.thumbnail)
+	$Centering/BackgroundThumbnail.texture = load("charts/" + scene_data.chart + "/" + chart.song.thumbnail)
 	$Centering/BackgroundThumbnail.modulate.a = 0.1
 	
 	# reset chart
-	$AudioStreamPlayer.stream = load("charts/" + scene_data.chart + "/" + chart['song'])
+	$AudioStreamPlayer.stream = load("charts/" + scene_data.chart + "/" + chart.song.path)
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
-	$Centering/NoteFrame.speed = chart['speed']
+	$Centering/NoteFrame.speed = chart.speed
 
 
 var progress

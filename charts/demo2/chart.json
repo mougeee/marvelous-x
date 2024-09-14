@@ -157,8 +157,12 @@
    "y": 3
   }
  ],
- "song": "song.wav",
+ "song": {
+  "path": "song.wav",
+  "thumbnail": "thumbnail.svg",
+  "composer": "Sch"
+ },
+ "mapper": "Sch",
  "speed": 0.7,
- "thumbnail": "thumbnail.svg",
  "version": 1
 }

@@ -51,9 +51,9 @@ func _ready() -> void:
 	
 	var chart_name = chart_names[selected_index]
 	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
-	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart['song'])
+	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart.song.path)
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
-	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart['thumbnail'])
+	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart.song.thumbnail)
 
 
 func _process(delta: float) -> void:
@@ -106,9 +106,9 @@ func change_selected_index_offset(offset: int):
 	
 	var chart_name = chart_names[selected_index]
 	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
-	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart['song'])
+	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart.song.path)
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf())
-	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/thumbnail.svg")
+	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart.song.thumbnail)
 
 
 func get_target_coverage(index: int) -> float:

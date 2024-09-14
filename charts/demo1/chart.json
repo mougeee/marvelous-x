@@ -23,8 +23,12 @@
 	],
 	"cursor": [
 		{"t": 0.0, "c": 1.0},
-		{"t": 5.5, "c": 0.7},
+		{"t": 5.5, "c": 0.7}
 	],
-	"song": "song.wav",
-	"thumbnail": "thumbnail.svg"
+	"song": {
+		"path": "song.wav",
+		"thumbnail": "thumbnail.svg",
+		"composer": "Sch"
+	},
+	"mapper": "Sch"
 }
