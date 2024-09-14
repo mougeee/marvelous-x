@@ -110,14 +110,19 @@ func _draw():
 		if p.get('process', 0.0) <= 0.0 or np.get('process', 0.0) <= 0.0:
 			continue
 		
+		var processed = p.get("processed", false)
+		
 		var points = []
-		var divides = 10.0
+		var divides = abs(angle_difference(p['r'], np['r'])) * 20.0
 		for j in range(divides+1):
 			var process = lerp(p.get('process', 0), np.get('process', 0), j/divides)
+			if processed and process > 1.0:
+				continue
 			var radius = frame_radius * pow(process, 4)
 			var angle = lerp_angle(p['r'], np['r'], j/divides)
 			#var coverage = lerp(p['c'], np['c'], j/divides)
 			points.append(Vector2(radius, 0.0).rotated(angle))
+			
 		draw_polyline(points, color, 2, true)
 
 	for p in path:
