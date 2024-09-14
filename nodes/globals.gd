@@ -22,35 +22,35 @@ const judgement_info = {
 		"label": "Marvelous",
 		"precision": 0.015,
 		"accuracy": 100,
-		"texture": ""
+		"texture": "res://res/judgements_marvelous.svg"
 	},
 	Judgements.SPLENDID: {
 		"judgement": Judgements.SPLENDID,
 		"label": "Splendid",
 		"precision": 0.040,
 		"accuracy": 100,
-		"texture": ""
+		"texture": "res://res/judgements_splendid.svg"
 	},
 	Judgements.GREAT: {
 		"judgement": Judgements.GREAT,
 		"label": "Great",
 		"precision": 0.065,
 		"accuracy": 70,
-		"texture": ""
+		"texture": "res://res/judgements_great.svg"
 	},
 	Judgements.OK: {
 		"judgement": Judgements.OK,
 		"label": "OK",
 		"precision": 0.100,
 		"accuracy": 20,
-		"texture": ""
+		"texture": "res://res/judgements_ok.svg"
 	},
 	Judgements.MISS: {
 		"judgement": Judgements.MISS,
 		"label": "Miss",
 		"precision": 0.100,
 		"accuracy": 0,
-		"texture": ""
+		"texture": "res://res/judgements_miss.svg"
 	},
 }
 

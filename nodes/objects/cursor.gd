@@ -1,7 +1,6 @@
 extends Node2D
 
-const CUSTOM_WHITE = preload("res://nodes/globals.gd").CUSTOM_WHITE
-var fill_color = CUSTOM_WHITE
+var fill_color = Globals.CUSTOM_WHITE
 var radius_delta = 0.0
 
 

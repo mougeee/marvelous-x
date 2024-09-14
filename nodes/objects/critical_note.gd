@@ -1,14 +1,5 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const Keys = globals.Keys
-const key_info = globals.key_info
-const Judgements = globals.Judgements
-const judgement_info = globals.judgement_info
-const NoteTypes = globals.NoteTypes
-const note_type_info = globals.note_type_info
-const CUSTOM_WHITE = globals.CUSTOM_WHITE
-
 var radius = 0
 var width = 0
 var note_width = 0
@@ -25,7 +16,7 @@ signal pressed
 
 func to_json(time: float) -> Dictionary:
 	return {
-		"y": note_type_info[NoteTypes.CRITICAL]['code'],
+		"y": Globals.note_type_info[Globals.NoteTypes.CRITICAL]['code'],
 		't': time,
 	}
 
@@ -60,25 +51,25 @@ func _process(_delta: float) -> void:
 	
 	var dt = (process - 1.0) / speed
 	if not processed:
-		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and Input.is_action_just_pressed("CriticalPress"):
+		if abs(dt) <= Globals.judgement_info[Globals.Judgements.MISS]["precision"] and Input.is_action_just_pressed("CriticalPress"):
 			processed = true
-			for i in range(judgement_info.size() - 1):
-				if abs(dt) <= judgement_info[i]["precision"]:
+			for i in range(Globals.judgement_info.size() - 1):
+				if abs(dt) <= Globals.judgement_info[i]["precision"]:
 					pressed.emit(i, rotation, true, dt)
 					break
 			queue_free()
-		elif dt > judgement_info[Judgements.MISS]["precision"]:
-			pressed.emit(Judgements.MISS, rotation, true, dt)
+		elif dt > Globals.judgement_info[Globals.Judgements.MISS]["precision"]:
+			pressed.emit(Globals.Judgements.MISS, rotation, true, dt)
 			processed = true
 	
-	if dt > judgement_info[Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
+	if dt > Globals.judgement_info[Globals.Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
 		queue_free()
 
 
 
 func _draw():
 	if radius > 0 and process < 2.0:
-		var color = note_type_info[NoteTypes.CRITICAL]['color']
+		var color = Globals.note_type_info[Globals.NoteTypes.CRITICAL]['color']
 		
 		if temporary:
 			color.a = 0.5

@@ -1,12 +1,5 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const Keys = globals.Keys
-const key_info = globals.key_info
-const Judgements = globals.Judgements
-const judgement_info = globals.judgement_info
-const CUSTOM_WHITE = globals.CUSTOM_WHITE
-
 var path
 var speed
 
@@ -56,21 +49,21 @@ func process_notes() -> float:
 			var is_last_keyreleased = Input.is_action_just_released("LeftPress") or Input.is_action_just_released("RightPress") or Input.is_action_just_released("Click")
 			
 			if (
-				abs(p['dt']) <= judgement_info[Judgements.MISS]["precision"]
+				abs(p['dt']) <= Globals.judgement_info[Globals.Judgements.MISS]["precision"]
 				and is_covered(i)
 				and (i == 0 and is_first_keypressed or i == path.size() - 1 and is_last_keyreleased)
 				and not last_missed
 			):
 				p['processed'] = true
-				for j in range(judgement_info.size() - 1):
-					if abs(p['dt']) <= judgement_info[j]["precision"]:
+				for j in range(Globals.judgement_info.size() - 1):
+					if abs(p['dt']) <= Globals.judgement_info[j]["precision"]:
 						pressed.emit(j, p['r'], false, p['dt'])
 						p['visible'] = false
 						break
-			if p['dt'] > judgement_info[Judgements.MISS]["precision"] and (i == 0 or i == path.size() - 1 and not last_missed):
+			if p['dt'] > Globals.judgement_info[Globals.Judgements.MISS]["precision"] and (i == 0 or i == path.size() - 1 and not last_missed):
 				p['processed'] = true
 				p['visible'] = false
-				pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
+				pressed.emit(Globals.Judgements.MISS, p['r'], false, p['dt'])
 		
 		elif not p['processed'] and not (i == 0 or i == path.size() - 1):
 			var is_keypressing = Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress") or Input.is_action_pressed("Click")
@@ -80,7 +73,7 @@ func process_notes() -> float:
 				p['visible'] = false
 				if (not is_covered(i) or not is_keypressing):
 					last_missed = true
-					pressed.emit(Judgements.MISS, p['r'], false, p['dt'])
+					pressed.emit(Globals.Judgements.MISS, p['r'], false, p['dt'])
 		
 		last_process = min(last_process, p['process'])
 	queue_redraw()
@@ -101,7 +94,7 @@ func _process(_delta: float) -> void:
 	
 
 func _draw():
-	var color = CUSTOM_WHITE
+	var color = Globals.CUSTOM_WHITE
 
 	for i in range(path.size() - 1):
 		var p = path[i]

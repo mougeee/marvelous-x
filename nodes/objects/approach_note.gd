@@ -1,14 +1,5 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const Keys = globals.Keys
-const key_info = globals.key_info
-const Judgements = globals.Judgements
-const judgement_info = globals.judgement_info
-const NoteTypes = globals.NoteTypes
-const note_type_info = globals.note_type_info
-const CUSTOM_WHITE = globals.CUSTOM_WHITE
-
 var radius = 0
 var coverage = 0.4
 var width = 0
@@ -27,7 +18,7 @@ signal pressed
 func to_json(time: float) -> Dictionary:
 	#{"y": 0, "t": 8.0, "r": -2.0, "c": 0.0, "k": 2},
 	return {
-		"y": note_type_info[NoteTypes.APPROACH]['code'],
+		"y": Globals.note_type_info[Globals.NoteTypes.APPROACH]['code'],
 		't': time,
 		'r': rotation,
 		'c': coverage
@@ -77,32 +68,32 @@ func _process(_delta: float) -> void:
 	
 	var dt = (process - 1.0) / speed
 	if not processed:
-		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and (
+		if abs(dt) <= Globals.judgement_info[Globals.Judgements.MISS]["precision"] and (
 			(
 				Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress") or Input.is_action_just_pressed("Click")
 			)
 		):
 			processed = true
 			if is_entirely_covered():
-				for i in range(judgement_info.size() - 1):
-					if abs(dt) <= judgement_info[i]["precision"]:
+				for i in range(Globals.judgement_info.size() - 1):
+					if abs(dt) <= Globals.judgement_info[i]["precision"]:
 						pressed.emit(i, rotation, false, dt)
 						break
 			else:
-				pressed.emit(Judgements.OK, rotation, false, dt)
+				pressed.emit(Globals.Judgements.OK, rotation, false, dt)
 			queue_free()
-		elif dt > judgement_info[Judgements.MISS]["precision"]:
-			pressed.emit(Judgements.MISS, rotation, false, dt)
+		elif dt > Globals.judgement_info[Globals.Judgements.MISS]["precision"]:
+			pressed.emit(Globals.Judgements.MISS, rotation, false, dt)
 			processed = true
 	
-	if dt > judgement_info[Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
+	if dt > Globals.judgement_info[Globals.Judgements.MISS]["precision"] and radius > (get_window().size/2).length() + width * 2:
 		queue_free()
 
 
 
 func _draw():
 	if radius > 0 and process < 2.0:
-		var color = CUSTOM_WHITE
+		var color = Globals.CUSTOM_WHITE
 		
 		if temporary:
 			color.a = 0.5

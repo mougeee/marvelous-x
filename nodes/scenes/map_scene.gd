@@ -1,10 +1,5 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const Keys = globals.Keys
-const key_info = globals.key_info
-const NoteTypes = globals.NoteTypes
-const note_type_info = globals.note_type_info
 const ApproachNote = preload("res://nodes/objects/approach_note.tscn")
 const LongNote = preload("res://nodes/objects/long_note.tscn")
 const TrapNote = preload("res://nodes/objects/trap_note.tscn")
@@ -13,7 +8,7 @@ const CriticalNote = preload("res://nodes/objects/critical_note.tscn")
 var audio_playing = false
 var stream_loaded = false
 
-var offset = globals.offset
+var offset = Globals.offset
 
 var notes = []
 var note_nodes = []
@@ -39,13 +34,13 @@ func _ready() -> void:
 	chart_duplicate.erase("notes")
 	$ChartRawEdit.text = JSON.stringify(chart_duplicate, ' ')
 
-func process_key(key_code: int) -> Keys:
+func process_key(key_code: int) -> Globals.Keys:
 	if key_code == 0:
-		return Keys.LEFT
+		return Globals.Keys.LEFT
 	elif key_code == 1:
-		return Keys.RIGHT
+		return Globals.Keys.RIGHT
 	else:
-		return Keys.CRITICAL
+		return Globals.Keys.CRITICAL
 	
 	
 func process_bpm_index(index: int) -> void:
@@ -141,7 +136,7 @@ func _process(delta: float) -> void:
 		if not (note['t'] - 1.0 / chart['speed'] <= time):
 			continue
 			
-		if note["y"] == note_type_info[NoteTypes.APPROACH]["code"]:
+		if note["y"] == Globals.note_type_info[Globals.NoteTypes.APPROACH]["code"]:
 			if process > 0.0 and process < 2.0:
 				var note_node = ApproachNote.instantiate()
 				note_nodes.append(note_node)
@@ -154,7 +149,7 @@ func _process(delta: float) -> void:
 				note_node.render()
 				$Centering.add_child(note_node)
 				
-		elif note["y"] == note_type_info[NoteTypes.LONG]["code"]:
+		elif note["y"] == Globals.note_type_info[Globals.NoteTypes.LONG]["code"]:
 			if process > 0.0:
 				var note_node = LongNote.instantiate()
 				note_nodes.append(note_node)
@@ -166,7 +161,7 @@ func _process(delta: float) -> void:
 				note_node.process_notes()
 				$Centering.add_child(note_node)
 				
-		elif note['y'] == note_type_info[NoteTypes.TRAP]['code']:
+		elif note['y'] == Globals.note_type_info[Globals.NoteTypes.TRAP]['code']:
 			if process > 0.0 and process < 2.0:
 				var note_node = TrapNote.instantiate()
 				note_nodes.append(note_node)
@@ -178,7 +173,7 @@ func _process(delta: float) -> void:
 				note_node.render()
 				$Centering.add_child(note_node)
 				
-		elif note['y'] == note_type_info[NoteTypes.CRITICAL]['code']:
+		elif note['y'] == Globals.note_type_info[Globals.NoteTypes.CRITICAL]['code']:
 			if process > 0.0 and process < 2.0:
 				var note_node = CriticalNote.instantiate()
 				note_nodes.append(note_node)
@@ -202,11 +197,11 @@ func _process(delta: float) -> void:
 			var json = note.to_json(t)
 			if $CreateTrapNotes.button_pressed:
 				json.erase("k")
-				json['y'] = note_type_info[NoteTypes.TRAP]['code']
+				json['y'] = Globals.note_type_info[Globals.NoteTypes.TRAP]['code']
 			elif Input.is_action_just_pressed("CriticalPress"):
 				json.erase("c")
 				json.erase("r")
-				json['y'] = note_type_info[NoteTypes.CRITICAL]['code']
+				json['y'] = Globals.note_type_info[Globals.NoteTypes.CRITICAL]['code']
 			
 			# insert in right position
 			var left = 0
@@ -252,9 +247,9 @@ func _process(delta: float) -> void:
 			# insert long note to the position
 			var key_code
 			if Input.is_action_just_released("LeftPress"):
-				key_code = key_info[Keys.LEFT]['code']
+				key_code = Globals.key_info[Globals.Keys.LEFT]['code']
 			elif Input.is_action_just_released("RightPress"):
-				key_code = key_info[Keys.RIGHT]['code']
+				key_code = Globals.key_info[Globals.Keys.RIGHT]['code']
 				
 				
 			# insert in right position
@@ -269,7 +264,7 @@ func _process(delta: float) -> void:
 				else:
 					right = mid_index
 			notes.insert(left, {
-				'y': note_type_info[NoteTypes.LONG]['code'],
+				'y': Globals.note_type_info[Globals.NoteTypes.LONG]['code'],
 				't': start_time,
 				'p': JSON.parse_string(JSON.stringify(creating_long_note))
 			})
@@ -301,8 +296,8 @@ func _process(delta: float) -> void:
 		for i in range(notes.size()):
 			var note = notes[i]
 			if (
-				note['y'] == note_type_info[NoteTypes.APPROACH]['code']
-				or note['y'] == note_type_info[NoteTypes.TRAP]['code']
+				note['y'] == Globals.note_type_info[Globals.NoteTypes.APPROACH]['code']
+				or note['y'] == Globals.note_type_info[Globals.NoteTypes.TRAP]['code']
 			):
 				var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
 				var distance = pow(process, 4) * frame.radius

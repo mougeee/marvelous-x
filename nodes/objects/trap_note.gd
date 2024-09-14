@@ -1,13 +1,5 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const Keys = globals.Keys
-const key_info = globals.key_info
-const Judgements = globals.Judgements
-const judgement_info = globals.judgement_info
-const NoteTypes = globals.NoteTypes
-const note_type_info = globals.note_type_info
-
 var radius = 0
 var coverage = 0.4
 var width = 0
@@ -64,11 +56,11 @@ func _process(_delta: float) -> void:
 	
 	if process >= 1.0 and not processed:
 		if is_well_covered():
-			passed.emit(Judgements.MISS, rotation, false, 0.0)
+			passed.emit(Globals.Judgements.MISS, rotation, false, 0.0)
 		elif is_kinda_covered():
-			passed.emit(Judgements.OK, rotation, false, 0.0)
+			passed.emit(Globals.Judgements.OK, rotation, false, 0.0)
 		else:
-			passed.emit(Judgements.MARVELOUS, rotation, false, 0.0)
+			passed.emit(Globals.Judgements.MARVELOUS, rotation, false, 0.0)
 		processed = true
 	
 	render()
@@ -76,7 +68,7 @@ func _process(_delta: float) -> void:
 
 
 func _draw():
-	var color = note_type_info[NoteTypes.TRAP]['color']
+	var color = Globals.note_type_info[Globals.NoteTypes.TRAP]['color']
 	
 	if radius > 0 and process < 2.0:
 		draw_arc(

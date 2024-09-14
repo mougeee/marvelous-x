@@ -1,15 +1,9 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-var Keys = globals.Keys
-var key_info = globals.key_info
-const CUSTOM_WHITE = globals.CUSTOM_WHITE
-const CUSTOM_YELLOW = globals.CUSTOM_YELLOW
-
 var radius = 0
 var coverage = 1.0
 var width = 0
-var cursor_color = CUSTOM_WHITE
+var cursor_color = Globals.CUSTOM_WHITE
 
 var target_coverage = 1.0
 @export var speed = 1.0
@@ -43,7 +37,7 @@ func _ready() -> void:
 	
 var mouse_radius = 100.0
 @export var mouse_lock = false
-var cursor_highlight_color = Color(CUSTOM_WHITE.r, CUSTOM_WHITE.g, CUSTOM_WHITE.b, 0.0)
+var cursor_highlight_color = Color(Globals.CUSTOM_WHITE.r, Globals.CUSTOM_WHITE.g, Globals.CUSTOM_WHITE.b, 0.0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -81,13 +75,13 @@ func _process(delta: float) -> void:
 		or Input.is_action_pressed("RightPress")
 		or Input.is_action_pressed("Click")
 	):
-		cursor_highlight_color = CUSTOM_WHITE
+		cursor_highlight_color = Globals.CUSTOM_WHITE
 	elif Input.is_action_pressed("CriticalPress"):
-		cursor_highlight_color = CUSTOM_YELLOW
+		cursor_highlight_color = Globals.CUSTOM_YELLOW
 	else:
-		cursor_highlight_color.r = lerp(cursor_highlight_color.r, CUSTOM_WHITE.r, 0.1)
-		cursor_highlight_color.g = lerp(cursor_highlight_color.g, CUSTOM_WHITE.g, 0.1)
-		cursor_highlight_color.b = lerp(cursor_highlight_color.b, CUSTOM_WHITE.b, 0.1)
+		cursor_highlight_color.r = lerp(cursor_highlight_color.r, Globals.CUSTOM_WHITE.r, 0.1)
+		cursor_highlight_color.g = lerp(cursor_highlight_color.g, Globals.CUSTOM_WHITE.g, 0.1)
+		cursor_highlight_color.b = lerp(cursor_highlight_color.b, Globals.CUSTOM_WHITE.b, 0.1)
 		cursor_highlight_color.a = lerp(cursor_highlight_color.a, 0.0, 0.1)
 	queue_redraw()
 
@@ -135,13 +129,13 @@ func set_coverage(c: float) -> void:
 
 func _draw():
 	# note frame
-	draw_circle(Vector2.ZERO, radius, CUSTOM_WHITE, false, 2, true)
+	draw_circle(Vector2.ZERO, radius, Globals.CUSTOM_WHITE, false, 2, true)
 	
 	# center
-	draw_circle(Vector2.ZERO, 20, CUSTOM_WHITE, false, 1, true)
+	draw_circle(Vector2.ZERO, 20, Globals.CUSTOM_WHITE, false, 1, true)
 	
 	# beat lines
-	var beat_line_color = Color(CUSTOM_WHITE)
+	var beat_line_color = Color(Globals.CUSTOM_WHITE)
 	beat_line_color.a = 0.1
 	for b in beat_lines:
 		var r = radius * pow(b, 4)

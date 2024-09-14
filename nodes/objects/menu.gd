@@ -1,14 +1,11 @@
 extends Node2D
 
-const globals = preload("res://nodes/globals.gd")
-const CUSTOM_WHITE = globals.CUSTOM_WHITE
-
 @export var target_coverage = PI / 2
 @export var thumbnail: Texture2D
 @export var target_rotation = 0.0
 @export var label = ""
 
-var background_color = CUSTOM_WHITE
+var background_color = Globals.CUSTOM_WHITE
 var original_radius = 0.0
 var radius = original_radius
 var coverage = target_coverage
@@ -62,9 +59,9 @@ func _process(_delta: float) -> void:
 func _draw():
 	$Label.position.x = radius - $Label.get_rect().size.x - 50.0
 	$Label.position.y = -$Label.get_rect().size.y / 2
-	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(-coverage/2), CUSTOM_WHITE, 2, true)
-	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), CUSTOM_WHITE, 2, true)
-	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, CUSTOM_WHITE, 2, true)
+	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(-coverage/2), Globals.CUSTOM_WHITE, 2, true)
+	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), Globals.CUSTOM_WHITE, 2, true)
+	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, Globals.CUSTOM_WHITE, 2, true)
 	
 	#if thumbnail:
 		#draw_texture(thumbnail, Vector2.ZERO)

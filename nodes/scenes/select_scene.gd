@@ -1,7 +1,6 @@
 extends Node2D
 
 const Menu = preload("res://nodes/objects/menu.tscn")
-const globals = preload("res://nodes/globals.gd")
 
 var chart_names = []
 var selected_index = 0
