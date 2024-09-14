@@ -219,7 +219,9 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt
 	
 	var judgement_node = Judgement.instantiate()
 	judgement_node.set_judgement(j_info["judgement"])
-	if not is_critical:
+	if is_critical:
+		judgement_node.position = Vector2(0.0, 100.0)
+	else:
 		judgement_node.position = Vector2.RIGHT.rotated(angle) * 100.0
 	if j_info['judgement'] != Judgements.MISS and dt:
 		judgement_node.get_node("Offset").text = "%.1fms" % [dt * 1000.0]

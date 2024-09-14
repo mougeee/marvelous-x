@@ -9,7 +9,7 @@ font = ExtResource("3_3ssaj")
 font_size = 24
 
 [node name="Judgement" type="Sprite2D"]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_ykxoi")
 script = ExtResource("1_l0cc0")
 
