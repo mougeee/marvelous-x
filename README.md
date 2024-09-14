@@ -11,6 +11,8 @@
 
 ## 개발 버전으로 실행하는 방법
 
+<img width="1136" alt="Godot 메인 화면" src="https://github.com/user-attachments/assets/c4126777-c4d5-4203-b8b0-40f4f62840aa">
+
 1. [Godot 게임 엔진](https://godotengine.org)을 다운로드합니다.
 1. 레포지토리를 다운로드하여 Godot 프로젝트 목록에 추가합니다.
 1. 메인 화면 우측의 Play (실행) 버튼을 눌러 실행합니다.
