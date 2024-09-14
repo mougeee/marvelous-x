@@ -17,7 +17,7 @@ func _ready() -> void:
 	$Centering/PreviewThumbnail.modulate.a = 0.1
 	
 	# load chart names
-	var dir = DirAccess.open("charts")
+	var dir = DirAccess.open("user://charts")
 	chart_names.clear()
 	dir.list_dir_begin()
 	while true:
@@ -44,16 +44,17 @@ func _ready() -> void:
 		menu.rotation = menu.target_rotation
 		menu.target_coverage = get_target_coverage(i)
 		menu.pressed.connect(change_selected_index_offset.bind(i))
-		menu.thumbnail = load("charts/" + chart_name + "/thumbnail.svg")
+		#menu.thumbnail = load("user://charts/" + chart_name + "/thumbnail.svg")
 		menu.label = chart_name
 		menus[i] = menu
 		$Centering.add_child(menu)
 	
-	var chart_name = chart_names[selected_index]
-	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
-	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart.song.path)
-	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
-	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart.song.thumbnail)
+	if chart_names:
+		var chart_name = chart_names[selected_index]
+		var chart = Globals.load_chart("user://charts/" + chart_name + "/chart.json")
+		$PreviewAudio.stream = load("user://charts/" + chart_name + "/" + chart.song.path)
+		$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
+		$Centering/PreviewThumbnail.texture = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
 
 
 func _process(delta: float) -> void:
@@ -105,10 +106,10 @@ func change_selected_index_offset(offset: int):
 	selected_index += offset
 	
 	var chart_name = chart_names[selected_index]
-	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
-	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart.song.path)
+	var chart = Globals.load_chart("user://charts/" + chart_name + "/chart.json")
+	$PreviewAudio.stream = load("user://charts/" + chart_name + "/" + chart.song.path)
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf())
-	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart.song.thumbnail)
+	$Centering/PreviewThumbnail.texture = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
 
 
 func get_target_coverage(index: int) -> float:

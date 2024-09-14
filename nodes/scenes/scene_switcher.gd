@@ -6,6 +6,8 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	current_scene.scene_changed.connect(handle_scene_changed)
+	
+	DirAccess.make_dir_absolute("user://charts")
 
 
 func handle_scene_changed(current_scene_name: String, next_scene_name: String, data: Dictionary = {}):

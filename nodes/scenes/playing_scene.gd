@@ -83,15 +83,15 @@ func preprocess_notes(raw_notes: Array):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# preprocess notes
-	chart = Globals.load_chart("charts/" + scene_data.chart + "/chart.json")
+	chart = Globals.load_chart("user://charts/" + scene_data.chart + "/chart.json")
 	preprocess_notes(chart["notes"])
 	
 	# backgroung thumbnail
-	$Centering/BackgroundThumbnail.texture = load("charts/" + scene_data.chart + "/" + chart.song.thumbnail)
+	$Centering/BackgroundThumbnail.texture = load("user://charts/" + scene_data.chart + "/" + chart.song.thumbnail)
 	$Centering/BackgroundThumbnail.modulate.a = 0.1
 	
 	# reset chart
-	$AudioStreamPlayer.stream = load("charts/" + scene_data.chart + "/" + chart.song.path)
+	$AudioStreamPlayer.stream = load("user://charts/" + scene_data.chart + "/" + chart.song.path)
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	$Centering/NoteFrame.speed = chart.speed
 
