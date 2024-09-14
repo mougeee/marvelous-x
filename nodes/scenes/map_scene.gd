@@ -295,20 +295,23 @@ func _process(delta: float) -> void:
 		var selected_note_index
 		for i in range(notes.size()):
 			var note = notes[i]
-			var distance
 			var distance_between_mouse
+			var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
+			var distance = pow(process, 4) * frame.radius
 			if (
 				note['y'] == Globals.note_type_info[Globals.NoteTypes.APPROACH]['code']
 				or note['y'] == Globals.note_type_info[Globals.NoteTypes.TRAP]['code']
 				or note['y'] == Globals.note_type_info[Globals.NoteTypes.CRITICAL]['code']
 			):
-				var process = (time - (note['t'] - 1.0 / chart['speed'] + offset)) * chart['speed']
 				var pos
-				distance = pow(process, 4) * frame.radius
 				if note['y'] == Globals.note_type_info[Globals.NoteTypes.CRITICAL]['code']:
 					pos = Vector2(distance, 0.0).rotated(mouse_pos.angle())
 				else:
 					pos = Vector2(distance, 0).rotated(note['r'])
+				distance_between_mouse = (pos - mouse_pos).length()
+			
+			if note['y'] == Globals.note_type_info[Globals.NoteTypes.LONG]['code']:
+				var pos = Vector2(distance, 0.0).rotated(note['p'][0]['r'])
 				distance_between_mouse = (pos - mouse_pos).length()
 				
 			if not selected_note_distance or distance_between_mouse < selected_note_distance:
@@ -362,7 +365,11 @@ func _process(delta: float) -> void:
 
 func _draw():
 	if ($RemoveNotes.button_pressed or $EditNotes.button_pressed) and selected_note and notes:
-		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(selected_note.get('r', 0.0))
+		var direction = selected_note.get('r', 0.0)
+		if selected_note['y'] == Globals.note_type_info[Globals.NoteTypes.LONG]['code']:
+			direction = selected_note['p'][0]['r']
+		
+		var pos = get_viewport_rect().size / 2 + Vector2(selected_note_radius, 0.0).rotated(direction)
 		draw_circle(pos, 100.0, Color.WHITE, false, 1, true)
 
 
