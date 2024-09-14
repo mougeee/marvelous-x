@@ -25,6 +25,8 @@ const note_type_info = global.note_type_info
 var note_start_time = 0
 var scene_data = {}
 
+const ComboLabel = preload("res://nodes/objects/combo_label.tscn")
+
 signal scene_changed
 
 
@@ -178,6 +180,10 @@ func _process(_delta: float) -> void:
 	
 	progress = time / $AudioStreamPlayer.stream.get_length()
 	queue_redraw()
+	
+	# combo lerp
+	$Centering/Combo.modulate.a = lerp($Centering/Combo.modulate.a, 0.5, 0.1)
+	$Centering/Combo.position.y = lerp($Centering/Combo.position.y, -100.0, 0.1)
 
 
 func _draw():
@@ -191,6 +197,7 @@ var splendid_count = 0
 var great_count = 0
 var ok_count = 0
 var miss_count = 0
+var combo = 0
 
 
 func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt: float) -> void:
@@ -198,14 +205,23 @@ func _on_note_pressed(judgement: Judgements, angle: float, is_critical: bool, dt
 	
 	if j_info["judgement"] == Judgements.MARVELOUS:
 		marvelous_count += 1
+		combo += 1
 	if j_info["judgement"] == Judgements.SPLENDID:
 		splendid_count += 1
+		combo += 1
 	if j_info["judgement"] == Judgements.GREAT:
 		great_count += 1
+		combo += 1
 	if j_info["judgement"] == Judgements.OK:
 		ok_count += 1
+		combo += 1
 	if j_info["judgement"] == Judgements.MISS:
 		miss_count += 1
+		combo = 0
+		
+	$Centering/Combo.text = "%dx" % combo
+	$Centering/Combo.position.y = -80.0
+	$Centering/Combo.modulate.a = 1.0
 	
 	var judgement_node = Judgement.instantiate()
 	judgement_node.set_judgement(j_info["judgement"])

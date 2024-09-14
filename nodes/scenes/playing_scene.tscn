@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvcdkjhhm24wr"]
+[gd_scene load_steps=9 format=3 uid="uid://dvcdkjhhm24wr"]
 
 [ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="1_2g1bc"]
 [ext_resource type="Script" path="res://nodes/scenes/playing_scene.gd" id="1_o3yjq"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://bgfyeoxtfn5in" path="res://nodes/objects/animated_number.tscn" id="4_1n1rm"]
 [ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="4_lofq0"]
 [ext_resource type="PackedScene" uid="uid://b8hh7erdmresl" path="res://nodes/objects/cursor.tscn" id="7_ty78e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3qax2"]
+font = ExtResource("4_lofq0")
+font_size = 36
 
 [sub_resource type="LabelSettings" id="LabelSettings_y41ep"]
 font = ExtResource("4_lofq0")
@@ -19,6 +23,23 @@ script = ExtResource("1_o3yjq")
 [node name="BackgroundThumbnail" type="Sprite2D" parent="Centering"]
 
 [node name="NoteFrame" parent="Centering" instance=ExtResource("1_2g1bc")]
+
+[node name="Combo" type="Label" parent="Centering"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -100.0
+offset_right = 20.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0x"
+label_settings = SubResource("LabelSettings_3qax2")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Accuracy" parent="." instance=ExtResource("4_1n1rm")]
 offset_left = 20.0
