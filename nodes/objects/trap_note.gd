@@ -22,10 +22,11 @@ var begin_time
 signal passed
 
 
-func resize() -> void:
-	var frame = get_parent().get_node("NoteFrame")
+func resize(frame = null) -> void:
+	if frame == null:
+		frame = get_parent().get_node("NoteFrame")
 	frame_radius = frame.radius
-	note_width = frame.width / 2
+	note_width = frame.width
 
 
 # Called when the node enters the scene tree for the first time.

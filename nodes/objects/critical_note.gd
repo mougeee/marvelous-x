@@ -30,10 +30,11 @@ func to_json(time: float) -> Dictionary:
 	}
 
 
-func resize() -> void:
-	var frame = get_parent().get_node("NoteFrame")
+func resize(frame = null) -> void:
+	if frame == null:
+		frame = get_parent().get_node("NoteFrame")
 	frame_radius = frame.radius
-	note_width = frame.width
+	note_width = frame.width / 8
 
 
 # Called when the node enters the scene tree for the first time.

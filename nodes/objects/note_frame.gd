@@ -49,7 +49,7 @@ var cursor_highlight_color = Color(CUSTOM_WHITE.r, CUSTOM_WHITE.g, CUSTOM_WHITE.
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	var mouse_delta = get_global_mouse_position() - get_viewport_rect().size / 2
-	rotation = lerp_angle(rotation, mouse_delta.angle(), 0.5)
+	rotation = mouse_delta.angle()
 	
 	if mouse_lock and mouse_delta.length() > mouse_radius:
 		Input.warp_mouse(get_parent().position + mouse_delta.normalized() * mouse_radius)

@@ -49,6 +49,13 @@ func _ready() -> void:
 	begin_time = Time.get_ticks_usec()
 
 
+func is_entirely_covered() -> bool:
+	var frame = get_parent().get_node("NoteFrame")
+	var dr = abs(angle_difference(frame.rotation, rotation))
+	var dc = abs(angle_difference(frame.coverage, coverage)) / 2
+	return dr <= dc
+
+
 func is_covered() -> bool:
 	var frame = get_parent().get_node("NoteFrame")
 	var dr = abs(angle_difference(frame.rotation, rotation))
@@ -71,15 +78,18 @@ func _process(_delta: float) -> void:
 	var dt = (process - 1.0) / speed
 	if not processed:
 		if abs(dt) <= judgement_info[Judgements.MISS]["precision"] and (
-			is_covered() and (
+			(
 				Input.is_action_just_pressed("LeftPress") or Input.is_action_just_pressed("RightPress") or Input.is_action_just_pressed("Click")
 			)
 		):
 			processed = true
-			for i in range(judgement_info.size() - 1):
-				if abs(dt) <= judgement_info[i]["precision"]:
-					pressed.emit(i, rotation, false, dt)
-					break
+			if is_entirely_covered():
+				for i in range(judgement_info.size() - 1):
+					if abs(dt) <= judgement_info[i]["precision"]:
+						pressed.emit(i, rotation, false, dt)
+						break
+			else:
+				pressed.emit(Judgements.OK, rotation, false, dt)
 			queue_free()
 		elif dt > judgement_info[Judgements.MISS]["precision"]:
 			pressed.emit(Judgements.MISS, rotation, false, dt)
