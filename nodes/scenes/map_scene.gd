@@ -105,8 +105,17 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("MapTapBPM"):
 		_on_tap_bpm_button_pressed()
 	
-	# redraw lines
+	# Scroll to change playing time
+	if Input.is_action_just_released("MouseWheelUp"):
+		$Timeline.value -= 0.05
+	if Input.is_action_just_released("MouseWheelDown"):
+		$Timeline.value += 0.05
+	
+	# time label
 	var time = $Timeline.value
+	$Time.text = "%.3f" % time
+	
+	# redraw lines
 	if chart:
 		$Centering/NoteFrame.beat_lines.clear()
 		for i in range(chart['bpm'].size()):
@@ -165,8 +174,7 @@ func _process(delta: float) -> void:
 				note_node.process = process
 				note_node.rotation = note['r']
 				note_node.coverage = note['c']
-				note_node.frame_radius = frame.radius
-				note_node.note_width = frame.width
+				note_node.resize(frame)
 				note_node.render()
 				$Centering.add_child(note_node)
 				
@@ -176,8 +184,7 @@ func _process(delta: float) -> void:
 				note_nodes.append(note_node)
 				note_node.manual = true
 				note_node.process = process
-				note_node.frame_radius = frame.radius
-				note_node.note_width = frame.width
+				note_node.resize(frame)
 				note_node.render()
 				$Centering.add_child(note_node)
 				
