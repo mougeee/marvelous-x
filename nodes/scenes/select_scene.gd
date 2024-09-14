@@ -1,6 +1,7 @@
 extends Node2D
 
 const Menu = preload("res://nodes/objects/menu.tscn")
+const globals = preload("res://nodes/globals.gd")
 
 var chart_names = []
 var selected_index = 0
@@ -49,9 +50,10 @@ func _ready() -> void:
 		$Centering.add_child(menu)
 	
 	var chart_name = chart_names[selected_index]
-	$PreviewAudio.stream = load("charts/" + chart_name + "/song.wav")
+	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
+	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart['song'])
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
-	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/thumbnail.svg")
+	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/" + chart['thumbnail'])
 
 
 func _process(delta: float) -> void:
@@ -62,7 +64,7 @@ func _process(delta: float) -> void:
 func change_selected_index_offset(offset: int):
 	if offset == 0:
 		scene_changed.emit("select", "playing", {
-			'chart': 'charts/' + chart_names[selected_index] + '/chart.json'
+			'chart': chart_names[selected_index]
 		})
 		return
 	
@@ -103,7 +105,8 @@ func change_selected_index_offset(offset: int):
 	selected_index += offset
 	
 	var chart_name = chart_names[selected_index]
-	$PreviewAudio.stream = load("charts/" + chart_name + "/song.wav")
+	var chart = Globals.load_chart("charts/" + chart_name + "/chart.json")
+	$PreviewAudio.stream = load("charts/" + chart_name + "/" + chart['song'])
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf())
 	$Centering/PreviewThumbnail.texture = load("charts/" + chart_name + "/thumbnail.svg")
 

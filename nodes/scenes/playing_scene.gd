@@ -28,12 +28,6 @@ var scene_data = {}
 const ComboLabel = preload("res://nodes/objects/combo_label.tscn")
 
 signal scene_changed
-
-
-func load_chart():
-	var file = FileAccess.open(scene_data.chart, FileAccess.READ)
-	chart = JSON.parse_string(file.get_as_text())
-	file.close()
 	
 
 var note_count
@@ -89,7 +83,7 @@ func preprocess_notes(raw_notes: Array):
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# preprocess notes
-	load_chart()
+	chart = Globals.load_chart("charts/" + scene_data.chart + "/chart.json")
 	preprocess_notes(chart["notes"])
 	
 	# backgroung thumbnail
@@ -97,7 +91,7 @@ func _ready() -> void:
 	$Centering/BackgroundThumbnail.modulate.a = 0.1
 	
 	# reset chart
-	$AudioStreamPlayer.stream = load(chart['song'])
+	$AudioStreamPlayer.stream = load("charts/" + scene_data.chart + "/" + chart['song'])
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	$Centering/NoteFrame.speed = chart['speed']
 

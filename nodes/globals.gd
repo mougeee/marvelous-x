@@ -1,3 +1,5 @@
+extends Node
+
 const offset = 0.090
 
 const CUSTOM_WHITE = Color("#f7f7f9")
@@ -71,3 +73,10 @@ const note_type_info = {
 		'color': CUSTOM_YELLOW
 	},
 }
+
+
+func load_chart(filename: String) -> Dictionary:
+	var file = FileAccess.open(filename, FileAccess.READ)
+	var chart = JSON.parse_string(file.get_as_text())
+	file.close()
+	return chart

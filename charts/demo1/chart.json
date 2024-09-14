@@ -25,6 +25,6 @@
 		{"t": 0.0, "c": 1.0},
 		{"t": 5.5, "c": 0.7},
 	],
-	"song": "charts/demo1/song.wav",
-	"thumbnail": "charts/demo1/thumbnail.svg"
+	"song": "song.wav",
+	"thumbnail": "thumbnail.svg"
 }

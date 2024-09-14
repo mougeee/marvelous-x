@@ -157,8 +157,8 @@
    "y": 3
   }
  ],
- "song": "charts/demo2/song.wav",
+ "song": "song.wav",
  "speed": 0.7,
- "thumbnail": "charts/demo2/thumbnail.svg",
+ "thumbnail": "thumbnail.svg",
  "version": 1
 }

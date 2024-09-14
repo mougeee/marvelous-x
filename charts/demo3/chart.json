@@ -1,0 +1,19 @@
+{
+ "bpm": [
+  {
+   "b": 137,
+   "t": 0
+  }
+ ],
+ "cursor": [
+  {
+   "c": 1,
+   "t": 0
+  }
+ ],
+ "notes": [],
+ "song": "demo3.wav",
+ "speed": 0.7,
+ "thumbnail": "thumbnail.svg",
+ "version": 1
+}

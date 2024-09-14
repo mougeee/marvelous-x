@@ -13,7 +13,7 @@ font_size = 36
 
 [sub_resource type="LabelSettings" id="LabelSettings_y41ep"]
 font = ExtResource("4_lofq0")
-font_size = 24
+font_size = 32
 
 [node name="PlayingScene" type="Node2D"]
 script = ExtResource("1_o3yjq")
