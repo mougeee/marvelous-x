@@ -70,6 +70,9 @@ func preprocess_notes(raw_notes: Array):
 		notes.insert(left, raw_note)
 
 
+func resize() -> void:
+	Globals.resize_thumbnail($Centering/BackgroundThumbnail, get_viewport_rect().size)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -77,14 +80,18 @@ func _ready() -> void:
 	chart = Globals.load_chart("user://charts/" + scene_data.chart + "/chart.json")
 	preprocess_notes(chart["notes"])
 	
-	# backgroung thumbnail
+	# background thumbnail
 	$Centering/BackgroundThumbnail.texture = load("user://charts/" + scene_data.chart + "/" + chart.song.thumbnail)
 	$Centering/BackgroundThumbnail.modulate.a = 0.1
+	Globals.resize_thumbnail($Centering/BackgroundThumbnail, get_viewport_rect().size)	
 	
 	# reset chart
 	$AudioStreamPlayer.stream = load("user://charts/" + scene_data.chart + "/" + chart.song.path)
 	time_begin = Time.get_ticks_usec() - note_start_time * 1e6
 	$Centering/NoteFrame.speed = chart.speed
+
+	# connect resize event handler
+	get_tree().get_root().size_changed.connect(resize)
 
 
 var progress

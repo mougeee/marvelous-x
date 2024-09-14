@@ -80,3 +80,9 @@ func load_chart(filename: String) -> Dictionary:
 	var chart = JSON.parse_string(file.get_as_text())
 	file.close()
 	return chart
+
+
+func resize_thumbnail(sprite: Sprite2D, viewport_size: Vector2):
+	var thumbnail_size = sprite.texture.get_size()
+	var scale_factor = max(viewport_size.x / thumbnail_size.x, viewport_size.y / thumbnail_size.y)
+	sprite.scale = Vector2(scale_factor, scale_factor)

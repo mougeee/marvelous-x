@@ -11,6 +11,10 @@ var scene_data
 signal scene_changed
 
 
+func resize():
+	Globals.resize_thumbnail($Centering/PreviewThumbnail, get_viewport_rect().size)
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$Centering/PreviewThumbnail.modulate.a = 0.1
@@ -54,6 +58,10 @@ func _ready() -> void:
 		$PreviewAudio.stream = load("user://charts/" + chart_name + "/" + chart.song.path)
 		$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
 		$Centering/PreviewThumbnail.texture = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
+		Globals.resize_thumbnail($Centering/PreviewThumbnail, get_viewport_rect().size)
+	
+	# resize hander connection
+	get_tree().get_root().size_changed.connect(resize)
 
 
 func _process(delta: float) -> void:
@@ -109,6 +117,7 @@ func change_selected_index_offset(offset: int):
 	$PreviewAudio.stream = load("user://charts/" + chart_name + "/" + chart.song.path)
 	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf())
 	$Centering/PreviewThumbnail.texture = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
+	Globals.resize_thumbnail($Centering/PreviewThumbnail, get_viewport_rect().size)
 
 
 func get_target_coverage(index: int) -> float:
