@@ -97,8 +97,7 @@ func _ready() -> void:
 var progress
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# get audio play time
 	var time = (Time.get_ticks_usec() - time_begin) / 1e6
 	#var time = $AudioStreamPlayer.get_playback_position()
@@ -174,8 +173,8 @@ func _process(_delta: float) -> void:
 	queue_redraw()
 	
 	# combo lerp
-	$Centering/Combo.modulate.a = lerp($Centering/Combo.modulate.a, 0.5, 0.1)
-	$Centering/Combo.position.y = lerp($Centering/Combo.position.y, -100.0, 0.1)
+	$Centering/Combo.modulate.a = lerp($Centering/Combo.modulate.a, 0.5, 6.0 * delta)
+	$Centering/Combo.position.y = lerp($Centering/Combo.position.y, -100.0, 6.0 * delta)
 
 
 func _draw():

@@ -3,7 +3,7 @@ extends Label
 
 @export var number = 0.0
 @export var format = "%.2f"
-@export var lerp_ratio = 0.5
+@export var lerp_ratio = 6.0
 var display_number = 0.0
 
 
@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	display_number = lerp(display_number, number, lerp_ratio)
+func _process(delta: float) -> void:
+	display_number = lerp(display_number, number, delta * lerp_ratio)
 	
 	text = format % [display_number]

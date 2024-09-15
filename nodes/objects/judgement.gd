@@ -7,8 +7,8 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	modulate.a = lerp(modulate.a, -0.05, 0.05)
+func _process(delta: float) -> void:
+	modulate.a = lerp(modulate.a, -0.05, 3.0 * delta)
 	
 	if modulate.a < 0.0:
 		queue_free()

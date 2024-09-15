@@ -12,15 +12,15 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	position = get_global_mouse_position()
 	
-	fill_color.a = lerp(fill_color.a, 0.0, 0.2)
+	fill_color.a = lerp(fill_color.a, 0.0, 12.0 * delta)
 	if Input.is_action_pressed("Click") or Input.is_action_pressed("LeftPress") or Input.is_action_pressed("RightPress"):
 		fill_color.a = 1.0
-		radius_delta = lerp(radius_delta, 4.0, 0.2)
+		radius_delta = lerp(radius_delta, 4.0, 12.0 * delta)
 	else:
-		radius_delta = lerp(radius_delta, 0.0, 0.2)
+		radius_delta = lerp(radius_delta, 0.0, 12.0 * delta)
 	queue_redraw()
 
 

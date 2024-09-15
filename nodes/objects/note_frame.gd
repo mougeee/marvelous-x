@@ -66,7 +66,7 @@ func _process(delta: float) -> void:
 	
 	# change coverage
 	if abs(coverage - target_coverage) >= 0.01:
-		coverage = lerp(coverage, target_coverage, 0.1)
+		coverage = lerp(coverage, target_coverage, 6.0 * delta)
 		redraw_path()
 		
 	# highlight cursor by pressing keys
@@ -79,10 +79,10 @@ func _process(delta: float) -> void:
 	elif Input.is_action_pressed("CriticalPress"):
 		cursor_highlight_color = Globals.CUSTOM_YELLOW
 	else:
-		cursor_highlight_color.r = lerp(cursor_highlight_color.r, Globals.CUSTOM_WHITE.r, 0.1)
-		cursor_highlight_color.g = lerp(cursor_highlight_color.g, Globals.CUSTOM_WHITE.g, 0.1)
-		cursor_highlight_color.b = lerp(cursor_highlight_color.b, Globals.CUSTOM_WHITE.b, 0.1)
-		cursor_highlight_color.a = lerp(cursor_highlight_color.a, 0.0, 0.1)
+		cursor_highlight_color.r = lerp(cursor_highlight_color.r, Globals.CUSTOM_WHITE.r, 6.0 * delta)
+		cursor_highlight_color.g = lerp(cursor_highlight_color.g, Globals.CUSTOM_WHITE.g, 6.0 * delta)
+		cursor_highlight_color.b = lerp(cursor_highlight_color.b, Globals.CUSTOM_WHITE.b, 6.0 * delta)
+		cursor_highlight_color.a = lerp(cursor_highlight_color.a, 0.0, 6.0 * delta)
 	queue_redraw()
 
 

@@ -36,13 +36,13 @@ func _ready() -> void:
 	$Label.text = label
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if is_hover():
-		background_color.a = lerp(background_color.a, 0.2, 0.1)
-		radius = lerp(radius, original_radius * 1.1, 0.1)
+		background_color.a = lerp(background_color.a, 0.2, 6.0 * delta)
+		radius = lerp(radius, original_radius * 1.1, 6.0 * delta)
 	else:
-		background_color.a = lerp(background_color.a, 0.0, 0.1)
-		radius = lerp(radius, original_radius, 0.1)
+		background_color.a = lerp(background_color.a, 0.0, 6.0 * delta)
+		radius = lerp(radius, original_radius, 6.0 * delta)
 	queue_redraw()
 	
 	if is_hover() and visible and (
@@ -52,8 +52,8 @@ func _process(_delta: float) -> void:
 	):
 		pressed.emit()
 	
-	rotation = lerp_angle(rotation, target_rotation, 0.3)
-	coverage = lerp(coverage, target_coverage, 0.3)
+	rotation = lerp_angle(rotation, target_rotation, 18.0 * delta)
+	coverage = lerp(coverage, target_coverage, 18.0 * delta)
 
 
 func _draw():
