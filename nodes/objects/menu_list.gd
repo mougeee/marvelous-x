@@ -5,7 +5,8 @@ extends Node2D
 var children = []
 var menus = {}
 
-signal selected
+signal selected(child_name: String, selected_index: int)
+signal changed(selected_index: int)
 
 
 func change_selected_index_offset(offset: int, invoke: bool = true):
@@ -45,6 +46,8 @@ func change_selected_index_offset(offset: int, invoke: bool = true):
 	
 	menus = new_menus
 	selected_index += offset
+	
+	changed.emit(selected_index)
 
 
 
