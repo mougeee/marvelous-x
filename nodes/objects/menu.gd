@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 		radius = lerp(radius, original_radius, 0.1)
 	queue_redraw()
 	
-	if is_hover() and (
+	if is_hover() and visible and (
 		Input.is_action_just_released('Click')
 		or Input.is_action_just_pressed("LeftPress")
 		or Input.is_action_just_pressed("RightPress")

@@ -4,6 +4,7 @@ extends Node2D
 
 var children = []
 var menus = {}
+var left_right_count = 6
 
 signal selected(child_name: String, selected_index: int)
 signal changed(selected_index: int)
@@ -15,18 +16,18 @@ func change_selected_index_offset(offset: int, invoke: bool = true):
 		return
 	
 	var new_menus = {}
-	
-	for key in menus:
-		var new_key = key - offset
-		if abs(new_key) > 5:
-			menus[key].queue_free()
-			menus.erase(key)
-			continue
-	
-	for i in range(-5, 6):
+
+	for i in range(-(selected_index + offset), children.size() - (selected_index + offset)):
 		var new_index = selected_index + offset + i
 		var key = offset + i
 		var new_key = key - offset
+		
+		if key in menus:
+			if abs(new_key) > left_right_count:
+				menus[key].visible = false
+				continue
+			else:
+				menus[key].visible = true
 		
 		if key in menus:
 			menus[key].pressed.disconnect(change_selected_index_offset.bind(key))
