@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dchd7jyverxw0"]
+[gd_scene load_steps=7 format=3 uid="uid://dchd7jyverxw0"]
 
 [ext_resource type="Script" path="res://nodes/scenes/title_scene.gd" id="1_s6t7h"]
 [ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/utils/centering.tscn" id="2_hjfw1"]
 [ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="3_kehp1"]
+[ext_resource type="PackedScene" uid="uid://b4xurpdejwh2e" path="res://nodes/objects/menu_list.tscn" id="4_f0wnp"]
 [ext_resource type="PackedScene" uid="uid://bkjikw1mkxf44" path="res://nodes/objects/menu.tscn" id="4_wutpc"]
 [ext_resource type="PackedScene" uid="uid://b8hh7erdmresl" path="res://nodes/objects/cursor.tscn" id="5_yitsy"]
 
@@ -14,19 +15,18 @@ script = ExtResource("1_s6t7h")
 [node name="NoteFrame" parent="Centering" instance=ExtResource("3_kehp1")]
 beat_line = false
 
-[node name="MenuGame" parent="Centering" instance=ExtResource("4_wutpc")]
-rotation = 1.5708
-target_rotation = 1.571
-label = "Play"
+[node name="MenuList" parent="Centering" instance=ExtResource("4_f0wnp")]
+selected_index = 1
 
-[node name="MenuMap" parent="Centering" instance=ExtResource("4_wutpc")]
-rotation = 3.14159
-target_rotation = 3.142
+[node name="MapMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
 label = "Map Editor"
 
-[node name="MenuQuit" parent="Centering" instance=ExtResource("4_wutpc")]
-rotation = -1.5708
-target_rotation = -1.571
+[node name="PlayMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
+label = "Play"
+
+[node name="QuitMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
 label = "Quit"
 
 [node name="Cursor" parent="." instance=ExtResource("5_yitsy")]
+
+[connection signal="selected" from="Centering/MenuList" to="." method="_on_menu_list_selected"]
