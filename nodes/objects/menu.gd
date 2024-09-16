@@ -10,6 +10,7 @@ var original_radius = 0.0
 var radius = original_radius
 var coverage = target_coverage
 var pressing = false
+var highlight_radius = 0.0
 
 signal pressed
 
@@ -41,9 +42,11 @@ func _process(delta: float) -> void:
 	if is_hover():
 		background_color.a = lerp(background_color.a, 0.2, 6.0 * delta)
 		radius = lerp(radius, original_radius * 1.1, 6.0 * delta)
+		highlight_radius = lerp(highlight_radius, radius, 12.0 * delta)
 	else:
 		background_color.a = lerp(background_color.a, 0.0, 6.0 * delta)
 		radius = lerp(radius, original_radius, 6.0 * delta)
+		highlight_radius = lerp(highlight_radius, 0.0, 12.0 * delta)
 	queue_redraw()
 	
 	if is_hover() and visible and (
@@ -71,6 +74,7 @@ func _draw():
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(-coverage/2), Globals.CUSTOM_WHITE, 2, true)
 	draw_line(Vector2.ZERO, Vector2(radius, 0.0).rotated(coverage/2), Globals.CUSTOM_WHITE, 2, true)
 	draw_arc(Vector2.ZERO, radius, -coverage/2, coverage/2, coverage*50.0, Globals.CUSTOM_WHITE, 2, true)
+	draw_arc(Vector2.ZERO, highlight_radius, -coverage/2, coverage/2, coverage*50.0, Globals.CUSTOM_WHITE, 2, true)
 	
 	#if thumbnail:
 		#draw_texture(thumbnail, Vector2.ZERO)
