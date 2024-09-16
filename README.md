@@ -17,6 +17,13 @@
 1. 레포지토리를 다운로드하여 Godot 프로젝트 목록에 추가합니다.
 1. 메인 화면 우측의 Run (실행) 버튼을 눌러 실행합니다.
 
+## 브랜딩
+
+<p align="center">
+   <img src="https://github.com/junhg0211/marvelous-x/blob/master/icon_sketch.svg" alt="logo sketch" style="width: 50%">
+   <img src="https://github.com/user-attachments/assets/5d60b071-36fc-468f-b30f-194efdfa8afb" alt="colors">
+</p>
+
 ## 관련 링크
 
 - GitHub 레포지토리: https://github.com/junhg0211/mougee
