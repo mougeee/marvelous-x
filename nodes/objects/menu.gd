@@ -24,7 +24,7 @@ func is_hover() -> bool:
 	
 func resize() -> void:
 	original_radius = get_viewport_rect().size.y / 3
-	radius = original_radius
+	radius = 0.0
 
 
 # Called when the node enters the scene tree for the first time.
