@@ -9,6 +9,7 @@ var background_color = Globals.CUSTOM_WHITE
 var original_radius = 0.0
 var radius = original_radius
 var coverage = target_coverage
+var pressing = false
 
 signal pressed
 
@@ -46,11 +47,19 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	
 	if is_hover() and visible and (
-		Input.is_action_just_released('Click')
+		Input.is_action_just_pressed('Click')
+	):
+		pressing = true
+	
+	if is_hover() and visible and (
+		pressing and Input.is_action_just_released('Click')
 		or Input.is_action_just_pressed("LeftPress")
 		or Input.is_action_just_pressed("RightPress")
 	):
 		pressed.emit()
+	
+	if not is_hover():
+		pressing = false
 	
 	rotation = lerp_angle(rotation, target_rotation, 18.0 * delta)
 	coverage = lerp(coverage, target_coverage, 18.0 * delta)

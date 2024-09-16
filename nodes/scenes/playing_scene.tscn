@@ -49,7 +49,6 @@ offset_bottom = 43.0
 label_settings = SubResource("LabelSettings_y41ep")
 number = 100.0
 format = "%.2f%%"
-lerp_ratio = 0.2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
