@@ -84,5 +84,5 @@ func load_chart(filename: String) -> Dictionary:
 
 func resize_thumbnail(sprite: Sprite2D, viewport_size: Vector2):
 	var thumbnail_size = sprite.texture.get_size()
-	var scale_factor = max(viewport_size.x / thumbnail_size.x, viewport_size.y / thumbnail_size.y)
+	var scale_factor = max(viewport_size.x / thumbnail_size.x, viewport_size.y / thumbnail_size.y) + 0.1
 	sprite.scale = Vector2(scale_factor, scale_factor)

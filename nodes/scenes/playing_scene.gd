@@ -175,6 +175,9 @@ func _process(delta: float) -> void:
 	# combo lerp
 	$Centering/Combo.modulate.a = lerp($Centering/Combo.modulate.a, 0.5, 6.0 * delta)
 	$Centering/Combo.position.y = lerp($Centering/Combo.position.y, -100.0, 6.0 * delta)
+	
+	# thumbnail panning
+	$Centering/BackgroundThumbnail.position = lerp($Centering/BackgroundThumbnail.position, -(get_global_mouse_position() - get_viewport_rect().size / 2) / 20.0, 0.5 * delta)
 
 
 func _draw():
