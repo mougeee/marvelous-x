@@ -3,6 +3,7 @@ extends Node2D
 const Menu = preload("res://nodes/objects/menu.tscn")
 
 var chart_names = []
+var chart_data = {}
 
 var scene_data
 
@@ -55,12 +56,24 @@ func _on_menu_list_changed(index: int) -> void:
 	if not chart_names:
 		return
 	
+	for i in range(-$Centering/MenuList.left_right_count, $Centering/MenuList.left_right_count + 1):
+		if index + i < 0 or index + i >= chart_names.size():
+			continue
+			
+		var chart_name = chart_names[index + i]
+		if chart_name in chart_data:
+			continue
+			
+		var chart = Globals.load_chart("user://charts/" + chart_name + "/chart.json")
+		chart_data[chart_name] = chart
+		chart_data[chart_name]["stream"] = load("user://charts/" + chart_name + "/" + chart.song.path)
+		chart_data[chart_name]["thumbnail"] = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
+		
 	var chart_name = chart_names[index]
-	var chart = Globals.load_chart("user://charts/" + chart_name + "/chart.json")
-	$PreviewAudio.stream = load("user://charts/" + chart_name + "/" + chart.song.path)
-	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
-	$Centering/PreviewThumbnail.texture = load("user://charts/" + chart_name + "/" + chart.song.thumbnail)
+	$Centering/PreviewThumbnail.texture = chart_data[chart_name]["thumbnail"]
 	Globals.resize_thumbnail($Centering/PreviewThumbnail, get_viewport_rect().size)
+	$PreviewAudio.stream = chart_data[chart_name]["stream"]
+	$PreviewAudio.play($PreviewAudio.stream.get_length() * randf() * 0.5)
 
 
 func _on_menu_list_selected(child_name: String, selected_index: int) -> void:
