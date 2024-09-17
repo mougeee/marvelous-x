@@ -16,6 +16,8 @@ func resize():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$Centering/NoteFrame.rotation = scene_data.get("cursor_direction", 0.0)
+	
 	$Centering/PreviewThumbnail.modulate.a = 0.1
 	
 	# load chart names
@@ -49,7 +51,7 @@ func _process(delta: float) -> void:
 
 
 func _on_back_menu_pressed() -> void:
-	scene_changed.emit("select", "title")
+	scene_changed.emit("select", "title", {"cursor_direction": $Centering/NoteFrame.rotation})
 
 
 func _on_menu_list_changed(index: int) -> void:
@@ -78,5 +80,6 @@ func _on_menu_list_changed(index: int) -> void:
 
 func _on_menu_list_selected(child_name: String, selected_index: int) -> void:
 	scene_changed.emit("select", "playing", {
-		'chart': chart_names[$Centering/MenuList.selected_index]
+		'chart': chart_names[$Centering/MenuList.selected_index],
+		"cursor_direction": $Centering/NoteFrame.rotation
 	})

@@ -74,6 +74,8 @@ func resize() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$Centering/NoteFrame.rotation = scene_data.get("cursor_direction", 0.0)
+	
 	# preprocess notes
 	chart = Globals.load_chart("user://charts/" + scene_data.chart + "/chart.json")
 	preprocess_notes(chart["notes"])
