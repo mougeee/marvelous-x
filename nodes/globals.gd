@@ -86,6 +86,21 @@ func resize_thumbnail(sprite: Sprite2D, viewport_size: Vector2):
 	sprite.scale = Vector2(scale_factor, scale_factor)
 
 
-var settings = {
+var options = {
+	"version": 1,
 	"offset": 0.0
 }
+
+
+func save_options():
+	var file = FileAccess.open("user://options.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify(options, ' '))
+	file.close()
+
+
+func load_options():
+	if ResourceLoader.exists("user://options.json"):
+		var file = FileAccess.open("user://options.json", FileAccess.READ)
+		var new_options = JSON.parse_string(file.get_as_text())
+		if new_options.version == options.version:
+			options = new_options

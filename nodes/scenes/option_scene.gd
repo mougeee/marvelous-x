@@ -6,6 +6,8 @@ signal scene_changed
 
 func _ready() -> void:
 	$Centering/NoteFrame.rotation = scene_data.get("cursor_direction", 0.0)
+	
+	$Centering/MenuList/OffsetMenu/Label.text = "Offset: %.2fms" % [Globals.options.offset * 1000.0]
 
 
 func _on_back_menu_pressed() -> void:

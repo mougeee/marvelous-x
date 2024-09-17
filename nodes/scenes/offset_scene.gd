@@ -5,6 +5,7 @@ signal scene_changed
 
 
 func _on_back_menu_pressed() -> void:
+	Globals.save_options()
 	scene_changed.emit("offset", "option", {"cursor_direction": $Centering/NoteFrame.rotation})
 
 
@@ -35,9 +36,9 @@ func _process(delta: float) -> void:
 		count += 1
 		offset_sum += diff
 		
-		Globals.settings.offset = offset_sum / count
-		$Centering/NoteFrame.metronome.set_anchor_position(time - 1.0 - Globals.settings.offset)
+		Globals.options.offset = offset_sum / count
+		$Centering/NoteFrame.metronome.set_anchor_position(time - 1.0 - Globals.options.offset)
 		
-		$Centering/OffsetLabel.text = "%.2fms\nOffset set to %.2fms" % [diff * 1000.0, Globals.settings.offset * 1000.0]
+		$Centering/OffsetLabel.text = "%.2fms\nOffset set to %.2fms" % [diff * 1000.0, Globals.options.offset * 1000.0]
 		$Centering/OffsetLabel.modulate.a = 1.0
 	$Centering/OffsetLabel.modulate.a = lerp($Centering/OffsetLabel.modulate.a, 0.0, 6.0 * delta)

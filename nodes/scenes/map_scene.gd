@@ -8,7 +8,7 @@ const CriticalNote = preload("res://nodes/objects/critical_note.tscn")
 var audio_playing = false
 var stream_loaded = false
 
-var offset = Globals.settings.offset
+var offset = Globals.options.offset
 
 var notes = []
 var note_nodes = []
