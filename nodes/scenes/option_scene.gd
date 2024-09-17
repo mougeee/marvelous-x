@@ -17,3 +17,6 @@ func _on_back_menu_pressed() -> void:
 func _on_menu_list_selected(child_name: String, selected_index: int) -> void:
 	if child_name == "OffsetMenu":
 		scene_changed.emit("option", "offset", {"cursor_direction": $Centering/NoteFrame.rotation})
+	
+	if child_name == "ChartDirectoryMenu":
+		OS.shell_open(ProjectSettings.globalize_path("user://charts"))

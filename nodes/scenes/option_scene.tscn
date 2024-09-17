@@ -25,5 +25,8 @@ label = "Back"
 [node name="OffsetMenu" parent="Centering/MenuList" instance=ExtResource("4_ycfn8")]
 label = "Offset"
 
+[node name="ChartDirectoryMenu" parent="Centering/MenuList" instance=ExtResource("4_ycfn8")]
+label = "Open chart directory"
+
 [connection signal="pressed" from="Centering/BackMenu" to="." method="_on_back_menu_pressed"]
 [connection signal="selected" from="Centering/MenuList" to="." method="_on_menu_list_selected"]
