@@ -6,7 +6,7 @@ var TrapNote = preload("res://nodes/objects/trap_note.tscn")
 var Judgement = preload("res://nodes/objects/judgement.tscn")
 var CriticalNote = preload("res://nodes/objects/critical_note.tscn")
 var time_begin
-var offset = Globals.offset
+var offset = Globals.settings.offset
 
 var notes = []
 var next_index = 0

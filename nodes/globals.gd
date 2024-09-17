@@ -1,7 +1,5 @@
 extends Node
 
-var offset = 0.090
-
 const CUSTOM_WHITE = Color("#f7f7f9")
 const CUSTOM_RED = Color("#bc3b3b")
 const CUSTOM_BLUE = Color("#3c70ba")
@@ -86,3 +84,8 @@ func resize_thumbnail(sprite: Sprite2D, viewport_size: Vector2):
 	var thumbnail_size = sprite.texture.get_size()
 	var scale_factor = max(viewport_size.x / thumbnail_size.x, viewport_size.y / thumbnail_size.y) + 0.1
 	sprite.scale = Vector2(scale_factor, scale_factor)
+
+
+var settings = {
+	"offset": 0.0
+}
