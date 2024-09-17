@@ -1,6 +1,6 @@
 extends Node
 
-const offset = 0.090
+var offset = 0.090
 
 const CUSTOM_WHITE = Color("#f7f7f9")
 const CUSTOM_RED = Color("#bc3b3b")

@@ -14,6 +14,10 @@ func _on_menu_list_selected(menu_name: String, _index: int) -> void:
 		scene_changed.emit("title", "select")
 		return
 	
+	if menu_name == "OptionMenu":
+		scene_changed.emit("title", "option")
+		return
+	
 	if menu_name == "QuitMenu":
 		get_tree().quit()
 		return

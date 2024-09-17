@@ -6,6 +6,7 @@ var beat_duration
 @export var sound = false
 var need = false
 var time = 0.0
+var anchor_position
 
 
 func set_bpm(b: float) -> void:
@@ -13,8 +14,9 @@ func set_bpm(b: float) -> void:
 	beat_duration = 60.0 / _bpm
 	
 	
-func set_anchor_position(anchor_position: float):
-	time = fposmod(Time.get_ticks_usec() / 1_000_000.0 - anchor_position, beat_duration)
+func set_anchor_position(ap: float):
+	anchor_position = ap
+	time = fposmod(Time.get_ticks_usec() / 1_000_000.0 - ap, beat_duration)
 
 
 # Called when the node enters the scene tree for the first time.

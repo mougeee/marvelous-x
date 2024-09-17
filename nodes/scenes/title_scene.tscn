@@ -24,6 +24,9 @@ label = "Map Editor"
 [node name="PlayMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
 label = "Play"
 
+[node name="OptionMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
+label = "Option"
+
 [node name="QuitMenu" parent="Centering/MenuList" instance=ExtResource("4_wutpc")]
 label = "Quit"
 

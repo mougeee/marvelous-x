@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://cd5ps54rboa65"]
+
+[ext_resource type="Script" path="res://nodes/scenes/offset_scene.gd" id="1_agokc"]
+[ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/utils/centering.tscn" id="2_rqg3v"]
+[ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="3_eslvr"]
+[ext_resource type="PackedScene" uid="uid://bkjikw1mkxf44" path="res://nodes/objects/menu.tscn" id="4_bwgkh"]
+[ext_resource type="PackedScene" uid="uid://djcbvrojlng0" path="res://nodes/utils/metronome.tscn" id="5_3jp41"]
+[ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="5_elgp3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_a0ric"]
+font = ExtResource("5_elgp3")
+font_size = 24
+
+[node name="OffsetScene" type="Node2D"]
+script = ExtResource("1_agokc")
+
+[node name="Centering" parent="." instance=ExtResource("2_rqg3v")]
+
+[node name="NoteFrame" parent="Centering" instance=ExtResource("3_eslvr")]
+
+[node name="BackMenu" parent="Centering" instance=ExtResource("4_bwgkh")]
+rotation = -1.5708
+target_coverage = 1.0
+target_rotation = -1.571
+label = "Back"
+
+[node name="OffsetLabel" type="Label" parent="Centering"]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -33.5
+offset_top = 73.0
+offset_right = 33.5
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0.0ms"
+label_settings = SubResource("LabelSettings_a0ric")
+horizontal_alignment = 1
+
+[node name="Metronome" parent="." instance=ExtResource("5_3jp41")]
+sound = true
+
+[connection signal="pressed" from="Centering/BackMenu" to="." method="_on_back_menu_pressed"]
