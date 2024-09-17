@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvcdkjhhm24wr"]
+[gd_scene load_steps=8 format=3 uid="uid://dvcdkjhhm24wr"]
 
 [ext_resource type="PackedScene" uid="uid://b3ygu6pkadmsm" path="res://nodes/objects/note_frame.tscn" id="1_2g1bc"]
 [ext_resource type="Script" path="res://nodes/scenes/playing_scene.gd" id="1_o3yjq"]
 [ext_resource type="PackedScene" uid="uid://1xt8ttogo0t7" path="res://nodes/utils/centering.tscn" id="2_4xu5f"]
-[ext_resource type="PackedScene" uid="uid://bgfyeoxtfn5in" path="res://nodes/objects/animated_number.tscn" id="4_1n1rm"]
 [ext_resource type="FontFile" uid="uid://b5baly05xhyg4" path="res://res/futura medium bt.ttf" id="4_lofq0"]
 [ext_resource type="PackedScene" uid="uid://b8hh7erdmresl" path="res://nodes/objects/cursor.tscn" id="7_ty78e"]
 
@@ -11,9 +10,9 @@
 font = ExtResource("4_lofq0")
 font_size = 36
 
-[sub_resource type="LabelSettings" id="LabelSettings_y41ep"]
+[sub_resource type="LabelSettings" id="LabelSettings_3hpss"]
 font = ExtResource("4_lofq0")
-font_size = 32
+font_size = 24
 
 [node name="PlayingScene" type="Node2D"]
 script = ExtResource("1_o3yjq")
@@ -41,14 +40,13 @@ label_settings = SubResource("LabelSettings_3qax2")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Accuracy" parent="." instance=ExtResource("4_1n1rm")]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 60.0
-offset_bottom = 43.0
-label_settings = SubResource("LabelSettings_y41ep")
-number = 100.0
-format = "%.2f%%"
+[node name="Accuracy" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 108.0
+offset_bottom = 54.0
+text = "100.0%"
+label_settings = SubResource("LabelSettings_3hpss")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 

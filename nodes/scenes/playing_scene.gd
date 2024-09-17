@@ -16,8 +16,6 @@ var chart
 var note_start_time = 0
 var scene_data = {}
 
-const ComboLabel = preload("res://nodes/objects/combo_label.tscn")
-
 signal scene_changed
 	
 
@@ -178,6 +176,10 @@ func _process(delta: float) -> void:
 	
 	# thumbnail panning
 	$Centering/BackgroundThumbnail.position = lerp($Centering/BackgroundThumbnail.position, -(get_global_mouse_position() - get_viewport_rect().size / 2) / 20.0, 0.5 * delta)
+	
+	# animate accuracy label
+	accuracy_label_number = lerp(accuracy_label_number, accuracy, 12.0 * delta)
+	$Accuracy.text = "%.2f%%" % accuracy_label_number
 
 
 func _draw():
@@ -192,6 +194,8 @@ var great_count = 0
 var ok_count = 0
 var miss_count = 0
 var combo = 0
+var accuracy_label_number = 100.0
+var accuracy = 100.0
 
 
 func _on_note_pressed(judgement: Globals.Judgements, angle: float, is_critical: bool, dt: float) -> void:
@@ -227,11 +231,11 @@ func _on_note_pressed(judgement: Globals.Judgements, angle: float, is_critical: 
 		judgement_node.get_node("Offset").text = "%.1fms" % [dt * 1000.0]
 	$Centering.add_child(judgement_node)
 		
-	var accuracy = (float) (
+	accuracy = (float) (
 		marvelous_count * Globals.judgement_info[Globals.Judgements.MARVELOUS]["accuracy"]
 		+ splendid_count * Globals.judgement_info[Globals.Judgements.SPLENDID]["accuracy"]
 		+ great_count * Globals.judgement_info[Globals.Judgements.GREAT]["accuracy"]
 		+ ok_count * Globals.judgement_info[Globals.Judgements.OK]["accuracy"]
 		+ miss_count * Globals.judgement_info[Globals.Judgements.MISS]["accuracy"]
 	) / (marvelous_count + splendid_count + great_count + ok_count + miss_count)
-	$Accuracy.number = accuracy
+	$Accuracy.text = "%.2f%%" % accuracy_label_number
