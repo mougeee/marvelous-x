@@ -38,5 +38,5 @@ charts
 
 ## 관련 링크
 
-- GitHub 레포지토리: https://github.com/junhg0211/mougee
+- GitHub 레포지토리: https://github.com/marvelous-x/marvelous-x
 - 공식 Discord 서버: https://discord.gg/bxvbFNTSww
